@@ -44,7 +44,7 @@ class Maze {
             return colorSum < 3.0;
         };
         
-        void drawCorner(float xCenter, float yCenter, float z, float start);
+        void drawCorner(float xCenter, float yCenter, float z, float start, bool inner);
 
     public:
         void load();

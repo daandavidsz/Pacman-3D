@@ -43,9 +43,13 @@ void Tile::render(float ticks) {
     if (!visited) {
         glColor4f(1.0, 1.0, 0.0, 0.7);
         glBegin (GL_QUADS);
+            glNormal3f(0, 0, 1);
             glVertex3f(pointX+0.45, pointY+0.45, -19.5);
+            glNormal3f(0, 0, 1);            
             glVertex3f(pointX+0.55, pointY+0.45, -19.5);
+            glNormal3f(0, 0, 1);            
             glVertex3f(pointX+0.55, pointY+0.55, -19.5);
+            glNormal3f(0, 0, 1);            
             glVertex3f(pointX+0.45, pointY+0.55, -19.5);
         glEnd ();
     }

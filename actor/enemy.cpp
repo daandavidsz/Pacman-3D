@@ -63,6 +63,8 @@ void Enemy::setColor() {
 }
 
 void Enemy::render(float ticks) {
+    totalTicks += ticks * 4.8;
+
     if (direction != none) {
         position += ticks * 4.8;
     }
@@ -83,6 +85,7 @@ void Enemy::render(float ticks) {
     }
     
     this->setColor();
+    glColor4f(0,0,1,1);
     /*
     glBegin(GL_LINES);            
     glVertex3f(currentTile->getPosition().x-14, currentTile->getPosition().y-15, -19);
@@ -99,10 +102,14 @@ void Enemy::render(float ticks) {
     glPushMatrix();
     glLineWidth(0.5);
     
-    glTranslatef(center.x, center.y, -19.0);
+    float delta = (totalTicks / 3 - (int)(totalTicks / 3));
+    
+    float height = 0.2 * sin(M_PI * delta);
+    
+    glTranslatef(center.x, center.y, -19.4 + height);
     
     // Ghost rotation
-    //glRotatef(360.0/8*position,0,0,1);
+    glRotatef(360.0/8*delta,0,0,1);
         
     std::vector<point> points; 
             
@@ -151,7 +158,8 @@ void Enemy::render(float ticks) {
     
     unsigned int counter = 0;
     while (counter < points.size()) {
-        point normal = computeFaceNormal(&points[counter], &points[counter+2], &points[counter+3]);
+        point normal;
+        computeFaceNormal(&points[counter], &points[counter+2], &points[counter+3], &normal);
         
         point face = points[counter];
         face.x = (face.x + points[counter+3].x) / 2;

@@ -23,6 +23,7 @@ class Enemy : public Actor {
         Player * player;
         Tile * currentTile;
         float position;
+        float totalTicks;
 
         void setRandomDirection();
         virtual void resolvePosition(float movement);

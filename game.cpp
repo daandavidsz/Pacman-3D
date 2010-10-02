@@ -44,32 +44,20 @@ void Game::render(float ticks) {
     
     // gluLookAt (0, -20, 18, 0, -2, playerPos.z, 0.0, 1.0, 0.0);
     
-    gluLookAt (playerPos.x, playerPos.y - 16, -4, playerPos.x, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
-    point blinkyPos = blinky.getPosition();
     //gluLookAt (blinkyPos.x, blinkyPos.y - 4, blinkyPos.z+1, blinkyPos.x, blinkyPos.y, blinkyPos.z, 0.0, 1.0, 0.0);
     
     //gluLookAt (blinkyPos.x - 2, blinkyPos.y - 2, blinkyPos.z+4, blinkyPos.x, blinkyPos.y, blinkyPos.z, 0.0, 1.0, 0.0);                                        
     
-    maze.render(ticks);
-    
-    bool scatter = (int)gameTime % (20+7) <= 7;
-    blinky.setScatter(scatter); 
-    blinky.render(ticks);
-    pinky.setScatter(scatter); 
-    pinky.render(ticks);
-    inky.setScatter(scatter); 
-    inky.render(ticks);
-    clyde.setScatter(scatter); 
-    clyde.render(ticks);
-
-    player.render(ticks);
-    
+    gluLookAt (playerPos.x, playerPos.y - 16, -4, playerPos.x, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
+        
     glEnable ( GL_LIGHTING ) ;            
     //GLfloat position[] = { 0.0, 0.0, -1.0, 1.0f };
-    GLfloat position[] = { 0.0, 0.0, 20, 1.0f };            
+    glutSolidSphere(3, 32, 32);
+        
+    GLfloat position[] = { 0.5, -0.5, 1, 0};            
     glLightfv(GL_LIGHT0, GL_POSITION, position);
     
-    GLfloat ambient[] = {0.0, 0.0, 0.0};
+    GLfloat ambient[] = {0.2, 0.2, 0.2};
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
     
     GLfloat diffuse[] = {1.0, 1.0, 1.0, 1.0};
@@ -86,6 +74,23 @@ void Game::render(float ticks) {
     
     glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE ) ;
     glEnable ( GL_COLOR_MATERIAL ) ;  
+    
+            
+    maze.render(ticks);
+    
+    bool scatter = (int)gameTime % (20+7) <= 7;
+    blinky.setScatter(scatter); 
+    blinky.render(ticks);
+    pinky.setScatter(scatter); 
+    pinky.render(ticks);
+    inky.setScatter(scatter); 
+    inky.render(ticks);
+    clyde.setScatter(scatter); 
+    clyde.render(ticks);
+
+    player.render(ticks);
+    
+    glLoadIdentity();
 
     /*
     glTranslatef(0,-8,0);    

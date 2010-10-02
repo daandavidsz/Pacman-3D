@@ -61,9 +61,8 @@ bool Actor::vectorNormalize (point *pIn, point *pOut)
 }
 
 // Compute p1,p2,p3 face normal into pOut
-point Actor::computeFaceNormal (point *p1, point *p2, point *p3)
+point Actor::computeFaceNormal (point *p1, point *p2, point *p3, point *pOut)
 {
-    point * pOut = new point();
     // Uses p2 as a new origin for p1,p3
     point a;
     vectorOffset(p3, p2, &a);

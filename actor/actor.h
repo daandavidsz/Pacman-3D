@@ -14,7 +14,7 @@ class Actor {
         void vectorOffset (point *pIn, point *pOffset, point *pOut);
         void vectorGetNormal (point *a, point *b, point *pOut);
         bool vectorNormalize (point *pIn, point *pOut);
-        point computeFaceNormal (point *p1, point *p2, point *p3);
+        point computeFaceNormal (point *p1, point *p2, point *p3, point *pOut);
         point computeVertexNormal (point a, point b, point c, point d);
         
     public:
