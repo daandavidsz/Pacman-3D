@@ -1,0 +1,10 @@
+g++ `Magick++-config --cppflags --cxxflags --ldflags --libs` -Wall -lglut -lGLU -lGL -pg \
+    pacman.cpp \
+    actor.cpp \
+    player.cpp \
+    enemy.cpp \
+    maze.cpp \
+    game.cpp \
+    path.cpp \
+    tile.cpp \
+    -o pacman && ./pacman

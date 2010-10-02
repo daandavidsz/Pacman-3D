@@ -1,0 +1,16 @@
+g++ `Magick++-config --cppflags --cxxflags --ldflags --libs` \
+    -Wall -Wno-unused-parameter -Wno-switch \
+    -lglut -lGLU -lGL \
+    pacman.cpp \
+    actor/actor.cpp \
+    actor/player.cpp \
+    actor/enemy.cpp \
+    actor/blinky.cpp \
+    actor/pinky.cpp \
+    actor/inky.cpp \
+    actor/clyde.cpp \
+    maze.cpp \
+    game.cpp \
+    path.cpp \
+    tile.cpp \
+    -o pacman && ./pacman
