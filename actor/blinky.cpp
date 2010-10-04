@@ -4,7 +4,7 @@ void Blinky::resolvePosition(float ticks) {
     std::vector<DIRECTION> directions;
     DIRECTION dirs[] = {up, down, left, right};
     DIRECTION dir = none;
-
+    
     targetPosition = this->getTargetPosition();
     
     int distance = 99;
@@ -18,7 +18,7 @@ void Blinky::resolvePosition(float ticks) {
             }
         }
     }
-
+    
     direction = dir;    
 }
 

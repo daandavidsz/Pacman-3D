@@ -53,7 +53,7 @@ class Renderer {
 
             Renderer::handleLighting(true);
 
-    	    glEnable(GL_CULL_FACE);
+    	    //glEnable(GL_CULL_FACE);
         	
             glEnable (GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -140,8 +140,15 @@ class Renderer {
                 }
             }
             */
-
+            
+            bool paused = game.isPaused();
+            if (paused) {
+                sleep(1);
+                lastClock = timer.getSeconds();
+                return;
+            }
             lastClock = now;
+            
             float movement = (float)ticks * 5;
             
             switch (direction) {
@@ -157,7 +164,6 @@ class Renderer {
                     break;
             }
 
-            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
             glLoadIdentity();
             game.render(ticks);
             /*

@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     glutReshapeFunc(&Renderer::reSizeGLScene);
 
     /* Register the function called when the keyboard is pressed. */
-    //glutKeyboardFunc(&Renderer::keyPressed);
+    glutKeyboardFunc(&Renderer::keyPressed);
     glutSpecialFunc(&Renderer::specialKey);
 
     /* Initialize our window. */

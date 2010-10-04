@@ -117,7 +117,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     glBegin(GL_QUADS);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glColor4f (0, 0.0, 0.2, 1.0);
+        glColor4f (0, 0.0, 0.2, 0.7);
         glNormal3f(0, 0, 1);
         glVertex3f(p.x, p.y, z-0.02);
     }
@@ -152,7 +152,7 @@ void Maze::drawCorner(float xCenter, float yCenter, float z, float start, bool i
 		}
 	glEnd();
 	
-	glColor3f(0, 0, 0.2);	
+	glColor4f(0, 0, 0.2, 0.7);	
 	glBegin(GL_POLYGON);
 		x = (float)radius * cos(359 * PI/180.0f);
 		y = (float)radius * sin(359 * PI/180.0f);
@@ -254,7 +254,7 @@ void Maze::drawCeiling(int x, int y) {
     float pointY = (float)y-(height/2);
     float top = -19 - 0.02;
     
-    glColor4f(0.0, 0.0, 0.2, 1.0);
+    glColor4f(0.0, 0.0, 0.2, 0.7);
     
     glBegin (GL_QUADS);
         glNormal3f(0, 0, 1);
@@ -314,11 +314,11 @@ Tile * Maze::getTile(int x, int y) {
 }
         
 void Maze::render(float ticks) {
-    glCallList(mazeDisplayList);
     glTranslatef(0,0,-0.5);
     glCallList(mazeDisplayList);
-    glTranslatef(0,0,0.5);    
-    
+    glTranslatef(0,0,0.5);
+    glCallList(mazeDisplayList);
+
     //glTranslatef(28,0,0);    
     //glCallList(mazeDisplayList);
     //glTranslatef(-28,0,0);        

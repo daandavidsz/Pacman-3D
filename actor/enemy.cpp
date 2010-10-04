@@ -63,15 +63,19 @@ void Enemy::setColor() {
 }
 
 void Enemy::render(float ticks) {
-    totalTicks += ticks * 4.8;
+    totalTicks += ticks * 7.0;
 
     if (direction != none) {
-        position += ticks * 4.8;
+        position += ticks * 7.0;
     }
     if (position >= 1.0) {
         position--;
         currentTile = currentTile->getExit(direction);
-        this->resolvePosition(ticks * 4.8);
+        
+        DIRECTION tDirection = direction;
+        this->resolvePosition(ticks * 7.0);
+        if (direction == none) direction = getOpposite(tDirection);
+        
     }
 
     point center = currentTile->getCenter();
@@ -85,7 +89,8 @@ void Enemy::render(float ticks) {
     }
     
     this->setColor();
-    glColor4f(0,0,1,1);
+    //glColor4f(0,0,1,1);
+    
     /*
     glBegin(GL_LINES);            
     glVertex3f(currentTile->getPosition().x-14, currentTile->getPosition().y-15, -19);

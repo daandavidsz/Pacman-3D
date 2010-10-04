@@ -41,7 +41,7 @@ void Tile::render(float ticks) {
     float pointY = center.y - 0.5;
     
     if (!visited) {
-        glColor4f(1.0, 1.0, 0.0, 0.7);
+        glColor4f(1.0, 1.0/255*184, 1.0/255*151, 1);
         glBegin (GL_QUADS);
             glNormal3f(0, 0, 1);
             glVertex3f(pointX+0.45, pointY+0.45, -19.5);

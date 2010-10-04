@@ -7,6 +7,7 @@ class Actor {
     protected:
         void resolvePosition(float movement);
         bool isOpposite(DIRECTION a, DIRECTION b);
+        DIRECTION getOpposite(DIRECTION dir);
         float distance(pos a, pos b);
         
         point normalizeVector(point vector);

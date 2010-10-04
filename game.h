@@ -24,6 +24,7 @@ class Game {
 
     int counter;
     float gameTime;
+    bool paused;
     
     public:
         
@@ -32,4 +33,5 @@ class Game {
         void render(float ticks);
         void handleKeystroke(unsigned char key);
         void handleSpecialKeystoke(int key);
+        bool isPaused();
 };

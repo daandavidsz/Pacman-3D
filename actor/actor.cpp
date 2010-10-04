@@ -2,14 +2,18 @@
 
 #include "actor.h"
 
-bool Actor::isOpposite(DIRECTION a, DIRECTION b) {
-    switch (a) {
-        case left: return b == right;
-        case up: return b == down;
-        case down: return b == up;
-        case right: return b == left;       
-        default: return false;                 
+DIRECTION Actor::getOpposite(DIRECTION dir) {
+    switch (dir) {
+        case left: return right;
+        case up: return down;
+        case down: return up;
+        case right: return left;
+        default: return none;
     }
+}
+
+bool Actor::isOpposite(DIRECTION a, DIRECTION b) {
+    return a != none && b != none && getOpposite(a) == b;
 }
 
 float Actor::distance(pos a, pos b) {

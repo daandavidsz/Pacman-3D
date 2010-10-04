@@ -69,7 +69,7 @@ point Player::getPosition() {
 }
 
 void Player::render(float ticks) {
-    this->resolvePosition(ticks * 5.0);
+    this->resolvePosition(ticks * 8.0);
     
     point center = currentTile->getCenter();
     

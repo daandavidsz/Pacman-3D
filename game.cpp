@@ -25,6 +25,8 @@ Maze Game::getMaze() {
 }
 
 void Game::render(float ticks) {
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
     gameTime += ticks;
     counter++;
     
@@ -39,16 +41,11 @@ void Game::render(float ticks) {
     if (lookAt > 25) lookAt = 25;
     
     // gluLookAt (playerPos.x, playerPos.y, -18.0 + lookAt, playerPos.x/2, playerPos.y/2, playerPos.z, 0.0, 1.0, 0.0);
-    // gluLookAt (0, -24, -18.0 + lookAt, 0, -4, playerPos.z, 0.0, 1.0, 0.0);
-    // gluLookAt (playerPos.x , playerPos.y - 15, -8, playerPos.x , playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
-    
     // gluLookAt (0, -20, 18, 0, -2, playerPos.z, 0.0, 1.0, 0.0);
     
-    //gluLookAt (blinkyPos.x, blinkyPos.y - 4, blinkyPos.z+1, blinkyPos.x, blinkyPos.y, blinkyPos.z, 0.0, 1.0, 0.0);
+    // Close
     
-    //gluLookAt (blinkyPos.x - 2, blinkyPos.y - 2, blinkyPos.z+4, blinkyPos.x, blinkyPos.y, blinkyPos.z, 0.0, 1.0, 0.0);                                        
-    
-    gluLookAt (playerPos.x, playerPos.y - 16, -4, playerPos.x, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
+    gluLookAt (playerPos.x / 3.5, playerPos.y - 16, -4, playerPos.x / 3.5, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
         
     glEnable ( GL_LIGHTING ) ;            
     //GLfloat position[] = { 0.0, 0.0, -1.0, 1.0f };
@@ -75,9 +72,8 @@ void Game::render(float ticks) {
     glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE ) ;
     glEnable ( GL_COLOR_MATERIAL ) ;  
     
+    player.render(ticks);          
             
-    maze.render(ticks);
-    
     bool scatter = (int)gameTime % (20+7) <= 7;
     blinky.setScatter(scatter); 
     blinky.render(ticks);
@@ -88,7 +84,7 @@ void Game::render(float ticks) {
     clyde.setScatter(scatter); 
     clyde.render(ticks);
 
-    player.render(ticks);
+    maze.render(ticks);
     
     glLoadIdentity();
 
@@ -115,6 +111,10 @@ void Game::handleSpecialKeystoke(int key) {
         case GLUT_KEY_RIGHT:
             player.setWantedDirection(right); break;
     }
+    
+    if (paused) {
+        paused = false;
+    }
 }
 
 void Game::handleKeystroke(unsigned char key) {
@@ -127,5 +127,15 @@ void Game::handleKeystroke(unsigned char key) {
             player.setWantedDirection(left); break;
         case 'd':
             player.setWantedDirection(right); break;
+        case 'p':
+            paused = !paused; break;
     }
+    
+    if (paused && key != 'p') {
+        paused = false;
+    }
+}
+
+bool Game::isPaused() {
+    return paused;
 }
