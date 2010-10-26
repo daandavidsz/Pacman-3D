@@ -23,7 +23,7 @@ void Clyde::resolvePosition(float ticks) {
 }
 
 pos Clyde::getTargetPosition() {
-    if (scatter) {
+    if (state == SCATTER) {
         pos p;
         p.x = 0;
         p.y = 32;
@@ -41,6 +41,6 @@ pos Clyde::getTargetPosition() {
     return position;
 }
 
-void Clyde::setColor() {
+void Clyde::setRealColor() {
     glColor3f(1.0, 0.5, 0.0);
 }

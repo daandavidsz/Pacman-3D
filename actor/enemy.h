@@ -15,25 +15,40 @@
 #include "actor.h"
 #include "player.h"
 
+enum ENEMYSTATE {
+    CHASE,
+    SCATTER,
+    SCARED,
+    EATEN
+};
+
 class Enemy : public Actor {
 
     protected:
+        ENEMYSTATE state;
         DIRECTION direction;
-        bool scatter;
         Player * player;
         Tile * currentTile;
         float position;
         float totalTicks;
+        float gameTime;
+        float scaredTime;
 
+        void reverseDirection();
         void setRandomDirection();
         virtual void resolvePosition(float movement);
+        virtual void resolveScaredPosition(float movement);        
         virtual pos getTargetPosition();
         virtual void setColor();
+        virtual void setRealColor();
         pos targetPosition;
+        void renderBody();
+        void renderEyes();        
         
     public:
         virtual ~Enemy() {};
-        
+
+        void onSignal(std::string name);   
         void start();
         void render(float ticks);
         DIRECTION getDirection();
@@ -41,5 +56,4 @@ class Enemy : public Actor {
         void setCurrentTile(Tile * tile);
         Tile * getCurrentTile();        
         void setPlayer(Player * player);
-        void setScatter(bool scatter);
 };

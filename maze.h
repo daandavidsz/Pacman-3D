@@ -17,8 +17,9 @@
 #include "actor/player.h"
 #include "direction.h"
 #include "tile.h"
+#include "eventhandler.h"
 
-class Maze {
+class Maze : public EventHandler {
 
     private:
         int width;
@@ -41,6 +42,8 @@ class Maze {
                 return true;
             float * color = getPixel(x,y);
             float colorSum = color[0] + color[1] + color[2];
+            if (color[0] == 1.0 && colorSum == 1.0) return false;
+            if (color[0] == 1.0 && color[1] == 1.0 && color[2] == 0.0) return false;
             return colorSum < 3.0;
         };
         
@@ -51,7 +54,7 @@ class Maze {
         int getWidth();
         int getHeight();
         float * getPixel(int x, int y);
-        void render(float ticks);
+        void render(float ticks, float gameTime);
         
         Tile * getTile(int x, int y);
         

@@ -23,7 +23,13 @@ void Blinky::resolvePosition(float ticks) {
 }
 
 pos Blinky::getTargetPosition() {
-    if (scatter) {
+    if (state == EATEN) {
+        pos p;
+        p.x = 15;
+        p.y = 15;
+        return p;
+    }
+    if (state == SCATTER) {
         pos p;
         p.x = 0;
         p.y = 0;
@@ -32,6 +38,6 @@ pos Blinky::getTargetPosition() {
     return player->getCurrentTile()->getPosition();
 }
 
-void Blinky::setColor() {
+void Blinky::setRealColor() {
     glColor3f(1, 0, 0);
 }

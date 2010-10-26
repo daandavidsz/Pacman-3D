@@ -1,9 +1,7 @@
-g++ `Magick++-config --cppflags --cxxflags --ldflags --libs` \
-    -Wall -Wno-unused-parameter -Wno-switch \
+clang++ -fsyntax-only `Magick++-config --cppflags --cxxflags --ldflags --libs` \
     -lglut -lGLU -lGL \
     pacman.cpp \
     eventhandler.cpp \
-    actor/brain.cpp \
     actor/actor.cpp \
     actor/player.cpp \
     actor/enemy.cpp \

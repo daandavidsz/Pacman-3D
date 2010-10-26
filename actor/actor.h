@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../direction.h"
+#include "../eventhandler.h"
 
-class Actor {
+class Actor : public EventHandler {
 
     protected:
         void resolvePosition(float movement);

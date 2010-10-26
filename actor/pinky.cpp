@@ -23,7 +23,7 @@ void Pinky::resolvePosition(float ticks) {
 }
 
 pos Pinky::getTargetPosition() {
-    if (scatter) {
+    if (state == SCATTER) {
         pos p;
         p.x = 28;
         p.y = 32;
@@ -45,6 +45,6 @@ pos Pinky::getTargetPosition() {
     return position;
 }
 
-void Pinky::setColor() {
+void Pinky::setRealColor() {
     glColor3f(1, 0.0, 1);
 }

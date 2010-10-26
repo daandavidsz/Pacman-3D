@@ -4,11 +4,14 @@
 #include <GL/gl.h>	 // Header File For The OpenGL32 Library
 #include <GL/glu.h>	 // Header File For The GLu32 Library
 
+#include <iostream>
+#include <math.h>
 #include <stdio.h> 
 
 #include "direction.h"
+#include "eventhandler.h"
 
-class Tile {
+class Tile : public EventHandler {
 
     Tile * exits[10];
     pos position;
@@ -16,18 +19,22 @@ class Tile {
     int color;
     int steps;
     float smell;
-    bool visited;
     
+    bool energizer;
+    bool visited;
+
     public:
+        Tile();
+        
         void setCenter(point centerPoint);
         point getCenter();        
         void setExit(DIRECTION direction, Tile * tile);
         bool hasExit(DIRECTION direction);
         Tile * getExit(DIRECTION direction);
         void setColor(int color);
-        void setSmell();
-        void render(float ticks);        
+        void setVisited();
+        void setEnergizer();
+        void render(float ticks, float gameTime);        
         void setPosition(pos position);
         pos getPosition();
-            
 };

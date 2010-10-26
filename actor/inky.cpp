@@ -23,7 +23,7 @@ void Inky::resolvePosition(float ticks) {
 }
 
 pos Inky::getTargetPosition() {
-    if (scatter) {
+    if (state == SCATTER) {
         pos p;
         p.x = 28;
         p.y = 0;
@@ -52,7 +52,7 @@ pos Inky::getTargetPosition() {
     return newPos;
 }
 
-void Inky::setColor() {
+void Inky::setRealColor() {
     glColor3f(0.0, 0.9, 1);
 }
 

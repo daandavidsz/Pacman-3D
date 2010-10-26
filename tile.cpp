@@ -1,5 +1,8 @@
 #include "tile.h"
 
+Tile::Tile() {
+}
+
 void Tile::setPosition(pos tilePosition) {
     position = tilePosition;
 }
@@ -32,25 +35,37 @@ void Tile::setColor(int c) {
     color = c;
 }
 
-void Tile::setSmell() {
-    visited = true;
+void Tile::setVisited() {
+    if (!visited) {
+        if (energizer) {
+            emit("energizer");       
+        }
+        visited = true;
+    }
 }
 
-void Tile::render(float ticks) {
+void Tile::setEnergizer() {
+    energizer = true;
+}
+
+void Tile::render(float ticks, float gameTime) {
     float pointX = center.x - 0.5;
     float pointY = center.y - 0.5;
     
-    if (!visited) {
-        glColor4f(1.0, 1.0/255*184, 1.0/255*151, 1);
-        glBegin (GL_QUADS);
-            glNormal3f(0, 0, 1);
-            glVertex3f(pointX+0.45, pointY+0.45, -19.5);
-            glNormal3f(0, 0, 1);            
-            glVertex3f(pointX+0.55, pointY+0.45, -19.5);
-            glNormal3f(0, 0, 1);            
-            glVertex3f(pointX+0.55, pointY+0.55, -19.5);
-            glNormal3f(0, 0, 1);            
-            glVertex3f(pointX+0.45, pointY+0.55, -19.5);
-        glEnd ();
+    if (visited) return;
+
+    if (energizer) {
+        glColor4f(1, 1.0/255*184, 1.0/255*151, 0.2 + 0.8*sin(M_PI * (gameTime - (int)gameTime)));
+        glPushMatrix();
+        glTranslatef(pointX+0.5, pointY+0.5, -19.5);
+        glutSolidSphere(0.4, 12, 12);
+        glPopMatrix();
+    }
+    else {
+        glColor4f(1, 1.0/255*184, 1.0/255*151, 1);
+        glPushMatrix();
+        glTranslatef(pointX+0.5, pointY+0.5, -19.5);
+        glutSolidSphere(0.08, 4, 4);
+        glPopMatrix();
     }
 }

@@ -25,6 +25,8 @@ void Player::setCurrentTile(Tile * tile) {
 }
 
 void Player::resolvePosition(float movement) {
+
+    // Backwardo
     if (this->isOpposite(direction, wantedDirection)) {
         currentTile = currentTile->getExit(direction);
         position = 1.0-position;
@@ -42,7 +44,7 @@ void Player::resolvePosition(float movement) {
     
     if (position >= 1.0) {
         currentTile = currentTile->getExit(direction);
-        currentTile->setSmell();            
+        currentTile->setVisited();            
         if (currentTile->hasExit(wantedDirection)) {
             position -= 1.0;
             direction = wantedDirection;

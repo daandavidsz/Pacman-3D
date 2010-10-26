@@ -11,8 +11,9 @@
 #include "actor/inky.h"
 #include "actor/clyde.h"
 #include "maze.h"
+#include "eventhandler.h"
 
-class Game {
+class Game : public EventHandler {
 
     Maze maze;
     Player player;
@@ -20,14 +21,20 @@ class Game {
     Pinky pinky;
     Blinky blinky;
     Inky inky;
-    Clyde clyde;    
+    Clyde clyde;  
+    std::vector<Enemy*> enemies;
 
     int counter;
     float gameTime;
     bool paused;
     
+    protected:
+        
+        void handleLighting();
+    
     public:
         
+        virtual void onSignal(std::string name);    
         void load();
         Maze getMaze();
         void render(float ticks);

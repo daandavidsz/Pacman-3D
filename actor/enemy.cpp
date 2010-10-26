@@ -24,6 +24,26 @@ void Enemy::start() {
     resolvePosition(0.0);
 }
 
+void Enemy::resolveScaredPosition(float ticks) {
+    std::vector<DIRECTION> directions;
+    DIRECTION dirs[] = {up, down, left, right};
+    DIRECTION dir = none;
+
+    int distance = 0;
+    for (int i = 0; i < 4; i++) {
+        if (currentTile->hasExit(dirs[i])) {
+            float thisDistance = this->distance(currentTile->getExit(dirs[i])->getPosition(), player->getCurrentTile()->getPosition());
+            if (!this->isOpposite(dirs[i], direction)) directions.push_back(dirs[i]);
+            if (thisDistance > distance && !this->isOpposite(dirs[i], direction)) {
+                dir = dirs[i];
+                distance = thisDistance;
+            }
+        }
+    }
+
+    direction = dir;  
+}
+
 void Enemy::resolvePosition(float ticks) {
     std::vector<DIRECTION> directions;
     DIRECTION dirs[] = {up, down, left, right};
@@ -45,7 +65,7 @@ void Enemy::resolvePosition(float ticks) {
 }
 
 pos Enemy::getTargetPosition() {
-    if (scatter) {
+    if (state == SCATTER) {
         pos p;
         p.x = 0;
         p.y = 0;
@@ -54,28 +74,89 @@ pos Enemy::getTargetPosition() {
     return player->getCurrentTile()->getPosition();
 }
 
-void Enemy::setScatter(bool s) {
-    scatter = s;
+void Enemy::reverseDirection() {
+    currentTile = currentTile->getExit(direction);
+    direction = getOpposite(direction);
+    position = 1.0 - position;
+}
+
+void Enemy::onSignal(std::string name) {
+    if (name == "energizer" && state != EATEN) {
+        if (state != SCARED) {
+            reverseDirection();
+        }
+        scaredTime = 8;
+        state = SCARED;
+    }
 }
 
 void Enemy::setColor() {
-    glColor3f(0, 1, 0);
+    if (state == SCARED) {
+        bool white = scaredTime < 3 && (int)((3.0-scaredTime) * (3.0-scaredTime)) % 2 == 0;
+        glColor3f((int)white, (int)white, 1);
+    }
+    else {
+        setRealColor();
+    }
+}
+
+void Enemy::setRealColor() {
+    glColor3f(1, 1, 1);
 }
 
 void Enemy::render(float ticks) {
-    totalTicks += ticks * 7.0;
+    gameTime += ticks;
+    float speed = 7.0;
+    if (state == SCARED) speed = 3.5;
+
+    totalTicks += ticks * speed;
+    
+    if (state == EATEN) {
+        if (currentTile->getPosition().x >= 14 && currentTile->getPosition().x <= 16
+         && currentTile->getPosition().y >= 14 && currentTile->getPosition().y <= 16) {
+            state = CHASE;
+        }
+    }
+    
+    if (state == SCARED && scaredTime > 0) {
+        scaredTime -= ticks;
+        if (scaredTime <= 0) {
+            reverseDirection();
+        }
+    }
+    else if (state != EATEN) {
+        int mod = (int)gameTime % 27;
+
+        if (mod <= 7) {
+            state = SCATTER;
+        }
+        else {
+            state = CHASE;
+        }
+    }
+    
+    if (state == SCARED) {
+        float distance = this->distance(currentTile->getPosition(), player->getCurrentTile()->getPosition());
+        if (distance < 1) {
+            state = EATEN;
+        }
+    }
 
     if (direction != none) {
-        position += ticks * 7.0;
+        position += ticks * speed;
     }
     if (position >= 1.0) {
         position--;
         currentTile = currentTile->getExit(direction);
         
         DIRECTION tDirection = direction;
-        this->resolvePosition(ticks * 7.0);
+        if (state == SCARED) {
+            resolveScaredPosition(ticks * speed);
+        }
+        else {
+            this->resolvePosition(ticks * speed);
+        }
         if (direction == none) direction = getOpposite(tDirection);
-        
     }
 
     point center = currentTile->getCenter();
@@ -97,25 +178,45 @@ void Enemy::render(float ticks) {
     glVertex3f(targetPosition.x-14, targetPosition.y-15, -19);    
     glEnd();
     */
-    
-    double r = 0.6;
-    int lats = 12;
-    int longs = 16;
-
-    float i, j;
 
     glPushMatrix();
     glLineWidth(0.5);
     
     float delta = (totalTicks / 3 - (int)(totalTicks / 3));
-    
     float height = 0.2 * sin(M_PI * delta);
-    
+        
     glTranslatef(center.x, center.y, -19.4 + height);
     
+    switch (direction) {
+        case down:
+            glRotatef(90,0,0,1); break;
+        case up:
+            glRotatef(270,0,0,1); break;
+        case left:
+            glRotatef(0,0,0,1); break;
+        case right:
+            glRotatef(180,0,0,1); break;                            
+    }
+    
+    if (state != EATEN) {
+        renderBody();
+    }
+    renderEyes();
+    glPopMatrix();
+}
+
+void Enemy::renderBody() {
+    double r = 0.6;
+    int lats = 12;
+    int longs = 16;
+    float i, j;
+    
     // Ghost rotation
-    glRotatef(360.0/8*delta,0,0,1);
-        
+    //glRotatef(360.0/8*delta,0,0,1);
+    
+    // Ugly
+    //glRotatef(270,0,0,1);
+
     std::vector<point> points; 
             
     for(i = lats/2; i <= lats; i++) {
@@ -196,30 +297,31 @@ void Enemy::render(float ticks) {
     }
     
     counter = 0;
-            
     while (counter < points.size()-2) {
+    
+        int vc = counter / 2;
+            
+        
         glBegin(GL_POLYGON);
 
-        int vc = counter / 2;
-
         //glNormal3f(normal.x, normal.y, normal.z);
-        
+
         point vNormalA = computeVertexNormal(normals[vc-longs-2], normals[vc-longs-1], normals[vc], normals[vc-1]);
 
         glNormal3f(vNormalA.x, vNormalA.y, vNormalA.z);
         glVertex3f(points[counter].x, points[counter].y, points[counter].z);        
         
-        vc++;
+        vc = counter / 2 + 1;
         point vNormalD = computeVertexNormal(normals[vc-longs-2], normals[vc-longs-1], normals[vc], normals[vc-1]);
         glNormal3f(vNormalD.x, vNormalD.y, vNormalD.z);  
         glVertex3f(points[counter+2].x, points[counter+2].y, points[counter+2].z);          
                       
-        vc += longs+1;
+        vc = counter / 2 + longs + 2;
         point vNormalC = computeVertexNormal(normals[vc-longs-2], normals[vc-longs-1], normals[vc], normals[vc-1]);
         glNormal3f(vNormalC.x, vNormalC.y, vNormalC.z);  
         glVertex3f(points[counter+3].x, points[counter+3].y, points[counter+3].z);                    
         
-        vc--;
+        vc = counter / 2 + longs + 1;
         point vNormalB = computeVertexNormal(normals[vc-longs-2], normals[vc-longs-1], normals[vc], normals[vc-1]);
         glNormal3f(vNormalB.x, vNormalB.y, vNormalB.z);
         glVertex3f(points[counter+1].x, points[counter+1].y, points[counter+1].z);        
@@ -259,8 +361,22 @@ void Enemy::render(float ticks) {
         
         counter += 2;
     }
+}
 
-    glPopMatrix();
+void Enemy::renderEyes() {
+    glColor3f(1, 1, 1);
+    glTranslatef(-0.40, 0.15, 0.1);
+    glutSolidSphere(0.25, 8, 8);
+
+    glTranslatef(0, -0.3, 0);
+    glutSolidSphere(0.25, 8, 8);
+            
+    glColor3f(0, 0, 0);    
+    glTranslatef(-0.22, -0.035, 0);
+    glutSolidSphere(0.05, 8, 8);
+    
+    glTranslatef(0, 0.035+0.3, 0);
+    glutSolidSphere(0.05, 8, 8);
 }
 
 Tile * Enemy::getCurrentTile() {

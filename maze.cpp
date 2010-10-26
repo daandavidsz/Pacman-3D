@@ -117,7 +117,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     glBegin(GL_QUADS);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glColor4f (0, 0.0, 0.2, 0.7);
+        glColor4f (0, 0.0, 0.5, 0.7);
         glNormal3f(0, 0, 1);
         glVertex3f(p.x, p.y, z-0.02);
     }
@@ -152,7 +152,7 @@ void Maze::drawCorner(float xCenter, float yCenter, float z, float start, bool i
 		}
 	glEnd();
 	
-	glColor4f(0, 0, 0.2, 0.7);	
+	glColor4f(0, 0, 0.5, 0.7);	
 	glBegin(GL_POLYGON);
 		x = (float)radius * cos(359 * PI/180.0f);
 		y = (float)radius * sin(359 * PI/180.0f);
@@ -211,10 +211,21 @@ void Maze::createMaze() {
             position.x = x;
             position.y = y;
             tiles[x][y].setPosition(position);
+            tiles[x][y].addListener(this);
             
             float colorSum = color[0] + color[1] + color[2];
-            if (colorSum < 3.0) {
-                tiles[x][y].setSmell();
+            
+            if (color[0] == 1.0 && colorSum == 1.0) {
+                tiles[x][y].setEnergizer();                
+            }
+            else if (color[0] == 1.0 && color[1] == 1.0 && color[2] == 0.0) {
+                // Dot
+            }
+            else if (colorSum == 3.0) {
+                tiles[x][y].setVisited();            
+            }
+            else {
+                tiles[x][y].setVisited();
                 if (colorSum > 0.0) {
                     drawWall(x, y, color);
                 }
@@ -226,25 +237,34 @@ void Maze::createMaze() {
     }
     
     // Configure exits
-    for (int x = 1; x < mazeWidth - 1; x++) {
-        for (int y = 1; y < mazeHeight - 1; y++) { 
-            float * color;
-
-            color = getPixel(x,y);            
-            if (color[0] + color[1] + color[2] >= 3.0) {
-                color = getPixel(x,y-1);
-                if (color[0] + color[1] + color[2] >= 3.0) {     
+    for (int x = 1; x < mazeWidth; x++) {
+        for (int y = 1; y < mazeHeight; y++) { 
+            if (!isWall(x,y)) {
+                if (!isWall(x,y-1)) {     
                     tiles[x][y].setExit(down, &tiles[x][y-1]);
                     tiles[x][y-1].setExit(up, &tiles[x][y]);
                 }
-                color = getPixel(x-1,y);
-                if (color[0] + color[1] + color[2] >= 3.0) {
+                if (!isWall(x-1,y)) {
                     tiles[x][y].setExit(left, &tiles[x-1][y]);
                     tiles[x-1][y].setExit(right, &tiles[x][y]);                    
                 }
             }
         }
     }  
+    
+    for (int x = 0; x < mazeWidth; x++) {
+        if (!isWall(x,0) && !isWall(x, mazeHeight-1)) {
+            tiles[x][0].setExit(up, &tiles[x][mazeHeight-1]);
+            tiles[x][mazeHeight-1].setExit(down, &tiles[x][0]);   
+        }
+    }
+    
+    for (int y = 1; y < mazeHeight; y++) { 
+        if (!isWall(0,y) && !isWall(mazeWidth - 1, y)) {
+            tiles[0][y].setExit(left, &tiles[mazeWidth - 1][y]);
+            tiles[mazeWidth - 1][y].setExit(right, &tiles[0][y]);   
+        }
+    }
     
 	glEndList();
 }
@@ -254,7 +274,7 @@ void Maze::drawCeiling(int x, int y) {
     float pointY = (float)y-(height/2);
     float top = -19 - 0.02;
     
-    glColor4f(0.0, 0.0, 0.2, 0.7);
+    glColor4f(0.0, 0.0, 0.5, 0.7);
     
     glBegin (GL_QUADS);
         glNormal3f(0, 0, 1);
@@ -277,6 +297,7 @@ void Maze::drawWall(int x, int y, float * color) {
 
 void Maze::load() {
     mazeDisplayList = glGenLists(1);
+    
     Magick::Image img("map.png");
     
     width = (int) img.columns();
@@ -313,19 +334,15 @@ Tile * Maze::getTile(int x, int y) {
     return &tiles[x][y];
 }
         
-void Maze::render(float ticks) {
+void Maze::render(float ticks, float gameTime) {
     glTranslatef(0,0,-0.5);
     glCallList(mazeDisplayList);
     glTranslatef(0,0,0.5);
     glCallList(mazeDisplayList);
 
-    //glTranslatef(28,0,0);    
-    //glCallList(mazeDisplayList);
-    //glTranslatef(-28,0,0);        
-        
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
-            tiles[x][y].render(ticks);
+            tiles[x][y].render(ticks, gameTime);
         }   
     }
 }
