@@ -1,4 +1,4 @@
-#include "eventhandler.h"
+#include "EventHandler.h"
 
 void EventHandler::onSignal(std::string name) {
 }

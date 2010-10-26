@@ -4,14 +4,14 @@
 
 #include <time.h>
 
-#include "actor/player.h"
-#include "actor/enemy.h"
-#include "actor/blinky.h"
-#include "actor/pinky.h"
-#include "actor/inky.h"
-#include "actor/clyde.h"
-#include "maze.h"
-#include "eventhandler.h"
+#include "actor/Player.h"
+#include "actor/Enemy.h"
+#include "actor/Blinky.h"
+#include "actor/Pinky.h"
+#include "actor/Inky.h"
+#include "actor/Clyde.h"
+#include "Maze.h"
+#include "EventHandler.h"
 
 class Game : public EventHandler {
 

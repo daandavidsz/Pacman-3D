@@ -1,4 +1,4 @@
-#include "inky.h"
+#include "Inky.h"
 
 void Inky::resolvePosition(float ticks) {
     std::vector<DIRECTION> directions;

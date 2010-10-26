@@ -9,10 +9,10 @@
 #include <stdio.h> 
 #include <math.h> 
 
-#include "../direction.h"
-#include "../tile.h"
+#include "../Direction.h"
+#include "../Tile.h"
 
-#include "actor.h"
+#include "Actor.h"
 
 class Player : Actor {
 

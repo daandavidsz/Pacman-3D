@@ -1,8 +1,8 @@
 #pragma once
 
-#include "enemy.h"
+#include "Enemy.h"
 
-class Blinky : public Enemy {
+class Pinky : public Enemy {
 
     protected:
         virtual void resolvePosition(float movement);

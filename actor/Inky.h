@@ -1,7 +1,7 @@
 #pragma once
 
-#include "enemy.h"
-#include "blinky.h"
+#include "Enemy.h"
+#include "Blinky.h"
 
 class Inky : public Enemy {
 

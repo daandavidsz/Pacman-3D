@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../direction.h"
+#include "Enemy.h"
 
-class Brain {
+class Clyde : public Enemy {
 
     protected:
         virtual void resolvePosition(float movement);

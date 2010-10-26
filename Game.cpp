@@ -1,4 +1,4 @@
-#include "game.h"
+#include "Game.h"
 
 void Game::load() {
     srand ( time(NULL) );

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../direction.h"
-#include "../eventhandler.h"
+#include "../Direction.h"
+#include "../EventHandler.h"
 
 class Actor : public EventHandler {
 

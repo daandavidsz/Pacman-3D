@@ -8,7 +8,7 @@
 
 #include <pthread.h>
 
-#include "renderer.cpp"
+#include "Renderer.cpp"
 
 int main(int argc, char **argv) 
 {  

@@ -14,10 +14,10 @@
 
 #include <Magick++.h>
 
-#include "actor/player.h"
-#include "direction.h"
-#include "tile.h"
-#include "eventhandler.h"
+#include "actor/Player.h"
+#include "Direction.h"
+#include "Tile.h"
+#include "EventHandler.h"
 
 class Maze : public EventHandler {
 

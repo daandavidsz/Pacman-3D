@@ -9,11 +9,11 @@
 #include <iostream>
 #include <vector>
 
-#include "../direction.h"
-#include "../tile.h"
+#include "../Direction.h"
+#include "../Tile.h"
 
-#include "actor.h"
-#include "player.h"
+#include "Actor.h"
+#include "Player.h"
 
 enum ENEMYSTATE {
     CHASE,

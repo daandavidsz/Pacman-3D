@@ -8,8 +8,8 @@
 #include <math.h>
 #include <stdio.h> 
 
-#include "direction.h"
-#include "eventhandler.h"
+#include "Direction.h"
+#include "EventHandler.h"
 
 class Tile : public EventHandler {
 

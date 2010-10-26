@@ -1,4 +1,4 @@
-#include "maze.h"
+#include "Maze.h"
 
 void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     glLineWidth(1.0);    
@@ -12,16 +12,6 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     
     std::vector<point> points; 
     std::vector<point> ceiling; 
-    
-    /*
-    glColor4f (1.0, 1.0, 0.0, 0.5);
-    glBegin (GL_LINE_LOOP);
-        glVertex3f(rawPointX, rawPointY, -19);
-        glVertex3f(rawPointX, rawPointY + 1.0, -19);
-        glVertex3f(rawPointX + 1.0, rawPointY + 1.0, -19);
-        glVertex3f(rawPointX + 1.0, rawPointY, -19);                        
-    glEnd ();
-    */  
     
     float z = -19;
     glColor3f (0.0, 0.0, 1.0);
@@ -78,16 +68,6 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     if (walls[up] || walls[down] || walls[right] || walls[left]) {
         if (walls[up] && walls[left]) {
             drawCorner(rawPointX+0.5, rawPointY+0.5, -19, 90, true);
-            
-            /*
-            glColor4f (1.0, 1.0, 0.0, 0.5);
-            glBegin (GL_LINE_LOOP);
-                glVertex3f(rawPointX, rawPointY, -19);
-                glVertex3f(rawPointX, rawPointY + 1.0, -19);
-                glVertex3f(rawPointX + 1.0, rawPointY + 1.0, -19);
-                glVertex3f(rawPointX + 1.0, rawPointY, -19);                        
-            glEnd ();   
-            */
         }
             
         else if (walls[up] && walls[right])
@@ -198,8 +178,6 @@ void Maze::createMaze() {
     
     for (int x = 0; x < mazeWidth; x++) {
         for (int y = 0; y < mazeHeight; y++) {  
-            std::cout << x << "->" << y << "\n";        
-                  
             float * color = getPixel(x,y);
             
             point center;

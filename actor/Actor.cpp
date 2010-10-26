@@ -1,6 +1,6 @@
 #include "math.h"
 
-#include "actor.h"
+#include "Actor.h"
 
 DIRECTION Actor::getOpposite(DIRECTION dir) {
     switch (dir) {
