@@ -13,7 +13,7 @@ Player.o: actor/Player.cpp actor/Player.h
 		$(CXX) $(CXXFLAGS) -c actor/Player.cpp
 		
 Enemy.o: actor/Enemy.cpp actor/Enemy.h
-		$(CXX) $(CXXFLAGS) -c actor/Enemy.cpp		
+		$(CXX) $(CXXFLAGS) -c actor/Enemy.cpp	
 		
 Blinky.o: actor/Blinky.cpp actor/Blinky.h
 		$(CXX) $(CXXFLAGS) -c actor/Blinky.cpp

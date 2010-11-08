@@ -48,11 +48,13 @@ void Enemy::resolvePosition(float ticks) {
     std::vector<DIRECTION> directions;
     DIRECTION dirs[] = {up, down, left, right};
     DIRECTION dir = none;
-
+    
+    targetPosition = this->getTargetPosition();
+    
     int distance = 99;
     for (int i = 0; i < 4; i++) {
         if (currentTile->hasExit(dirs[i])) {
-            float thisDistance = this->distance(currentTile->getExit(dirs[i])->getPosition(), getTargetPosition());
+            float thisDistance = this->distance(currentTile->getExit(dirs[i])->getPosition(), targetPosition);
             if (!this->isOpposite(dirs[i], direction)) directions.push_back(dirs[i]);
             if (thisDistance < distance && !this->isOpposite(dirs[i], direction)) {
                 dir = dirs[i];
@@ -60,15 +62,15 @@ void Enemy::resolvePosition(float ticks) {
             }
         }
     }
-
+    
     direction = dir;    
 }
 
 pos Enemy::getTargetPosition() {
-    if (state == SCATTER) {
+    if (state == EATEN) {
         pos p;
-        p.x = 0;
-        p.y = 0;
+        p.x = 15.5;
+        p.y = 15.5;
         return p;
     }
     return player->getCurrentTile()->getPosition();
@@ -258,8 +260,6 @@ void Enemy::renderBody() {
         glEnd();
     }
     
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    
     std::vector<point> normals; 
     
     unsigned int counter = 0;
@@ -272,15 +272,6 @@ void Enemy::renderBody() {
         face.y = (face.y + points[counter+3].y) / 2;
         face.z = (face.z + points[counter+3].z) / 2;  
     
-        /*
-        glColor3f(0,0,1);
-        glBegin(GL_LINES);
-            glVertex3f(face.x, face.y, face.z);            
-            glVertex3f(face.x + normal.x*2, face.y + normal.y*2, face.z + normal.z*2);  
-        glEnd();
-        glColor3f(1,0,0);      
-        */
-        
         normals.push_back(normal);        
         
         counter += 2;  
@@ -298,13 +289,8 @@ void Enemy::renderBody() {
     
     counter = 0;
     while (counter < points.size()-2) {
-    
         int vc = counter / 2;
-            
-        
         glBegin(GL_POLYGON);
-
-        //glNormal3f(normal.x, normal.y, normal.z);
 
         point vNormalA = computeVertexNormal(normals[vc-longs-2], normals[vc-longs-1], normals[vc], normals[vc-1]);
 
@@ -327,37 +313,6 @@ void Enemy::renderBody() {
         glVertex3f(points[counter+1].x, points[counter+1].y, points[counter+1].z);        
         
         glEnd();
-        
-        /*
-        if (counter < longs) {
-            
-            glColor3f(0,0,1);
-            glBegin(GL_LINES);
-                glVertex3f(points[counter+2].x, points[counter+2].y, points[counter+2].z);  
-                glVertex3f(points[counter+2].x + vNormalD.x, points[counter+2].y + vNormalD.y, points[counter+2].z + vNormalD.z);  
-            glEnd();
-            
-            glColor3f(0,1,0);
-            glBegin(GL_LINES);
-                glVertex3f(points[counter+3].x, points[counter+3].y, points[counter+3].z);            
-                glVertex3f(points[counter+3].x + vNormalC.x, points[counter+3].y + vNormalC.y, points[counter+3].z + vNormalC.z);  
-            glEnd();
-            
-            glColor3f(1,1,1);
-            glBegin(GL_LINES);
-                glVertex3f(points[counter+1].x, points[counter+1].y, points[counter+1].z);            
-                glVertex3f(points[counter+1].x + vNormalB.x, points[counter+1].y + vNormalB.y, points[counter+1].z + vNormalB.z);  
-            glEnd();
-            
-            glColor3f(1,1,0);
-            glBegin(GL_LINES);
-                glVertex3f(points[counter].x, points[counter].y, points[counter].z);            
-                glVertex3f(points[counter].x + vNormalA.x, points[counter].y + vNormalA.y, points[counter].z + vNormalA.z);  
-            glEnd();
-            
-            glColor3f(1,0,0);
-        }
-        */
         
         counter += 2;
     }

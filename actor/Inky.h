@@ -9,7 +9,6 @@ class Inky : public Enemy {
         Blinky * blinky;
 
     protected:
-        virtual void resolvePosition(float movement);
         pos getTargetPosition();
         void setRealColor();
         

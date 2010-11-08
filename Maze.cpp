@@ -3,6 +3,14 @@
 void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     glLineWidth(1.0);    
     
+    bool grid[3][3];
+    
+    for (int xAxis = 0; xAxis < 3; xAxis++) {
+        for (int yAxis = 0; yAxis < 3; yAxis++) {
+            grid[xAxis][yAxis] = isWall(x+xAxis-1, y+yAxis-1);
+        }
+    }
+    
     float size = 0.50;
     
     float rawPointX = pointX;
@@ -29,6 +37,42 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     wallDirection = up;
     walls[wallDirection] = !isWall(x, y+1);  
     
+    // Horizontal
+    if (!grid[1][0] && !grid[1][2] && grid[0][1] && grid[2][1]) {
+        points.push_back(point(rawPointX+1.0, rawPointY + 0.75));
+        points.push_back(point(rawPointX, rawPointY + 0.75));
+        points.push_back(point(rawPointX, rawPointY + 0.25));        
+        points.push_back(point(rawPointX+1.0, rawPointY + 0.25));      
+
+        glBegin (GL_LINE_STRIP);
+        for (unsigned int i = 2; i < points.size(); i++) {
+            point p = points[i];
+            glColor4f (0.0, 0.0, 1.0, 1.0);
+            glVertex3f(p.x, p.y, z);
+        }
+        glEnd ();
+              
+        goto done;
+    }
+    
+    // Vertical
+    if (!walls[up] && !walls[down] && walls[left] && walls[right]) {
+        points.push_back(point(rawPointX+0.25, rawPointY + 1.0));
+        points.push_back(point(rawPointX+0.25, rawPointY));
+        points.push_back(point(rawPointX+0.75, rawPointY));        
+        points.push_back(point(rawPointX+0.75, rawPointY + 1.0));        
+        
+        glBegin (GL_LINE_STRIP);
+        for (unsigned int i = 2; i < points.size(); i++) {
+            point p = points[i];
+            glColor4f (0.0, 0.0, 1.0, 1.0);
+            glVertex3f(p.x, p.y, z);
+        }
+        glEnd ();
+        
+        goto done;
+    }
+    
     // Wall facing up
     if (walls[up] == true && walls[right] == false && walls[left] == false) {
         points.push_back(point(rawPointX+1.0, rawPointY + 0.5));
@@ -52,7 +96,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
         points.push_back(point(rawPointX+0.5, rawPointY + 1.0));
         points.push_back(point(rawPointX+0.5, rawPointY));
         points.push_back(point(rawPointX+1.0, rawPointY));        
-        points.push_back(point(rawPointX+1.0, rawPointY + 1.0));        
+        points.push_back(point(rawPointX+1.0, rawPointY + 1.0));
         goto done;
     }
     
@@ -109,7 +153,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
         glColor4f (0.0, 0.0, 1.0, 1.0);
         glVertex3f(p.x, p.y, z);
     }
-    glEnd (); 
+    glEnd ();
 }
 
 void Maze::drawCorner(float xCenter, float yCenter, float z, float start, bool inner) {
@@ -285,6 +329,7 @@ void Maze::load() {
         for (int y = 0; y < height; y++) {
             float *color;
             color = new float[3];
+            
             Magick::ColorRGB rgb(img.pixelColor(x, y));
             color[0] = rgb.red();
             color[1] = rgb.green();
