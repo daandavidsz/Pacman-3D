@@ -10,6 +10,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <bitset>
 #include <math.h>
 
 #include <Magick++.h>
@@ -36,6 +37,20 @@ class Maze : public EventHandler {
         void createMaze();
         void drawWall(int x, int y, float *color);
         void drawCeiling(int x, int y);
+        
+        std::bitset<9> rotateGrid(std::bitset<9> grid) {
+            std::bitset<9> newGrid;
+            newGrid[6] = grid[0];
+            newGrid[3] = grid[1];
+            newGrid[0] = grid[2];
+            newGrid[7] = grid[3];
+            newGrid[4] = grid[4];
+            newGrid[1] = grid[5];
+            newGrid[8] = grid[6];
+            newGrid[5] = grid[7];
+            newGrid[2] = grid[8];                                                                                                
+            return newGrid;
+        }
         
         bool isWall(int x, int y) {
             if (x < 0 || x >= width || y < 0 || y >= height)
