@@ -97,7 +97,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     }*/
     
     // Wall facing up
-    if (grid[1] && !grid[5] && !grid[3]) {
+    if (!grid[1] && grid[5] && grid[3]) {
         points.push_back(point(rawPointX+1.0, rawPointY + 0.5));
         points.push_back(point(rawPointX, rawPointY + 0.5));
         points.push_back(point(rawPointX, rawPointY));        
@@ -106,7 +106,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     }
 
     // Wall facing down
-    if (grid[7] && !grid[5] && !grid[3]) {
+    if (!grid[7] && grid[5] && grid[3]) {
         points.push_back(point(rawPointX, rawPointY + 0.5));
         points.push_back(point(rawPointX+1.0, rawPointY + 0.5));
         points.push_back(point(rawPointX+1.0, rawPointY + 1.0));   
@@ -115,7 +115,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     }
     
     // Wall facing left
-    if (grid[3] && !grid[1] && !grid[7]) {
+    if (!grid[3] && grid[1] && grid[7]) {
         points.push_back(point(rawPointX+0.5, rawPointY + 1.0));
         points.push_back(point(rawPointX+0.5, rawPointY));
         points.push_back(point(rawPointX+1.0, rawPointY));        
@@ -124,7 +124,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     }
     
     // Wall facing right
-    if (grid[5] && !grid[1] && !grid[7]) {
+    if (!grid[5] && grid[1] && grid[7]) {
         points.push_back(point(rawPointX+0.5, rawPointY));
         points.push_back(point(rawPointX+0.5, rawPointY + 1.0));
         points.push_back(point(rawPointX, rawPointY + 1.0));        
