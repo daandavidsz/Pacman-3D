@@ -33,12 +33,12 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     for (unsigned int j = 0; j < 2; j++) {
         // Horizontal
         if (!grid[1] && !grid[7] && grid[3] && grid[5]) {
-            points.push_back(point(rawPointX+1.0, rawPointY + 0.75));
-            points.push_back(point(rawPointX, rawPointY + 0.75));
-            points.push_back(point(rawPointX, rawPointY + 0.25));        
-            points.push_back(point(rawPointX+1.0, rawPointY + 0.25));      
+            points.push_back(point(1.0, 0.75));
+            points.push_back(point(0.0, 0.75));
+            points.push_back(point(0.0, 0.25));        
+            points.push_back(point(1.0, 0.25));      
 
-	        glPushMatrix();
+            glPushMatrix();
             glLoadIdentity();
             glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
             glRotatef(j*90, 0, 0, 1);
@@ -47,7 +47,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
             for (unsigned int i = 2; i < points.size(); i++) {
                 point p = points[i];
                 glColor4f (0.0, 0.0, 1.0, 1.0);
-                glVertex3f(p.x, p.y, z);
+                glVertex3f(p.x, p.y, 0);
             }
             glEnd ();
                   
@@ -56,7 +56,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
                 point p = points[i];
                 glColor4f (0, 0.0, 0.5, 0.7);
                 glNormal3f(0, 0, 1);
-                glVertex3f(p.x, p.y, z-0.02);
+                glVertex3f(p.x, p.y, -0.02);
             }
             glEnd (); 
             
@@ -64,7 +64,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
             for (unsigned int i = 0; i < points.size() && i < 2; i++) {
                 point p = points[i];
                 glColor4f (0.0, 0.0, 1.0, 1.0);
-                glVertex3f(p.x, p.y, z);
+                glVertex3f(p.x, p.y, 0);
             }
             glEnd ();
             
@@ -211,7 +211,7 @@ void Maze::drawCorner(float xCenter, float yCenter, float z, float start, bool i
 		
 		for(float j = 0; j <= 90; j += 15)
 		{
-		    float step = inner ? j: 90 - j;
+		    float step = inner ? j : 90 - j;
 			x = (float)radius * cos(step * PI/180.0f);
 			y = (float)radius * sin(step * PI/180.0f);
 	        glNormal3f(0, 0, 1);
