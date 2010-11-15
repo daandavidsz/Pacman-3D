@@ -4,7 +4,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     glLineWidth(1.0);    
     
     std::bitset<9> grid;
-    
+        
     if (isWall(x-1, y-1)) grid[0] = 1;
     if (isWall(x+0, y-1)) grid[1] = 1;
     if (isWall(x+1, y-1)) grid[2] = 1;
@@ -39,7 +39,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
             points.push_back(point(1.0, 0.25));      
 
             glPushMatrix();
-            glLoadIdentity();
+            //glLoadIdentity();
             glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
             glRotatef(j*90, 0, 0, 1);
             
@@ -245,6 +245,7 @@ void Maze::createMaze() {
     
     for (int x = 0; x < mazeWidth; x++) {
         for (int y = 0; y < mazeHeight; y++) {  
+                       
             float * color = getPixel(x,y);
             
             point center;
@@ -252,6 +253,18 @@ void Maze::createMaze() {
             center.y = (float)y - (height / 2 - 0.5);
             center.z = -19.5;
             tiles[x][y].setCenter(center);
+            
+            glBegin(GL_LINE_LOOP);
+            for(float j = 0; j <= 90; j += 15)
+            {
+                glColor3f(1,1,0);
+                glVertex3f(center.x-0.5, center.y-0.5, -19);
+                glVertex3f(center.x-0.5, center.y+0.5, -19);
+                glVertex3f(center.x+0.5, center.y+0.5, -19);
+                glVertex3f(center.x+0.5, center.y-0.5, -19);
+            }
+            glEnd();
+            
             pos position;
             position.x = x;
             position.y = y;
