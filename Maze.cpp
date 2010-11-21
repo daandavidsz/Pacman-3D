@@ -1,5 +1,126 @@
 #include "Maze.h"
 
+void Maze::drawSmallWall() {
+    std::vector<point> points; 
+    points.push_back(point(0.5, 0.30));
+    points.push_back(point(-0.5, 0.30));
+    points.push_back(point(-0.5, -0.30));        
+    points.push_back(point(0.5, -0.30));      
+
+    glBegin (GL_LINE_LOOP);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glColor4f (0.0, 0.0, 1.0, 1.0);
+        glVertex3f(p.x, p.y, 0);
+    }
+    glEnd ();
+          
+    glBegin(GL_QUADS);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glColor4f (0, 0.0, 0.5, 0.7);
+        glNormal3f(0, 0, 1);
+        glVertex3f(p.x, p.y, -0.02);
+    }
+    glEnd (); 
+}
+
+void Maze::drawSmallCorner() {
+    std::vector<point> points; 
+    points.push_back(point(-0.3, 0.5));
+    points.push_back(point(-0.3, -0.3));
+    points.push_back(point(0.5, -0.3));        
+    points.push_back(point(0.5, 0.3));      
+    points.push_back(point(0.3, 0.3));                  
+    points.push_back(point(0.3, 0.5));                              
+
+    glBegin (GL_LINE_LOOP);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glColor4f (0.0, 0.0, 1.0, 1.0);
+        glVertex3f(p.x, p.y, 0);
+    }
+    glEnd ();
+          
+    glBegin(GL_POLYGON);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glColor4f (0, 0.0, 0.5, 0.7);
+        glNormal3f(0, 0, 1);
+        glVertex3f(p.x, p.y, -0.02);
+    }
+    glEnd (); 
+}
+
+void Maze::drawBigWall() {
+    std::vector<point> points; 
+    points.push_back(point(0.5, 0));
+    points.push_back(point(-0.5, 0));
+    points.push_back(point(-0.5, 0.5));        
+    points.push_back(point(0.5, 0.5));      
+
+    glBegin (GL_LINE_LOOP);
+        glColor4f (0.0, 0.0, 1.0, 1.0);    
+        glVertex3f(points[0].x, points[0].y, 0);
+        glVertex3f(points[1].x, points[1].y, 0);        
+    glEnd ();
+          
+    glBegin(GL_QUADS);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glColor4f (0, 0.0, 0.5, 0.7);
+        glNormal3f(0, 0, 1);
+        glVertex3f(p.x, p.y, -0.02);
+    }
+    glEnd (); 
+}
+
+void Maze::drawBigCorner() {
+    std::vector<point> points; 
+    points.push_back(point(0.5, 0.5));
+    points.push_back(point(0.5, 0));
+    points.push_back(point(0, 0.5));        
+
+    glBegin (GL_LINE_LOOP);
+        glColor4f (0.0, 0.0, 1.0, 1.0);
+        glVertex3f(points[1].x, points[1].y, 0);
+        glVertex3f(points[2].x, points[2].y, 0);        
+    glEnd ();
+          
+    glBegin(GL_POLYGON);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glColor4f (0, 0.0, 0.5, 0.7);
+        glNormal3f(0, 0, 1);
+        glVertex3f(p.x, p.y, -0.02);
+    }
+    glEnd (); 
+}
+
+void Maze::drawBigInset() {
+    std::vector<point> points; 
+    points.push_back(point(0.5, -0.5));
+    points.push_back(point(0, -0.5));
+    points.push_back(point(-0.5, 0));        
+    points.push_back(point(-0.5, 0.5));                    
+    points.push_back(point(0.5, 0.5));                                
+
+    glBegin (GL_LINE_LOOP);
+        glColor4f (0.0, 0.0, 1.0, 1.0);
+        glVertex3f(points[1].x, points[1].y, 0);
+        glVertex3f(points[2].x, points[2].y, 0);        
+    glEnd ();
+          
+    glBegin(GL_POLYGON);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glColor4f (0, 0.0, 0.5, 0.7);
+        glNormal3f(0, 0, 1);
+        glVertex3f(p.x, p.y, -0.02);
+    }
+    glEnd (); 
+}
+
 void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     glLineWidth(1.0);    
     
@@ -15,8 +136,6 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     if (isWall(x+0, y+1)) grid[7] = 1;
     if (isWall(x+1, y+1)) grid[8] = 1;
     
-    std::cout << grid << "\n";
-    
     float size = 0.50;
     
     float rawPointX = pointX;
@@ -25,187 +144,89 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     pointY += (1.0 - size) / 2.0;  
     
     std::vector<point> points; 
-    std::vector<point> ceiling; 
     
     float z = -19;
     glColor3f (0.0, 0.0, 1.0);
-
-    for (unsigned int j = 0; j < 4; j++) {
     
-        // Small wall
-        if (!grid[1] && !grid[7] && grid[3] && grid[5]) {
-            points.push_back(point(0.5, 0.30));
-            points.push_back(point(-0.5, 0.30));
-            points.push_back(point(-0.5, -0.30));        
-            points.push_back(point(0.5, -0.30));      
-
-            glPushMatrix();
-            glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
-            glRotatef(j*90, 0, 0, 1);
-            
-            glBegin (GL_LINE_LOOP);
-            for (unsigned int i = 0; i < points.size(); i++) {
-                point p = points[i];
-                glColor4f (0.0, 0.0, 1.0, 1.0);
-                glVertex3f(p.x, p.y, 0);
-            }
-            glEnd ();
-                  
-            glBegin(GL_QUADS);
-            for (unsigned int i = 0; i < points.size(); i++) {
-                point p = points[i];
-                glColor4f (0, 0.0, 0.5, 0.7);
-                glNormal3f(0, 0, 1);
-                glVertex3f(p.x, p.y, -0.02);
-            }
-            glEnd (); 
-            
-            glRotatef(0 - j*90, 0, 0, 1);
-        	glPopMatrix();
-            
-            return;
-        }
+    int counter = 0;
+    while (true) {
+        std::cout << counter << "\n";
+        int drawType = counter / 4;
+        float rotation = (counter % 4) * 90;
         
-        if (!grid[1] && grid[7] && !grid[3] && grid[5] && !grid[8]) {
-            points.push_back(point(-0.3, 0.5));
-            points.push_back(point(-0.3, -0.3));
-            points.push_back(point(0.5, -0.3));        
-            points.push_back(point(0.5, 0.3));      
-            points.push_back(point(0.3, 0.3));                  
-            points.push_back(point(0.3, 0.5));                              
-
-            glPushMatrix();
-            glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
-            glRotatef(j*90, 0, 0, 1);
-            
-            glBegin (GL_LINE_LOOP);
-            for (unsigned int i = 0; i < points.size(); i++) {
-                point p = points[i];
-                glColor4f (0.0, 0.0, 1.0, 1.0);
-                glVertex3f(p.x, p.y, 0);
-            }
-            glEnd ();
-                  
-            glBegin(GL_POLYGON);
-            for (unsigned int i = 0; i < points.size(); i++) {
-                point p = points[i];
-                glColor4f (0, 0.0, 0.5, 0.7);
-                glNormal3f(0, 0, 1);
-                glVertex3f(p.x, p.y, -0.02);
-            }
-            glEnd (); 
-            
-            glRotatef(0 - j*90, 0, 0, 1);
-        	glPopMatrix();
-            
-            return;
+        switch (drawType) {
+            case 0: // Small wall
+                if (!grid[1] && !grid[7] && (grid[3] || grid[5])) {
+                    glPushMatrix();
+                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
+                    glRotatef(rotation, 0, 0, 1);
+                    
+                    drawSmallWall();
+                    
+                    glRotatef(0 - rotation, 0, 0, 1);
+                	glPopMatrix();
+                    return;
+                }
+                break;
+            case 1: // 90 degree corner
+                if (!grid[1] && grid[7] && !grid[3] && grid[5] && !grid[8])        
+                {
+                    glPushMatrix();
+                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
+                    glRotatef(rotation, 0, 0, 1);
+                    
+                    drawSmallCorner();
+                    
+                    glRotatef(0 - rotation, 0, 0, 1);
+                	glPopMatrix();
+                    return;
+                }
+                break;
+            case 2: // Big wall
+                if (!grid[1] && grid[7] && grid[3] && grid[5]) {
+                    glPushMatrix();
+                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
+                    glRotatef(rotation, 0, 0, 1);
+                    
+                    drawBigWall();
+                    
+                    glRotatef(0 - rotation, 0, 0, 1);
+                	glPopMatrix();
+                    return;
+                }
+                break;
+            case 3: // Big corner
+               if (!grid[1] && grid[7] && !grid[3] && grid[5]) {
+                    glPushMatrix();
+                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
+                    glRotatef(rotation, 0, 0, 1);
+                    
+                    drawBigCorner();
+                                
+                    glRotatef(0 - rotation, 0, 0, 1);
+                	glPopMatrix();
+                    return;
+                }
+                break;
+            case 4: // Big inset
+                if (grid.count() == 8 && !grid[0]) {
+                    glPushMatrix();
+                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
+                    glRotatef(rotation, 0, 0, 1);
+                    
+                    drawBigInset();
+                    
+                    glRotatef(0 - rotation, 0, 0, 1);
+                	glPopMatrix();
+                    return;
+                }
+                break;
+            default:
+                return;
         }
-
         grid = rotateGrid(grid);
+        counter++;
     }
-    
-    return;
-    
-    // Vertical
-    /*
-    if (!walls[up] && !walls[down] && walls[left] && walls[right]) {
-        points.push_back(point(rawPointX+0.25, rawPointY + 1.0));
-        points.push_back(point(rawPointX+0.25, rawPointY));
-        points.push_back(point(rawPointX+0.75, rawPointY));        
-        points.push_back(point(rawPointX+0.75, rawPointY + 1.0));        
-        
-        glBegin (GL_LINE_STRIP);
-        for (unsigned int i = 2; i < points.size(); i++) {
-            point p = points[i];
-            glColor4f (0.0, 0.0, 1.0, 1.0);
-            glVertex3f(p.x, p.y, z);
-        }
-        glEnd ();
-        
-        goto done;
-    }*/
-    
-    // Wall facing up
-    if (!grid[1] && grid[5] && grid[3]) {
-        points.push_back(point(rawPointX+1.0, rawPointY + 0.5));
-        points.push_back(point(rawPointX, rawPointY + 0.5));
-        points.push_back(point(rawPointX, rawPointY));        
-        points.push_back(point(rawPointX+1.0, rawPointY));        
-        goto done;
-    }
-
-    // Wall facing down
-    if (!grid[7] && grid[5] && grid[3]) {
-        points.push_back(point(rawPointX, rawPointY + 0.5));
-        points.push_back(point(rawPointX+1.0, rawPointY + 0.5));
-        points.push_back(point(rawPointX+1.0, rawPointY + 1.0));   
-        points.push_back(point(rawPointX, rawPointY + 1.0));             
-        goto done;
-    }
-    
-    // Wall facing left
-    if (!grid[3] && grid[1] && grid[7]) {
-        points.push_back(point(rawPointX+0.5, rawPointY + 1.0));
-        points.push_back(point(rawPointX+0.5, rawPointY));
-        points.push_back(point(rawPointX+1.0, rawPointY));        
-        points.push_back(point(rawPointX+1.0, rawPointY + 1.0));
-        goto done;
-    }
-    
-    // Wall facing right
-    if (!grid[5] && grid[1] && grid[7]) {
-        points.push_back(point(rawPointX+0.5, rawPointY));
-        points.push_back(point(rawPointX+0.5, rawPointY + 1.0));
-        points.push_back(point(rawPointX, rawPointY + 1.0));        
-        points.push_back(point(rawPointX, rawPointY));                
-        goto done;
-    }
-    
-    if (grid[1] || grid[3] || grid[5] || grid[7]) {
-        if (grid[1] && grid[3]) {
-            drawCorner(rawPointX+0.5, rawPointY+0.5, -19, 90, true);
-        }
-            /*
-        else if (walls[up] && walls[right])
-            drawCorner(rawPointX+0.5, rawPointY+0.5, -19, 0, true);
-        else if (walls[down] && walls[left])
-            drawCorner(rawPointX+0.5, rawPointY+0.5, -19, 180, true);
-        else if (walls[down] && walls[right])
-            drawCorner(rawPointX+0.5, rawPointY+0.5, -19, 270, true);*/
-    }
-    else {/*
-        if (!isWall(x-1, y-1)) {
-            drawCorner(rawPointX+0.5, rawPointY+0.5, -19, 0, false);
-        }
-        else if (!isWall(x+1, y+1)) {
-            drawCorner(rawPointX+0.5, rawPointY+0.5, -19, 180, false);
-        }
-        else if (!isWall(x-1, y+1)) {
-            drawCorner(rawPointX+0.5, rawPointY+0.5, -19, 270, false);
-        }
-        else if (!isWall(x+1, y-1)) {
-            drawCorner(rawPointX+0.5, rawPointY+0.5, -19, 90, false);
-        }*/
-    }
-    
-    done:;
-
-    glBegin(GL_QUADS);
-    for (unsigned int i = 0; i < points.size(); i++) {
-        point p = points[i];
-        glColor4f (0, 0.0, 0.5, 0.7);
-        glNormal3f(0, 0, 1);
-        glVertex3f(p.x, p.y, z-0.02);
-    }
-    glEnd (); 
-    
-    glBegin (GL_LINE_STRIP);
-    for (unsigned int i = 0; i < points.size() && i < 2; i++) {
-        point p = points[i];
-        glColor4f (0.0, 0.0, 1.0, 1.0);
-        glVertex3f(p.x, p.y, z);
-    }
-    glEnd ();
 }
 
 void Maze::drawCorner(float xCenter, float yCenter, float z, float start, bool inner) {
@@ -282,19 +303,6 @@ void Maze::createMaze() {
             center.y = (float)y - (height / 2 - 0.5);
             center.z = -19.5;
             tiles[x][y].setCenter(center);
-            
-            /*
-            glBegin(GL_LINE_LOOP);
-            for(float j = 0; j <= 90; j += 15)
-            {
-                glColor3f(1,1,0);
-                glVertex3f(center.x-0.5, center.y-0.5, -19);
-                glVertex3f(center.x-0.5, center.y+0.5, -19);
-                glVertex3f(center.x+0.5, center.y+0.5, -19);
-                glVertex3f(center.x+0.5, center.y-0.5, -19);
-            }
-            glEnd();
-            */
             
             pos position;
             position.x = x;

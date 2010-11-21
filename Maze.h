@@ -38,6 +38,12 @@ class Maze : public EventHandler {
         void drawWall(int x, int y, float *color);
         void drawCeiling(int x, int y);
         
+        void drawSmallWall();
+        void drawSmallCorner();        
+        void drawBigWall();
+        void drawBigCorner();
+        void drawBigInset();
+        
         std::bitset<9> rotateGrid(std::bitset<9> grid) {
             std::bitset<9> newGrid;
             newGrid[6] = grid[0];
