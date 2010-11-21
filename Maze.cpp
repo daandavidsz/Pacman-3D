@@ -7,10 +7,35 @@ void Maze::drawSmallWall() {
     points.push_back(point(-0.5, -0.30));        
     points.push_back(point(0.5, -0.30));      
 
-    glBegin (GL_LINE_LOOP);
+    glBegin (GL_LINES);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
         glColor4f (0.0, 0.0, 1.0, 1.0);
+        glVertex3f(p.x, p.y, 0);
+    }
+    glEnd ();
+          
+    glBegin(GL_QUADS);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glColor4f (0, 0.0, 0.5, 0.7);
+        glNormal3f(0, 0, 1);
+        glVertex3f(p.x, p.y, -0.02);
+    }
+    glEnd (); 
+}
+
+void Maze::drawSmallEnd() {
+    std::vector<point> points; 
+    points.push_back(point(0.5, 0.30));
+    points.push_back(point(-0.3, 0.30));
+    points.push_back(point(-0.3, -0.30));        
+    points.push_back(point(0.5, -0.30));      
+
+    glColor4f (0.0, 0.0, 1.0, 1.0);
+    glBegin (GL_LINE_STRIP);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
         glVertex3f(p.x, p.y, 0);
     }
     glEnd ();
@@ -34,13 +59,17 @@ void Maze::drawSmallCorner() {
     points.push_back(point(0.3, 0.3));                  
     points.push_back(point(0.3, 0.5));                              
 
-    glBegin (GL_LINE_LOOP);
-    for (unsigned int i = 0; i < points.size(); i++) {
-        point p = points[i];
-        glColor4f (0.0, 0.0, 1.0, 1.0);
-        glVertex3f(p.x, p.y, 0);
-    }
-    glEnd ();
+    glColor4f (0.0, 0.0, 1.0, 1.0);
+    glBegin (GL_LINE_STRIP);
+        glVertex3f(points[0].x, points[0].y, 0);
+        glVertex3f(points[1].x, points[1].y, 0);        
+        glVertex3f(points[2].x, points[2].y, 0);                
+    glEnd (); 
+    glBegin (GL_LINE_STRIP);
+        glVertex3f(points[3].x, points[3].y, 0);
+        glVertex3f(points[4].x, points[4].y, 0);        
+        glVertex3f(points[5].x, points[5].y, 0);                
+    glEnd (); 
           
     glBegin(GL_POLYGON);
     for (unsigned int i = 0; i < points.size(); i++) {
@@ -156,7 +185,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
         
         switch (drawType) {
             case 0: // Small wall
-                if (!grid[1] && !grid[7] && (grid[3] || grid[5])) {
+                if (!grid[1] && !grid[7] && grid[3] && grid[5]) {
                     glPushMatrix();
                     glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
                     glRotatef(rotation, 0, 0, 1);
@@ -168,7 +197,20 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
                     return;
                 }
                 break;
-            case 1: // 90 degree corner
+            case 1: // Small end
+                if (!grid[1] && !grid[7] && grid[5]) {
+                    glPushMatrix();
+                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
+                    glRotatef(rotation, 0, 0, 1);
+                    
+                    drawSmallEnd();
+                    
+                    glRotatef(0 - rotation, 0, 0, 1);
+                	glPopMatrix();
+                    return;
+                }
+                break;                
+            case 2: // 90 degree corner
                 if (!grid[1] && grid[7] && !grid[3] && grid[5] && !grid[8])        
                 {
                     glPushMatrix();
@@ -182,7 +224,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
                     return;
                 }
                 break;
-            case 2: // Big wall
+            case 3: // Big wall
                 if (!grid[1] && grid[7] && grid[3] && grid[5]) {
                     glPushMatrix();
                     glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
@@ -195,7 +237,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
                     return;
                 }
                 break;
-            case 3: // Big corner
+            case 4: // Big corner
                if (!grid[1] && grid[7] && !grid[3] && grid[5]) {
                     glPushMatrix();
                     glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
@@ -208,7 +250,7 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
                     return;
                 }
                 break;
-            case 4: // Big inset
+            case 5: // Big inset
                 if (grid.count() == 8 && !grid[0]) {
                     glPushMatrix();
                     glTranslatef(rawPointX+0.5, rawPointY+0.5, z);

@@ -39,6 +39,7 @@ class Maze : public EventHandler {
         void drawCeiling(int x, int y);
         
         void drawSmallWall();
+        void drawSmallEnd();        
         void drawSmallCorner();        
         void drawBigWall();
         void drawBigCorner();
