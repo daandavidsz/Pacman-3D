@@ -7,20 +7,20 @@ void Maze::drawSmallWall() {
     points.push_back(point(-0.5, -0.30));        
     points.push_back(point(0.5, -0.30));      
 
-    glBegin (GL_LINES);
-    for (unsigned int i = 0; i < points.size(); i++) {
-        point p = points[i];
-        glColor4f (0.0, 0.0, 1.0, 1.0);
-        glVertex3f(p.x, p.y, 0);
-    }
-    glEnd ();
-          
     glBegin(GL_QUADS);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glColor4f (0, 0.0, 0.5, 1);
         glNormal3f(0, 0, 1);
         glVertex3f(p.x, p.y, -0.02);
+    }
+    glEnd (); 
+    
+    glBegin(GL_QUAD_STRIP);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glNormal3f(0, -1, 0);
+        glVertex3f(p.x, p.y, -0.02);
+        glVertex3f(p.x, p.y, -1.02);
     }
     glEnd (); 
 }
@@ -32,20 +32,20 @@ void Maze::drawSmallEnd() {
     points.push_back(point(-0.3, -0.30));        
     points.push_back(point(0.5, -0.30));      
 
-    glColor4f (0.0, 0.0, 1.0, 1.0);
-    glBegin (GL_LINE_STRIP);
-    for (unsigned int i = 0; i < points.size(); i++) {
-        point p = points[i];
-        glVertex3f(p.x, p.y, 0);
-    }
-    glEnd ();
-          
     glBegin(GL_QUADS);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glColor4f (0, 0.0, 0.5, 1);
         glNormal3f(0, 0, 1);
         glVertex3f(p.x, p.y, -0.02);
+    }
+    glEnd (); 
+    
+    glBegin(GL_QUAD_STRIP);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glNormal3f(0, -1, 0);
+        glVertex3f(p.x, p.y, -0.02);
+        glVertex3f(p.x, p.y, -1.02);
     }
     glEnd (); 
 }
@@ -59,36 +59,31 @@ void Maze::drawSmallCorner() {
     points.push_back(point(0.3, 0.3));                  
     points.push_back(point(0.3, 0.5));                              
 
-    glColor4f (0.0, 0.0, 1.0, 1.0);
-    glBegin (GL_LINE_STRIP);
-        glVertex3f(points[0].x, points[0].y, 0);
-        glVertex3f(points[1].x, points[1].y, 0);        
-        glVertex3f(points[2].x, points[2].y, 0);                
-    glEnd (); 
-    glBegin (GL_LINE_STRIP);
-        glVertex3f(points[3].x, points[3].y, 0);
-        glVertex3f(points[4].x, points[4].y, 0);        
-        glVertex3f(points[5].x, points[5].y, 0);                
-    glEnd (); 
-          
     glBegin(GL_POLYGON);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glColor4f (0, 0.0, 0.5, 1);
         glNormal3f(0, 0, 1);
         glVertex3f(p.x, p.y, -0.02);
+    }
+    glEnd (); 
+    
+    glBegin(GL_QUAD_STRIP);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glNormal3f(0, -1, 0);
+        glVertex3f(p.x, p.y, -0.02);
+        glVertex3f(p.x, p.y, -1.02);
     }
     glEnd (); 
 }
 
 void Maze::drawBigWall() {
     std::vector<point> points; 
-    points.push_back(point(0.5, 0.5));      
-    points.push_back(point(-0.5, 0.5));        
+    points.push_back(point(0.5, 0.25));      
+    points.push_back(point(-0.5, 0.25));        
     points.push_back(point(-0.5, 0));
     points.push_back(point(0.5, 0));
 
-    glColor4f (0, 0.0, 0.5, 1);
     glBegin(GL_QUADS);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
@@ -97,7 +92,6 @@ void Maze::drawBigWall() {
     }
     glEnd (); 
 
-    glColor4f (0, 0.0, 0.5, 1);
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
@@ -117,19 +111,23 @@ void Maze::drawBigCorner() {
     glBegin(GL_POLYGON);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glColor4f (0, 0.0, 0.5, 1);
         glNormal3f(0, 0, 1);
         glVertex3f(p.x, p.y, -0.02);
     }
     glEnd (); 
     
-    glColor4f (0, 0.0, 0.5, 1);
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glNormal3f(-0.6, -0.6, 0);
+        if (i == 0)
+            glNormal3f(-1, 0, 0);
+        if (i == 1)
+            glNormal3f(0, -1, 0);
         glVertex3f(p.x, p.y, -0.02);
-        glNormal3f(-0.6, -0.6, 0);        
+        if (i == 0)
+            glNormal3f(-1, 0, 0);
+        if (i == 1)        
+            glNormal3f(0, -1, 0);
         glVertex3f(p.x, p.y, -1.02);
     }
     glEnd ();     
@@ -146,19 +144,24 @@ void Maze::drawBigInset() {
     glBegin(GL_POLYGON);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glColor4f (0, 0.0, 0.5, 1);
         glNormal3f(0, 0, 1);
         glVertex3f(p.x, p.y, -0.02);
     }
     glEnd (); 
     
-    glColor4f (0, 0.0, 0.5, 1);
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glNormal3f(-0.6, -0.6, 0);
+        if (i == 2)
+            glNormal3f(0, -1, 0);
+        if (i == 3)
+            glNormal3f(-1, 0, 0);
         glVertex3f(p.x, p.y, -0.02);
-        glNormal3f(-0.6, -0.6, 0);        
+        glNormal3f(-0.6, -0.6, 0);  
+        if (i == 2)
+            glNormal3f(0, -1, 0);
+        if (i == 3)
+            glNormal3f(-1, 0, 0);
         glVertex3f(p.x, p.y, -1.02);
     }
     glEnd (); 
@@ -189,7 +192,6 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     std::vector<point> points; 
     
     float z = -19;
-    glColor3f (0.0, 0.0, 1.0);
     
     int counter = 0;
     while (true) {
@@ -305,7 +307,6 @@ void Maze::drawCorner(float xCenter, float yCenter, float z, float start, bool i
 		}
 	glEnd();
 	
-    glColor4f (0, 0.0, 0.5, 1);
 	glBegin(GL_POLYGON);
 		x = (float)radius * cos(359 * PI/180.0f);
 		y = (float)radius * sin(359 * PI/180.0f);
@@ -345,6 +346,7 @@ void Maze::createNormal(float x, float y, float z) {
         
 void Maze::createMaze() {
 	glNewList(mazeDisplayList, GL_COMPILE);
+    glColor3f (0.0, 0.0, 0.8);
 
     int mazeHeight = getHeight();
     int mazeWidth = getWidth(); 
@@ -383,7 +385,7 @@ void Maze::createMaze() {
                     drawWall(x, y, color);
                 }
                 else {
-                    drawCeiling(x, y);
+                    //drawCeiling(x, y);
                 }
             }
         }
@@ -427,8 +429,6 @@ void Maze::drawCeiling(int x, int y) {
     float pointY = (float)y-(height/2);
     float top = -19 - 0.02;
     
-    glColor4f (0, 0.0, 0.5, 1);
-    
     glBegin (GL_QUADS);
         glNormal3f(0, 0, 1);
         glVertex3f(pointX, pointY, top);
@@ -444,7 +444,6 @@ void Maze::drawCeiling(int x, int y) {
 void Maze::drawWall(int x, int y, float * color) {
     float pointX = (float)x-width/2;
     float pointY = (float)y-height/2;
-    glColor4f (color[0], color[1], color[2], 1.0);
     drawLines(color, x, y, pointX, pointY);
 }
 
