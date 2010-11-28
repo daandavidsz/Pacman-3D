@@ -87,7 +87,10 @@ void Maze::drawBigWall() {
     glBegin(GL_QUADS);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glNormal3f(0, 0, 1);
+        if (i < 2)
+            glNormal3f(0, 1, 0);
+        else
+            glNormal3f(0, -1, 0);            
         glVertex3f(p.x, p.y, -0.02);
     }
     glEnd (); 
@@ -95,19 +98,109 @@ void Maze::drawBigWall() {
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glNormal3f(0, -1, 0);
+        if (i < 2)
+            glNormal3f(0, 1, 0);     
+        else 
+            glNormal3f(0, -1, 0);
         glVertex3f(p.x, p.y, -0.02);
+        if (i < 2)
+            glNormal3f(0, 1, 0);     
+        else 
+            glNormal3f(0, -1, 0);
         glVertex3f(p.x, p.y, -1.02);
     }
     glEnd (); 
 }
 
 void Maze::drawBigCorner() {
+    float x, y;
+	float radius = 0.5f;
+    bool inner = false;
+    
+    std::vector<point> opoints;    
     std::vector<point> points; 
+
+	x = (float)radius * cos(359 * PI/180.0f);
+	y = (float)radius * sin(359 * PI/180.0f);
+	for(float j = 90; j >= 0; j -= 30)
+	{
+	    float step = 90 - j;
+		x = 1-(float)radius * cos(step * PI/180.0f);
+		y = 1-(float)radius * sin(step * PI/180.0f);
+		
+        std::cout << "x:" << x << "\n";
+        std::cout << "y:" << y << "\n";  
+         
+	    points.push_back(point(x - 0.5, y - 0.5));
+		x = 1-(float)radius/2 * cos(step * PI/180.0f);
+		y = 1-(float)radius/2 * sin(step * PI/180.0f);		    
+	    opoints.push_back(point(x - 0.5, y - 0.5));
+	}
+    glBegin(GL_QUAD_STRIP);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        glNormal3f(2*(p.x-0.5), 2*(p.y-0.5), 0);
+        glVertex3f(p.x, p.y, -0.02);
+        glNormal3f(2*(p.x-0.5), 2*(p.y-0.5), 0);
+        glVertex3f(p.x, p.y, -1.02);
+    }
+    glEnd (); 
+    
+    glBegin(GL_QUAD_STRIP);
+    for (unsigned int i = 0; i < opoints.size(); i++) {
+        point p = opoints[i];
+        glVertex3f(p.x, p.y, -1.02);
+        glVertex3f(p.x, p.y, -0.02);        
+    }
+    glEnd (); 
+    
+    glBegin(GL_QUAD_STRIP);
+    for (unsigned int i = 0; i < opoints.size(); i++) {
+        glNormal3f(0, 0, 1);
+        glVertex3f(opoints[i].x, opoints[i].y, -0.02);
+        glNormal3f(0, 0, 1);    
+        glVertex3f(points[i].x, points[i].y, -0.02);      
+    }
+    glEnd (); 
+    
+/*
+	glBegin(GL_POLYGON);
+		x = (float)radius * cos(359 * PI/180.0f);
+		y = (float)radius * sin(359 * PI/180.0f);
+		
+		if (!inner) {
+	        glNormal3f(0, 0, 1);
+    		glVertex3f(-0.5, 0.5, -0.02);
+		}
+		
+		for(float j = 0; j <= 90; j += 15)
+		{
+		    float step = inner ? j : 90 - j;
+			x = (float)radius * cos(step * PI/180.0f);
+			y = (float)radius * sin(step * PI/180.0f);
+	        glNormal3f(0, 0, 1);
+			glVertex3f(x-0.5, y-0.5, -0.02);
+		}
+		if (inner) {
+	        glNormal3f(0, 0, 1);
+    		glVertex3f(-0.5, -0.5, -0.02);
+		}
+		else {
+	        glNormal3f(0, 0, 1);
+    		glVertex3f(0.5, 0.5, -0.02);	
+	        glNormal3f(0, 0, 1);
+    		glVertex3f(0.5, -0.5, -0.02);	
+		}
+	glEnd();
+     */
+        /*  
+        
+           std::vector<point> points; 
     points.push_back(point(0, 0.5));        
     points.push_back(point(0.5, 0));    
     points.push_back(point(0.5, 0.5));
-          
+     
+     
     glBegin(GL_POLYGON);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
@@ -130,7 +223,7 @@ void Maze::drawBigCorner() {
             glNormal3f(0, -1, 0);
         glVertex3f(p.x, p.y, -1.02);
     }
-    glEnd ();     
+    glEnd ();    */ 
 }
 
 void Maze::drawBigInset() {
@@ -194,93 +287,63 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     float z = -19;
     
     int counter = 0;
+    int toDraw = -1;
     while (true) {
-        std::cout << counter << "\n";
         int drawType = counter / 4;
         float rotation = (counter % 4) * 90;
         
         switch (drawType) {
             case 0: // Small wall
-                if (!grid[1] && !grid[7] && grid[3] && grid[5]) {
-                    glPushMatrix();
-                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
-                    glRotatef(rotation, 0, 0, 1);
-                    
-                    drawSmallWall();
-                    
-                    glRotatef(0 - rotation, 0, 0, 1);
-                	glPopMatrix();
-                    return;
-                }
+                if (!grid[1] && !grid[7] && grid[3] && grid[5]) toDraw = 0;
                 break;
             case 1: // Small end
-                if (!grid[1] && !grid[7] && grid[5]) {
-                    glPushMatrix();
-                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
-                    glRotatef(rotation, 0, 0, 1);
-                    
-                    drawSmallEnd();
-                    
-                    glRotatef(0 - rotation, 0, 0, 1);
-                	glPopMatrix();
-                    return;
-                }
+                if (!grid[1] && !grid[7] && grid[5]) toDraw = 1;
                 break;                
             case 2: // 90 degree corner
-                if (!grid[1] && grid[7] && !grid[3] && grid[5] && !grid[8])        
-                {
-                    glPushMatrix();
-                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
-                    glRotatef(rotation, 0, 0, 1);
-                    
-                    drawSmallCorner();
-                    
-                    glRotatef(0 - rotation, 0, 0, 1);
-                	glPopMatrix();
-                    return;
-                }
+                if (!grid[1] && grid[7] && !grid[3] && grid[5] && !grid[8]) toDraw = 2;
                 break;
             case 3: // Big wall
-                if (!grid[1] && grid[7] && grid[3] && grid[5]) {
-                    glPushMatrix();
-                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
-                    glRotatef(rotation, 0, 0, 1);
-                    
-                    drawBigWall();
-                    
-                    glRotatef(0 - rotation, 0, 0, 1);
-                	glPopMatrix();
-                    return;
-                }
+                if (!grid[1] && grid[7] && grid[3] && grid[5]) toDraw = 3;
                 break;
             case 4: // Big corner
-               if (!grid[1] && grid[7] && !grid[3] && grid[5]) {
-                    glPushMatrix();
-                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
-                    glRotatef(rotation, 0, 0, 1);
-                    
-                    drawBigCorner();
-                                
-                    glRotatef(0 - rotation, 0, 0, 1);
-                	glPopMatrix();
-                    return;
-                }
+                if (!grid[1] && grid[7] && !grid[3] && grid[5]) toDraw = 4;
                 break;
             case 5: // Big inset
-                if (grid.count() == 8 && !grid[0]) {
-                    glPushMatrix();
-                    glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
-                    glRotatef(rotation, 0, 0, 1);
-                    
-                    drawBigInset();
-                    
-                    glRotatef(0 - rotation, 0, 0, 1);
-                	glPopMatrix();
-                    return;
-                }
+                if (grid.count() == 8 && !grid[0]) toDraw = 5;
                 break;
             default:
                 return;
+        }
+        
+        if (toDraw > -1) {
+            glPushMatrix();
+            glTranslatef(rawPointX+0.5, rawPointY+0.5, z);
+            glRotatef(rotation, 0, 0, 1);
+            
+            switch (toDraw) {
+                case 0: // Small wall
+                    drawSmallWall();
+                    break;
+                case 1: // Small end
+                    drawSmallEnd();
+                    break;                
+                case 2: // 90 degree corner
+                    drawSmallCorner();
+                    break;
+                case 3: // Big wall
+                    drawBigWall();
+                    break;
+                case 4: // Big corner
+                    drawBigCorner();
+                    break;
+                case 5: // Big inset
+                    drawBigInset();
+                    break;
+            }
+            
+            glRotatef(0 - rotation, 0, 0, 1);
+        	glPopMatrix();
+            return;
         }
         grid = rotateGrid(grid);
         counter++;
@@ -346,7 +409,7 @@ void Maze::createNormal(float x, float y, float z) {
         
 void Maze::createMaze() {
 	glNewList(mazeDisplayList, GL_COMPILE);
-    glColor3f (0.0, 0.0, 0.8);
+    glColor3f (0.1, 0.1, 0.8);
 
     int mazeHeight = getHeight();
     int mazeWidth = getWidth(); 

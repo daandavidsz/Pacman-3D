@@ -134,9 +134,9 @@ void Player::render(float ticks) {
                 double y = sin(lng);
             
                 glColor3f(1, 1, 0);
-                
+
+                glVertex3f(r * x * zr1, r * y * zr1, r * z1);                
                 glVertex3f(r * x * zr0, r * y * zr0, r * z0);
-                glVertex3f(r * x * zr1, r * y * zr1, r * z1);
             }
             else if (!drawn) {
                 drawn = true;
@@ -147,25 +147,25 @@ void Player::render(float ticks) {
                 double x = cos(lng);
                 double y = sin(lng);
 
-                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
                 glVertex3f(r * x * zr1, r * y * zr1, r * z1);
+                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
                 glColor3f(1,0,0);
-                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
                 glVertex3f(r * x * zr1, r * y * zr1, r * z1);
-                glVertex3f(0, 0, r * z0);
+                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
                 glVertex3f(0, 0, r * z1);
-                
+                glVertex3f(0, 0, r * z0);
+                                
                 m = (int)(0.5 + 360 - 45 - halfThreshHold);
                 
                 lng = 2 * M_PI * (double) (m - 1) / 360;
                 x = cos(lng);
                 y = sin(lng);
 
-                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
                 glVertex3f(r * x * zr1, r * y * zr1, r * z1);
+                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
                 glColor3f(1,1,0);
-                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
                 glVertex3f(r * x * zr1, r * y * zr1, r * z1);
+                glVertex3f(r * x * zr0, r * y * zr0, r * z0);                
             }            
 
         }
