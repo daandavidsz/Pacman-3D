@@ -79,10 +79,10 @@ void Maze::drawSmallCorner() {
 
 void Maze::drawBigWall() {
     std::vector<point> points; 
-    points.push_back(point(0.5, 0.25));      
-    points.push_back(point(-0.5, 0.25));        
-    points.push_back(point(-0.5, 0));
-    points.push_back(point(0.5, 0));
+    points.push_back(point(0.5, 0.125));      
+    points.push_back(point(-0.5, 0.125));        
+    points.push_back(point(-0.5, -0.125));
+    points.push_back(point(0.5, -0.125));
 
     glBegin(GL_QUADS);
     for (unsigned int i = 0; i < points.size(); i++) {
@@ -114,7 +114,7 @@ void Maze::drawBigWall() {
 
 void Maze::drawBigCorner() {
     float x, y;
-	float radius = 0.5f;
+	float radius = 0.6f;
     bool inner = false;
     
     std::vector<point> opoints;    
@@ -156,74 +156,13 @@ void Maze::drawBigCorner() {
     
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < opoints.size(); i++) {
-        glNormal3f(0, 0, 1);
+        point p = points[i];
+        glNormal3f(0-2*(p.x-0.5), 0-2*(p.y-0.5), 0);
         glVertex3f(opoints[i].x, opoints[i].y, -0.02);
-        glNormal3f(0, 0, 1);    
+        glNormal3f(2*(p.x-0.5), 2*(p.y-0.5), 0);
         glVertex3f(points[i].x, points[i].y, -0.02);      
     }
     glEnd (); 
-    
-/*
-	glBegin(GL_POLYGON);
-		x = (float)radius * cos(359 * PI/180.0f);
-		y = (float)radius * sin(359 * PI/180.0f);
-		
-		if (!inner) {
-	        glNormal3f(0, 0, 1);
-    		glVertex3f(-0.5, 0.5, -0.02);
-		}
-		
-		for(float j = 0; j <= 90; j += 15)
-		{
-		    float step = inner ? j : 90 - j;
-			x = (float)radius * cos(step * PI/180.0f);
-			y = (float)radius * sin(step * PI/180.0f);
-	        glNormal3f(0, 0, 1);
-			glVertex3f(x-0.5, y-0.5, -0.02);
-		}
-		if (inner) {
-	        glNormal3f(0, 0, 1);
-    		glVertex3f(-0.5, -0.5, -0.02);
-		}
-		else {
-	        glNormal3f(0, 0, 1);
-    		glVertex3f(0.5, 0.5, -0.02);	
-	        glNormal3f(0, 0, 1);
-    		glVertex3f(0.5, -0.5, -0.02);	
-		}
-	glEnd();
-     */
-        /*  
-        
-           std::vector<point> points; 
-    points.push_back(point(0, 0.5));        
-    points.push_back(point(0.5, 0));    
-    points.push_back(point(0.5, 0.5));
-     
-     
-    glBegin(GL_POLYGON);
-    for (unsigned int i = 0; i < points.size(); i++) {
-        point p = points[i];
-        glNormal3f(0, 0, 1);
-        glVertex3f(p.x, p.y, -0.02);
-    }
-    glEnd (); 
-    
-    glBegin(GL_QUAD_STRIP);
-    for (unsigned int i = 0; i < points.size(); i++) {
-        point p = points[i];
-        if (i == 0)
-            glNormal3f(-1, 0, 0);
-        if (i == 1)
-            glNormal3f(0, -1, 0);
-        glVertex3f(p.x, p.y, -0.02);
-        if (i == 0)
-            glNormal3f(-1, 0, 0);
-        if (i == 1)        
-            glNormal3f(0, -1, 0);
-        glVertex3f(p.x, p.y, -1.02);
-    }
-    glEnd ();    */ 
 }
 
 void Maze::drawBigInset() {
@@ -337,7 +276,8 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
                     drawBigCorner();
                     break;
                 case 5: // Big inset
-                    drawBigInset();
+                    glRotatef(180, 0, 0, 1);
+                    drawBigCorner();
                     break;
             }
             
@@ -409,7 +349,7 @@ void Maze::createNormal(float x, float y, float z) {
         
 void Maze::createMaze() {
 	glNewList(mazeDisplayList, GL_COMPILE);
-    glColor3f (0.1, 0.1, 0.8);
+    glColor3f (0.0, 0.0, 0.8);
 
     int mazeHeight = getHeight();
     int mazeWidth = getWidth(); 
