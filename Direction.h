@@ -19,9 +19,10 @@ struct point {
     }
     
     point(float _x, float _y, float _z = 0.0) {
-        x = _x;
-        y = _y;
-        z = _z;
+        int divisor = 64;
+        x = floor(divisor*_x+0.5)/divisor;
+        y = floor(divisor*_y+0.5)/divisor;
+        z = floor(divisor*_z+0.5)/divisor;
     }
 };
 

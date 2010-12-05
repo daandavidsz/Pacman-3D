@@ -79,10 +79,10 @@ void Maze::drawSmallCorner() {
 
 void Maze::drawBigWall() {
     std::vector<point> points; 
-    points.push_back(point(0.5, 0.125));      
-    points.push_back(point(-0.5, 0.125));        
-    points.push_back(point(-0.5, -0.125));
-    points.push_back(point(0.5, -0.125));
+    points.push_back(point(0.5, 0.149));      
+    points.push_back(point(-0.5, 0.149));        
+    points.push_back(point(-0.5, -0.15));
+    points.push_back(point(0.5, -0.15));
 
     glBegin(GL_QUADS);
     for (unsigned int i = 0; i < points.size(); i++) {
@@ -90,7 +90,7 @@ void Maze::drawBigWall() {
         if (i < 2)
             glNormal3f(0, 1, 0);
         else
-            glNormal3f(0, -1, 0);            
+            glNormal3f(0, -1, 0);
         glVertex3f(p.x, p.y, -0.02);
     }
     glEnd (); 
@@ -98,53 +98,78 @@ void Maze::drawBigWall() {
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        if (i < 2)
+        if (i < 2) {
             glNormal3f(0, 1, 0);     
-        else 
+            glColor3f(0,0,0.75);                        
+        }
+        else {
             glNormal3f(0, -1, 0);
+            glColor3f(0,0,1);
+        }
         glVertex3f(p.x, p.y, -0.02);
-        if (i < 2)
+        if (i < 2) {
             glNormal3f(0, 1, 0);     
-        else 
+            glColor3f(0,0,0.0);                        
+        }
+        else {
             glNormal3f(0, -1, 0);
+            glColor3f(0,0,0.0);
+        }
         glVertex3f(p.x, p.y, -1.02);
     }
+    glColor3f(0,0,1);
     glEnd (); 
 }
 
 void Maze::drawBigCorner() {
     float x, y;
-	float radius = 0.6f;
+	float bigRadius = 0.65;
+	float smallRadius = 0.35;
     bool inner = false;
     
     std::vector<point> opoints;    
     std::vector<point> points; 
+    std::vector<point> normals;     
 
-	x = (float)radius * cos(359 * PI/180.0f);
-	y = (float)radius * sin(359 * PI/180.0f);
-	for(float j = 90; j >= 0; j -= 30)
+	for(float j = 90; j >= 0; j -= 15)
 	{
 	    float step = 90 - j;
-		x = 1-(float)radius * cos(step * PI/180.0f);
-		y = 1-(float)radius * sin(step * PI/180.0f);
-		
-        std::cout << "x:" << x << "\n";
-        std::cout << "y:" << y << "\n";  
-         
+		x = 1 - bigRadius * cos(step * PI/180.0);
+		y = 1 - bigRadius * sin(step * PI/180.0);
 	    points.push_back(point(x - 0.5, y - 0.5));
-		x = 1-(float)radius/2 * cos(step * PI/180.0f);
-		y = 1-(float)radius/2 * sin(step * PI/180.0f);		    
+
+		x = 1 - smallRadius * cos(step * PI/180.0);
+		y = 1 - smallRadius * sin(step * PI/180.0);		    
 	    opoints.push_back(point(x - 0.5, y - 0.5));
+
+		x = 0 - cos(step * PI/180.0);
+		y = 0 - sin(step * PI/180.0);
+	    normals.push_back(point(x, y));	  
 	}
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        glNormal3f(2*(p.x-0.5), 2*(p.y-0.5), 0);
+        point n = normals[i];
+        glNormal3f(n.x, n.y, 0);
+        glColor3f(0,0,1);        
         glVertex3f(p.x, p.y, -0.02);
-        glNormal3f(2*(p.x-0.5), 2*(p.y-0.5), 0);
+        glNormal3f(n.x, n.y, 0);
+        glColor3f(0,0,0);
         glVertex3f(p.x, p.y, -1.02);
     }
     glEnd (); 
+    
+    for (unsigned int i = 0; i < normals.size(); i++) {
+        point n = normals[i];
+        glLineWidth(1);
+        glColor3f(1,1,1);
+        //glBegin(GL_LINES);
+        //glVertex3f(0, 0, 0);
+        //glVertex3f(n.x, n.y, 0);
+		//std::cout << n.x << ":" << n.y << "\n";		    
+        //glEnd(); 
+        glColor3f(0,0,1);
+    }
     
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < opoints.size(); i++) {
@@ -152,14 +177,16 @@ void Maze::drawBigCorner() {
         glVertex3f(p.x, p.y, -1.02);
         glVertex3f(p.x, p.y, -0.02);        
     }
-    glEnd (); 
+    glEnd(); 
     
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < opoints.size(); i++) {
         point p = points[i];
-        glNormal3f(0-2*(p.x-0.5), 0-2*(p.y-0.5), 0);
+        //glNormal3f(0-(p.x-0.5), 0-(p.y-0.5), 0);
+        glNormal3f(0,0,1);
         glVertex3f(opoints[i].x, opoints[i].y, -0.02);
-        glNormal3f(2*(p.x-0.5), 2*(p.y-0.5), 0);
+        //glNormal3f((p.x-0.5), (p.y-0.5), 0);
+        glNormal3f(0,0,1);        
         glVertex3f(points[i].x, points[i].y, -0.02);      
     }
     glEnd (); 

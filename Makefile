@@ -36,7 +36,7 @@ EventHandler.o: EventHandler.cpp EventHandler.h
 Game.o: Game.cpp Game.h
 		$(CXX) $(CXXFLAGS) -c Game.cpp
 				
-Maze.o: Maze.cpp Maze.h
+Maze.o: Maze.cpp Maze.h Direction.h
 		$(CXX) $(CXXFLAGS) -c Maze.cpp
 				
 Tile.o: Tile.cpp Tile.h
