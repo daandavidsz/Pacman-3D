@@ -41,7 +41,7 @@ void Game::onSignal(std::string name) {
 void Game::handleLighting() {
     glEnable ( GL_LIGHTING ) ;            
         
-    GLfloat position[] = { 0.5, -0.5, 1, 0};            
+    GLfloat position[] = { 0.5, -0.3, 1, 0};            
     glLightfv(GL_LIGHT0, GL_POSITION, position);
     
     GLfloat ambient[] = {0.1, 0.1, 0.1};
@@ -73,8 +73,8 @@ void Game::render(float ticks) {
     float lookAt = 1 + gameTime * 2.5;
     if (lookAt > 25) lookAt = 25;
     
-    // gluLookAt (playerPos.x, playerPos.y, -18.0 + lookAt, playerPos.x/2, playerPos.y/2, playerPos.z, 0.0, 1.0, 0.0);
-    // gluLookAt (0, -20, 18, 0, -2, playerPos.z, 0.0, 1.0, 0.0);
+    //gluLookAt (playerPos.x, playerPos.y, -18.0 + lookAt, playerPos.x/2, playerPos.y/2, playerPos.z, 0.0, 1.0, 0.0);
+    //gluLookAt (0, -20, 18, 0, -2, playerPos.z, 0.0, 1.0, 0.0);
     // Close
     
     handleLighting();

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <math.h>
+
 enum DIRECTION {
     none,
     up,

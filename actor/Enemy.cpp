@@ -267,11 +267,6 @@ void Enemy::renderBody() {
         point normal;
         computeFaceNormal(&points[counter], &points[counter+2], &points[counter+3], &normal);
         
-        point face = points[counter];
-        face.x = (face.x + points[counter+3].x) / 2;
-        face.y = (face.y + points[counter+3].y) / 2;
-        face.z = (face.z + points[counter+3].z) / 2;  
-    
         normals.push_back(normal);        
         
         counter += 2;  

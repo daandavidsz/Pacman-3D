@@ -39,10 +39,10 @@ class Maze : public EventHandler {
         void drawCeiling(int x, int y);
         
         void drawSmallWall();
-        void drawSmallEnd();        
+        void drawSmallEnd();
         void drawSmallCorner();        
         void drawBigWall();
-        void drawBigCorner();
+        void drawBigCorner(bool isInset);
         void drawBigInset();
         
         std::bitset<9> rotateGrid(std::bitset<9> grid) {

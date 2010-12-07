@@ -87,10 +87,12 @@ void Maze::drawBigWall() {
     glBegin(GL_QUADS);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
+        /*
         if (i < 2)
             glNormal3f(0, 1, 0);
         else
-            glNormal3f(0, -1, 0);
+            glNormal3f(0, -1, 0);*/
+        glNormal3f(0, 0, 1);
         glVertex3f(p.x, p.y, -0.02);
     }
     glEnd (); 
@@ -100,7 +102,7 @@ void Maze::drawBigWall() {
         point p = points[i];
         if (i < 2) {
             glNormal3f(0, 1, 0);     
-            glColor3f(0,0,0.75);                        
+            glColor3f(0,0,0.50);                        
         }
         else {
             glNormal3f(0, -1, 0);
@@ -113,7 +115,7 @@ void Maze::drawBigWall() {
         }
         else {
             glNormal3f(0, -1, 0);
-            glColor3f(0,0,0.0);
+            glColor3f(0,0,0.25);
         }
         glVertex3f(p.x, p.y, -1.02);
     }
@@ -121,7 +123,7 @@ void Maze::drawBigWall() {
     glEnd (); 
 }
 
-void Maze::drawBigCorner() {
+void Maze::drawBigCorner(bool isInset) {
     float x, y;
 	float bigRadius = 0.65;
 	float smallRadius = 0.35;
@@ -146,38 +148,48 @@ void Maze::drawBigCorner() {
 		y = 0 - sin(step * PI/180.0);
 	    normals.push_back(point(x, y));	  
 	}
+	
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
         point n = normals[i];
+        glColor3f(0, 0, 1 - isInset * 0.50);
         glNormal3f(n.x, n.y, 0);
-        glColor3f(0,0,1);        
         glVertex3f(p.x, p.y, -0.02);
-        glNormal3f(n.x, n.y, 0);
-        glColor3f(0,0,0);
+        glColor3f(0, 0, 0.25 - isInset * 0.25);
+        glNormal3f(n.x, n.y, 0);        
         glVertex3f(p.x, p.y, -1.02);
     }
     glEnd (); 
     
-    for (unsigned int i = 0; i < normals.size(); i++) {
-        point n = normals[i];
-        glLineWidth(1);
-        glColor3f(1,1,1);
-        //glBegin(GL_LINES);
-        //glVertex3f(0, 0, 0);
-        //glVertex3f(n.x, n.y, 0);
-		//std::cout << n.x << ":" << n.y << "\n";		    
-        //glEnd(); 
-        glColor3f(0,0,1);
-    }
-    
     glBegin(GL_QUAD_STRIP);
-    for (unsigned int i = 0; i < opoints.size(); i++) {
+    for (unsigned int i = 0; i < points.size(); i++) {
         point p = opoints[i];
+        point n = normals[i];
+        if (isInset) glColor3f(0, 0, 0.25);
+        else glColor3f(0, 0, 0);
+        glNormal3f(0-n.x, 0-n.y, 0);        
         glVertex3f(p.x, p.y, -1.02);
-        glVertex3f(p.x, p.y, -0.02);        
+        if (isInset) glColor3f(0, 0, 1);
+        else glColor3f(0, 0, 0.5);
+        glNormal3f(0-n.x, 0-n.y, 0);
+        glVertex3f(p.x, p.y, -0.02);
     }
-    glEnd(); 
+    glEnd (); 
+    
+    /*
+    glColor3f(1,1,1);
+    glBegin(GL_LINES);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = opoints[i];
+        point n = normals[i];
+        glVertex3f(p.x, p.y, -0.02);
+        glVertex3f(p.x+(0-n.x), p.y+(0-n.y), -0.02);
+    }
+    glEnd (); 
+    */
+      
+    glColor3f(0, 0, 1);
     
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < opoints.size(); i++) {
@@ -231,15 +243,15 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
     
     std::bitset<9> grid;
         
-    if (isWall(x-1, y-1)) grid[0] = 1;
-    if (isWall(x+0, y-1)) grid[1] = 1;
-    if (isWall(x+1, y-1)) grid[2] = 1;
-    if (isWall(x-1, y+0)) grid[3] = 1;
-    if (isWall(x+0, y+0)) grid[4] = 1;
-    if (isWall(x+1, y+0)) grid[5] = 1;
-    if (isWall(x-1, y+1)) grid[6] = 1;
-    if (isWall(x+0, y+1)) grid[7] = 1;
-    if (isWall(x+1, y+1)) grid[8] = 1;
+    grid[0] = isWall(x-1, y-1);
+    grid[1] = isWall(x+0, y-1);
+    grid[2] = isWall(x+1, y-1);
+    grid[3] = isWall(x-1, y+0);
+    grid[4] = isWall(x+0, y+0);
+    grid[5] = isWall(x+1, y+0);
+    grid[6] = isWall(x-1, y+1);
+    grid[7] = isWall(x+0, y+1);
+    grid[8] = isWall(x+1, y+1);
     
     float size = 0.50;
     
@@ -300,11 +312,11 @@ void Maze::drawLines(float * color, int x, int y, float pointX, float pointY) {
                     drawBigWall();
                     break;
                 case 4: // Big corner
-                    drawBigCorner();
+                    drawBigCorner(false);
                     break;
                 case 5: // Big inset
                     glRotatef(180, 0, 0, 1);
-                    drawBigCorner();
+                    drawBigCorner(true);
                     break;
             }
             

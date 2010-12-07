@@ -107,8 +107,8 @@ void Player::render(float ticks) {
             glRotatef(0,1,0,0); break;        
     }
         
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    
+    std::vector<point> points; 
+        
     int threshHold = (int)(position * 180 + 90) % 180;
     if (threshHold > 90) threshHold = 180 - threshHold;
     
@@ -126,7 +126,6 @@ void Player::render(float ticks) {
         float halfThreshHold = threshHold / 2;
         float m;
 
-        glBegin(GL_QUAD_STRIP);
         for(j = 0; j <= 360; j += 360 / longs) {
             if (j <= 180 + 45 + halfThreshHold || j >= 360 - 45 - halfThreshHold ) {
                 double lng = 2 * M_PI * (double) (j - 1) / 360;
@@ -135,8 +134,8 @@ void Player::render(float ticks) {
             
                 glColor3f(1, 1, 0);
 
-                glVertex3f(r * x * zr1, r * y * zr1, r * z1);                
-                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
+                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
+                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
             }
             else if (!drawn) {
                 drawn = true;
@@ -147,13 +146,13 @@ void Player::render(float ticks) {
                 double x = cos(lng);
                 double y = sin(lng);
 
-                glVertex3f(r * x * zr1, r * y * zr1, r * z1);
-                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
-                glColor3f(1,0,0);
-                glVertex3f(r * x * zr1, r * y * zr1, r * z1);
-                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
-                glVertex3f(0, 0, r * z1);
-                glVertex3f(0, 0, r * z0);
+                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
+                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
+                //glColor3f(1,0,0);
+                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
+                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
+                points.push_back(point(0, 0, r * z1));
+                points.push_back(point(0, 0, r * z0));
                                 
                 m = (int)(0.5 + 360 - 45 - halfThreshHold);
                 
@@ -161,16 +160,39 @@ void Player::render(float ticks) {
                 x = cos(lng);
                 y = sin(lng);
 
-                glVertex3f(r * x * zr1, r * y * zr1, r * z1);
-                glVertex3f(r * x * zr0, r * y * zr0, r * z0);
-                glColor3f(1,1,0);
-                glVertex3f(r * x * zr1, r * y * zr1, r * z1);
-                glVertex3f(r * x * zr0, r * y * zr0, r * z0);                
+                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
+                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
+                //glColor3f(1,1,0);
+                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
+                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));                
             }            
 
         }
-        glEnd();
+
     }
+    
+    glColor3f(1,1,0);
+    
+    glBegin(GL_QUAD_STRIP);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        point n;
+        computeFaceNormal(&points[i], &points[i+1], &points[i+2], &n);
+        glNormal3f(n.x, n.y, n.z);
+        glVertex3f(p.x, p.y, p.z);
+    }
+    glEnd();
+    
+        
+    glBegin(GL_LINES);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        point n;
+        computeFaceNormal(&points[i], &points[i+1], &points[i+2], &n);
+        glVertex3f(p.x, p.y, p.z);
+        glNormal3f((p.x)+n.x*5, (p.y)+n.y*5, (p.z)+n.z*5);
+    }
+    glEnd();
 
     glPopMatrix();
 }
