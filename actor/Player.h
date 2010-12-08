@@ -8,6 +8,7 @@
 
 #include <stdio.h> 
 #include <math.h> 
+#include <map>
 
 #include "../Direction.h"
 #include "../Tile.h"

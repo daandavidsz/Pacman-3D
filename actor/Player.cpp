@@ -108,6 +108,7 @@ void Player::render(float ticks) {
     }
         
     std::vector<point> points; 
+    std::map<int,bool> mouth;
         
     int threshHold = (int)(position * 180 + 90) % 180;
     if (threshHold > 90) threshHold = 180 - threshHold;
@@ -146,9 +147,11 @@ void Player::render(float ticks) {
                 double x = cos(lng);
                 double y = sin(lng);
 
+
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
                 //glColor3f(1,0,0);
+                mouth[(int)points.size()] = true;
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
                 points.push_back(point(0, 0, r * z1));
@@ -162,6 +165,8 @@ void Player::render(float ticks) {
 
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
+                
+                mouth[(int)points.size()-1] = false;
                 //glColor3f(1,1,0);
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));                
@@ -175,24 +180,42 @@ void Player::render(float ticks) {
     
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < points.size(); i++) {
+    
+        if (mouth.find(i) != mouth.end()) {
+            switch (mouth.find(i)->second) {
+                case true:
+                    glColor3f(1, 0, 0);
+                    break;
+                case false:
+                    glColor3f(1, 1, 0);
+                    break;
+            }
+        }
+    
         point p = points[i];
         point n;
-        computeFaceNormal(&points[i], &points[i+1], &points[i+2], &n);
+        
+        int offset = i - (i % 2);
+        computeFaceNormal(&points[offset], &points[offset+3], &points[offset+2], &n);
         glNormal3f(n.x, n.y, n.z);
         glVertex3f(p.x, p.y, p.z);
     }
     glEnd();
     
-        
+    /*
+    glColor3f(1, 0, 0);
     glBegin(GL_LINES);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
         point n;
-        computeFaceNormal(&points[i], &points[i+1], &points[i+2], &n);
+        int offset = i - (i % 2);
+        computeFaceNormal(&points[offset], &points[offset+3], &points[offset+2], &n);
         glVertex3f(p.x, p.y, p.z);
-        glNormal3f((p.x)+n.x*5, (p.y)+n.y*5, (p.z)+n.z*5);
+        //std::cout << n.x << "-" << n.y << "-" << n.z << "\n";
+        glVertex3f((p.x)+n.x*5, (p.y)+n.y*5, (p.z)+n.z*5);
     }
     glEnd();
+    */
 
     glPopMatrix();
 }
