@@ -193,10 +193,8 @@ void Player::render(float ticks) {
         }
     
         point p = points[i];
-        point n;
+        point n = normalizeVector(p);
         
-        int offset = i - (i % 2);
-        computeFaceNormal(&points[offset], &points[offset+3], &points[offset+2], &n);
         glNormal3f(n.x, n.y, n.z);
         glVertex3f(p.x, p.y, p.z);
     }
@@ -207,16 +205,12 @@ void Player::render(float ticks) {
     glBegin(GL_LINES);
     for (unsigned int i = 0; i < points.size(); i++) {
         point p = points[i];
-        point n;
-        int offset = i - (i % 2);
-        computeFaceNormal(&points[offset], &points[offset+3], &points[offset+2], &n);
         glVertex3f(p.x, p.y, p.z);
-        //std::cout << n.x << "-" << n.y << "-" << n.z << "\n";
-        glVertex3f((p.x)+n.x*5, (p.y)+n.y*5, (p.z)+n.z*5);
+        glVertex3f(0.5,0.5,0.5);
     }
     glEnd();
     */
-
+    
     glPopMatrix();
 }
 
