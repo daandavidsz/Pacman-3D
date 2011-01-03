@@ -214,11 +214,8 @@ void Enemy::renderBody() {
     float i, j;
     
     // Ghost rotation
-    //glRotatef(360.0/8*delta,0,0,1);
+    // glRotatef(360.0/8*delta,0,0,1);
     
-    // Ugly
-    //glRotatef(270,0,0,1);
-
     std::vector<point> points; 
             
     for(i = lats/2; i <= lats; i++) {
@@ -240,7 +237,6 @@ void Enemy::renderBody() {
         double z1 = sin(M_PI * (-0.5 + (double) i / lats));
         double zr1 = cos(lat1);
         
-        glBegin(GL_QUAD_STRIP);
         bool odd = true;        
         for(j = 0; j <= 360; j += 360.0 / longs) {
             double lng = 2 * M_PI * (double) (j - 1) / 360;
@@ -251,15 +247,26 @@ void Enemy::renderBody() {
             if (i == lats / 2 && odd) {
                 extend = 0.2;
             }
-            
+
+            points.push_back(point(r * x * zr1, r * y * zr1, r * z1));            
             points.push_back(point(r * x * zr0, r * y * zr0, r * z0 + extend));
-            points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
             
             odd = !odd;
         }
-        glEnd();
     }
     
+    glBegin(GL_QUAD_STRIP);
+    for (unsigned int i = 0; i < points.size(); i++) {
+        point p = points[i];
+        
+        point n = normalizeVector(p);
+        glNormal3f(n.x, n.y, n.z);
+        
+        glVertex3f(p.x, p.y, p.z);
+    }
+    glEnd();
+        
+    /*
     std::vector<point> normals; 
     
     unsigned int counter = 0;
@@ -310,7 +317,7 @@ void Enemy::renderBody() {
         glEnd();
         
         counter += 2;
-    }
+    }*/
 }
 
 void Enemy::renderEyes() {

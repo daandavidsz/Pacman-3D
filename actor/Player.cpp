@@ -166,7 +166,7 @@ void Player::render(float ticks) {
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
                 
-                mouth[(int)points.size()-1] = false;
+                mouth[(int)points.size()] = false;
                 //glColor3f(1,1,0);
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));                
@@ -178,6 +178,8 @@ void Player::render(float ticks) {
     
     glColor3f(1,1,0);
     
+    bool isMouth = false;
+    
     glBegin(GL_QUAD_STRIP);
     for (unsigned int i = 0; i < points.size(); i++) {
     
@@ -185,17 +187,25 @@ void Player::render(float ticks) {
             switch (mouth.find(i)->second) {
                 case true:
                     glColor3f(1, 0, 0);
+                    isMouth = true;
                     break;
                 case false:
                     glColor3f(1, 1, 0);
+                    isMouth = false;
                     break;
             }
         }
     
         point p = points[i];
-        point n = normalizeVector(p);
         
-        glNormal3f(n.x, n.y, n.z);
+        if (isMouth) {
+            glNormal3f(0, -1, 0);
+        }
+        else {
+            point n = normalizeVector(p);
+            glNormal3f(n.x, n.y, n.z);
+        }
+        
         glVertex3f(p.x, p.y, p.z);
     }
     glEnd();
