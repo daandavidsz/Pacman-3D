@@ -1,6 +1,9 @@
 #include "Tile.h"
 
 Tile::Tile() {
+    if (rand() % 50 == 7) {
+        bonus = new Cherry();
+    }
 }
 
 void Tile::setPosition(pos tilePosition) {
@@ -66,6 +69,14 @@ void Tile::render(float ticks, float gameTime) {
         glPushMatrix();
         glTranslatef(pointX+0.5, pointY+0.5, -19.5);
         glutSolidSphere(0.08, 4, 4);
+        glPopMatrix();
+    }
+    
+    if (bonus != NULL) {
+        point center = getCenter();    
+        glPushMatrix();
+        glTranslatef(center.x, center.y, -19.5);
+        bonus->render(ticks, gameTime);
         glPopMatrix();
     }
 }

@@ -8,12 +8,14 @@
 #include <math.h>
 #include <stdio.h> 
 
+#include "bonus/Cherry.h"
 #include "Direction.h"
 #include "EventHandler.h"
 
 class Tile : public EventHandler {
 
     Tile * exits[10];
+    Bonus * bonus;
     pos position;
     point center;
     int color;
