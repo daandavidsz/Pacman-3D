@@ -43,6 +43,9 @@ void Tile::setVisited() {
         if (energizer) {
             emit("energizer");       
         }
+        else {
+            emit("pellet");
+        }
         visited = true;
     }
 }

@@ -10,12 +10,14 @@
 #include "actor/Pinky.h"
 #include "actor/Inky.h"
 #include "actor/Clyde.h"
+#include "object/ScoreBoard.h"
 #include "Maze.h"
 #include "EventHandler.h"
 
 class Game : public EventHandler {
 
     Maze maze;
+    ScoreBoard scoreBoard;    
     Player player;
 
     Pinky pinky;

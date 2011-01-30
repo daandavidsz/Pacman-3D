@@ -5,6 +5,8 @@ void Game::load() {
     maze.load();
     maze.addListener(this);
     
+    maze.addListener(&scoreBoard);
+    
     player.setCurrentTile(maze.getTile(1,1));
 
     blinky.setCurrentTile(maze.getTile(10,10));
@@ -88,6 +90,7 @@ void Game::render(float ticks) {
     }
 
     maze.render(ticks, gameTime);
+    scoreBoard.render(ticks);    
     
     glLoadIdentity();
 }
