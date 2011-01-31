@@ -4,7 +4,11 @@
 #include <GL/gl.h>	 // Header File For The OpenGL32 Library
 #include <GL/glu.h>	 // Header File For The GLu32 Library
 
-#include <vector>
+#include <stdlib.h> 
+#include <iostream> 
+#include <string> 
+#include <sstream>
+#include <map>
 #include <bitset>
 
 #include "../EventHandler.h"
@@ -13,8 +17,8 @@ class ScoreBoard : public EventHandler {
 
     private:
         int score;
-        std::vector<std::bitset<15> > digits;
-        float glow[15];
+        std::map<char, std::bitset<15> > digits;
+        float glow[10][15];
 
     public:
     

@@ -70,7 +70,8 @@ void Game::render(float ticks) {
 
     gameTime += ticks;
     counter++;
-    
+
+    scoreBoard.render(ticks);
     point playerPos = player.getPosition();
     float lookAt = 1 + gameTime * 2.5;
     if (lookAt > 25) lookAt = 25;
@@ -90,7 +91,6 @@ void Game::render(float ticks) {
     }
 
     maze.render(ticks, gameTime);
-    scoreBoard.render(ticks);    
     
     glLoadIdentity();
 }
