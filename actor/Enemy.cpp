@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "../Game.h"
 
 void Enemy::setCurrentTile(Tile * tile) {
     currentTile = tile;
@@ -107,10 +108,13 @@ void Enemy::setRealColor() {
 }
 
 void Enemy::render(float ticks) {
+    if (game->getState() == stopped) {
+        ticks = 0;
+    }
+
     gameTime += ticks;
     float speed = 7.0;
     if (state == SCARED) speed = 3.5;
-
     totalTicks += ticks * speed;
     
     if (state == EATEN) {

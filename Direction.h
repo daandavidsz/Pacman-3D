@@ -10,6 +10,11 @@ enum DIRECTION {
     left
 };
 
+enum GAMESTATE {
+    running,
+    stopped
+};
+
 struct point {
     public:
         float x;

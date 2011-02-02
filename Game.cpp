@@ -7,18 +7,26 @@ void Game::load() {
     
     maze.addListener(&scoreBoard);
     
+    player.setGame(this);
     player.setCurrentTile(maze.getTile(1,1));
 
+    blinky.setGame(this);
     blinky.setCurrentTile(maze.getTile(10,10));
     blinky.setPlayer(&player); 
     blinky.start();
+    
+    pinky.setGame(this);
     pinky.setCurrentTile(maze.getTile(13,13));
     pinky.setPlayer(&player);  
     pinky.start();
+    
+    inky.setGame(this);
     inky.setCurrentTile(maze.getTile(15,13));
     inky.setPlayer(&player);  
     inky.setBlinky(&blinky);
     inky.start();
+    
+    clyde.setGame(this);
     clyde.setCurrentTile(maze.getTile(15,13));
     clyde.setPlayer(&player);  
     clyde.start();
@@ -30,6 +38,8 @@ void Game::load() {
     for (unsigned int i = 0; i < enemies.size(); i++) {
         this->addListener(enemies[i]);
     }
+    
+    gameState = running;
 }
 
 Maze Game::getMaze() {
@@ -92,6 +102,23 @@ void Game::render(float ticks) {
 
     maze.render(ticks, gameTime);
     
+    for (unsigned int i = 0; i < enemies.size(); i++) {
+        pos a = player.getCurrentTile()->getPosition();
+        pos b = enemies[i]->getCurrentTile()->getPosition();
+        
+        float diffX = (float)a.x - (float)b.x;
+        float diffY = (float)a.y - (float)b.y;    
+        if (diffX < 0.0) diffX = 0.0-diffX;
+        if (diffY < 0.0) diffY = 0.0-diffY;
+
+        float distance = sqrt((diffX*diffX) + (diffY*diffY));
+
+        if (distance < 1.1) { 
+            gameState = stopped;
+            break;
+        }
+    }
+    
     glLoadIdentity();
 }
 
@@ -133,4 +160,8 @@ void Game::handleKeystroke(unsigned char key) {
 
 bool Game::isPaused() {
     return paused;
+}
+
+GAMESTATE Game::getState() {
+    return gameState;
 }

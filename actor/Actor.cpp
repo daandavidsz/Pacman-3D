@@ -1,6 +1,11 @@
 #include "math.h"
 
 #include "Actor.h"
+#include "../Game.h"
+
+void Actor::setGame(Game *gamePointer) {
+    game = gamePointer;
+}
 
 DIRECTION Actor::getOpposite(DIRECTION dir) {
     switch (dir) {

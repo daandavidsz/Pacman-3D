@@ -11,6 +11,7 @@
 #include "actor/Inky.h"
 #include "actor/Clyde.h"
 #include "object/ScoreBoard.h"
+#include "Direction.h"
 #include "Maze.h"
 #include "EventHandler.h"
 
@@ -29,13 +30,12 @@ class Game : public EventHandler {
     int counter;
     float gameTime;
     bool paused;
+    GAMESTATE gameState;
     
     protected:
-        
         void handleLighting();
     
     public:
-        
         virtual void onSignal(std::string name);    
         void load();
         Maze getMaze();
@@ -43,4 +43,5 @@ class Game : public EventHandler {
         void handleKeystroke(unsigned char key);
         void handleSpecialKeystoke(int key);
         bool isPaused();
+        GAMESTATE getState();
 };

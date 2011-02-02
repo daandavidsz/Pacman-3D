@@ -15,7 +15,7 @@
 
 #include "Actor.h"
 
-class Player : Actor {
+class Player : public Actor {
 
     private:
         DIRECTION direction;

@@ -3,9 +3,12 @@
 #include "../Direction.h"
 #include "../EventHandler.h"
 
+class Game;
+
 class Actor : public EventHandler {
 
     protected:
+        Game * game;
         void resolvePosition(float movement);
         bool isOpposite(DIRECTION a, DIRECTION b);
         DIRECTION getOpposite(DIRECTION dir);
@@ -20,5 +23,6 @@ class Actor : public EventHandler {
         point computeVertexNormal (point a, point b, point c, point d);
         
     public:
+        void setGame(Game *game);
         void render(float ticks);
 };

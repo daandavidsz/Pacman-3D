@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../Game.h"
 
 DIRECTION Player::getDirection() {
     return direction;
@@ -71,7 +72,9 @@ point Player::getPosition() {
 }
 
 void Player::render(float ticks) {
-    this->resolvePosition(ticks * 8.0);
+    if (game->getState() != stopped) {
+        this->resolvePosition(ticks * 8.0);
+    }
     
     point center = currentTile->getCenter();
     
