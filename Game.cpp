@@ -92,19 +92,16 @@ void Game::render(float ticks) {
     
     handleLighting();
     
-    gluLookAt (playerPos.x / 3.5, playerPos.y - 16, -4, playerPos.x / 3.5, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
-        
-    player.render(ticks);          
-            
-    for (unsigned int i = 0; i < enemies.size(); i++) {
-        enemies[i]->render(ticks);
-    }
-
-    maze.render(ticks, gameTime);
+    float startZ = -4;
+    float endZ = playerPos.z;
+    float startY = playerPos.y - 16;
+    float endY = playerPos.y;
+    
+    float closestDistance = 100;
     
     for (unsigned int i = 0; i < enemies.size(); i++) {
-        pos a = player.getCurrentTile()->getPosition();
-        pos b = enemies[i]->getCurrentTile()->getPosition();
+        point a = player.getPosition();
+        point b = enemies[i]->getPosition();
         
         float diffX = (float)a.x - (float)b.x;
         float diffY = (float)a.y - (float)b.y;    
@@ -113,11 +110,26 @@ void Game::render(float ticks) {
 
         float distance = sqrt((diffX*diffX) + (diffY*diffY));
 
-        if (distance < 1.1) { 
+        if (distance < closestDistance) {
+            closestDistance = distance;
+        }
+        if (distance <= 1.1) { 
             gameState = stopped;
             break;
         }
     }
+    
+    //gluLookAt (playerPos.x / 3.5, playerPos.y - 16, -4, playerPos.x / 3.5, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
+    float multiplier = closestDistance > 9.0 ? 0.0 : 0.9 * (1.0-(1.0/9.0)*closestDistance);
+    gluLookAt (playerPos.x, startY - (startY - endY)*multiplier, startZ - (startZ - endZ)*multiplier, playerPos.x, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
+        
+    player.render(ticks);          
+            
+    for (unsigned int i = 0; i < enemies.size(); i++) {
+        enemies[i]->render(ticks);
+    }
+
+    maze.render(ticks, gameTime);
     
     glLoadIdentity();
 }
