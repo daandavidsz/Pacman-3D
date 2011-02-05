@@ -120,7 +120,8 @@ void Game::render(float ticks) {
     }
     
     //gluLookAt (playerPos.x / 3.5, playerPos.y - 16, -4, playerPos.x / 3.5, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
-    float multiplier = closestDistance > 9.0 ? 0.0 : 0.9 * (1.0-(1.0/9.0)*closestDistance);
+    float zoomInFrom = 15;    
+    float multiplier = closestDistance > zoomInFrom ? 0.0 : 0.4 * (1.0-(1.0/zoomInFrom)*closestDistance);
     gluLookAt (playerPos.x, startY - (startY - endY)*multiplier, startZ - (startZ - endZ)*multiplier, playerPos.x, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
         
     player.render(ticks);          
