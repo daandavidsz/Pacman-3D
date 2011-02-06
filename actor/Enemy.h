@@ -47,7 +47,8 @@ class Enemy : public Actor {
         
     public:
         virtual ~Enemy() {};
-
+        
+        ENEMYSTATE getState();
         void onSignal(std::string name);   
         void start();
         void render(float ticks);

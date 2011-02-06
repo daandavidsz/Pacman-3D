@@ -113,7 +113,7 @@ void Game::render(float ticks) {
         if (distance < closestDistance) {
             closestDistance = distance;
         }
-        if (distance <= 1.1) { 
+        if (distance <= 1.1 && (enemies[i]->getState() == CHASE || enemies[i]->getState() == SCATTER)) { 
             gameState = stopped;
             break;
         }

@@ -83,6 +83,10 @@ void Enemy::reverseDirection() {
     position = 1.0 - position;
 }
 
+ENEMYSTATE Enemy::getState() {
+    return state;
+}
+
 void Enemy::onSignal(std::string name) {
     if (name == "energizer" && state != EATEN) {
         if (state != SCARED) {
