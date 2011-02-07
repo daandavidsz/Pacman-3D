@@ -17,7 +17,7 @@
 class ScoreBoard : public EventHandler {
 
     private:
-        int score;
+        unsigned int score;
         std::vector< std::bitset<15> > digits;
         std::stack<int> numberStack;
         float glow[10][15];

@@ -115,6 +115,7 @@ void Game::render(float ticks) {
         }
         if (distance <= 1.1 && (enemies[i]->getState() == CHASE || enemies[i]->getState() == SCATTER)) { 
             gameState = stopped;
+            player.setDying();
             break;
         }
     }

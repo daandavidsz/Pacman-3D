@@ -30,7 +30,7 @@ void ScoreBoard::render(float ticks) {
     glPushMatrix();
     glTranslatef(-2.3, 1.3, -5);
     
-    int currentScore = score;
+    unsigned int currentScore = score;
     while (currentScore > 0) {
         numberStack.push(currentScore % 10);
         currentScore = (int)currentScore / 10;

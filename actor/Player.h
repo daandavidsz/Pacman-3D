@@ -15,11 +15,21 @@
 
 #include "Actor.h"
 
+enum PLAYERSTATE {
+    ALIVE,
+    DYING,
+    DEAD
+};
+
 class Player : public Actor {
 
     private:
         DIRECTION direction;
-        DIRECTION wantedDirection;        
+        DIRECTION wantedDirection;   
+        PLAYERSTATE state;     
+        
+        float dyingProgress;
+        float totalTicks;
         
         Tile * currentTile;
         float position;
@@ -27,7 +37,9 @@ class Player : public Actor {
         void resolvePosition(float movement);
         
     public:
-    
+        PLAYERSTATE getState();
+        void setDying();        
+        
         DIRECTION getDirection();
         void setDirection(DIRECTION direction);
         DIRECTION getWantedDirection();

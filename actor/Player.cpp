@@ -25,6 +25,14 @@ void Player::setCurrentTile(Tile * tile) {
     currentTile = tile;
 }
 
+PLAYERSTATE Player::getState() {
+    return state;
+}
+
+void Player::setDying() {
+    state = DYING;
+}
+
 void Player::resolvePosition(float movement) {
 
     // Backwardo
@@ -72,6 +80,8 @@ point Player::getPosition() {
 }
 
 void Player::render(float ticks) {
+    totalTicks += ticks;
+
     if (game->getState() != stopped) {
         this->resolvePosition(ticks * 8.0);
     }
@@ -95,7 +105,7 @@ void Player::render(float ticks) {
     glPushMatrix();
 
     glTranslatef(center.x, center.y, -19.5);
-    glRotatef(90,0,1,0);    
+    glRotatef(90,0,1,0);  
     
     switch (direction) {
         case left:
@@ -109,12 +119,27 @@ void Player::render(float ticks) {
         case none:
             glRotatef(0,1,0,0); break;        
     }
+    
+    glRotatef(90,0,0,1);
         
     std::vector<point> points; 
     std::map<int,bool> mouth;
-        
-    int threshHold = (int)(position * 180 + 90) % 180;
-    if (threshHold > 90) threshHold = 180 - threshHold;
+    
+    int threshHold = 0;
+    
+    if (state == ALIVE) {
+        threshHold = (int)(position * 90 + 45) % 90;
+        if (threshHold > 45) { 
+            threshHold = 135 + threshHold;
+        }
+        else {
+            threshHold = 180 - threshHold;
+        }
+    }
+    else if (state == DYING) {
+        threshHold = (int)(totalTicks * 360) % 360;
+        if (threshHold > 180) threshHold = 360 - threshHold;
+    }
     
     for(i = 1; i <= lats; i++) {
         double lat0 = M_PI * (-0.5 + (double) (i - 1) / lats);
@@ -127,11 +152,10 @@ void Player::render(float ticks) {
 
         bool drawn = false;
         
-        float halfThreshHold = threshHold / 2;
         float m;
 
         for(j = 0; j <= 360; j += 360 / longs) {
-            if (j <= 180 + 45 + halfThreshHold || j >= 360 - 45 - halfThreshHold ) {
+            if (j <= threshHold || j >= 360 - threshHold) {
                 double lng = 2 * M_PI * (double) (j - 1) / 360;
                 double x = cos(lng);
                 double y = sin(lng);
@@ -144,7 +168,7 @@ void Player::render(float ticks) {
             else if (!drawn) {
                 drawn = true;
                 
-                m = (int)(0.5 + 180 + 45 + halfThreshHold);
+                m = (int)(0.5 + threshHold);
                                
                 double lng = 2 * M_PI * (double) (m - 1) / 360;
                 double x = cos(lng);
@@ -160,7 +184,7 @@ void Player::render(float ticks) {
                 points.push_back(point(0, 0, r * z1));
                 points.push_back(point(0, 0, r * z0));
                                 
-                m = (int)(0.5 + 360 - 45 - halfThreshHold);
+                m = (int)(0.5 + 360 - threshHold);
                 
                 lng = 2 * M_PI * (double) (m - 1) / 360;
                 x = cos(lng);
