@@ -7,16 +7,16 @@ ScoreBoard::ScoreBoard() {
         }
     }
 
-    digits['0'] = std::bitset<15>(std::string("111101101101111")); // 0
-    digits['1'] = std::bitset<15>(std::string("001001001001001")); // 1
-    digits['2'] = std::bitset<15>(std::string("111001111100111")); // 2   
-    digits['3'] = std::bitset<15>(std::string("111001111001111")); // 3    
-    digits['4'] = std::bitset<15>(std::string("101101111001001")); // 4
-    digits['5'] = std::bitset<15>(std::string("111100111001111")); // 5
-    digits['6'] = std::bitset<15>(std::string("111100111101111")); // 6
-    digits['7'] = std::bitset<15>(std::string("111001001010010")); // 7
-    digits['8'] = std::bitset<15>(std::string("111101111101111")); // 8
-    digits['9'] = std::bitset<15>(std::string("111101111001111")); // 9
+    digits.push_back(std::bitset<15>(std::string("111101101101111"))); // 0
+    digits.push_back(std::bitset<15>(std::string("001001001001001"))); // 1
+    digits.push_back(std::bitset<15>(std::string("111001111100111"))); // 2   
+    digits.push_back(std::bitset<15>(std::string("111001111001111"))); // 3    
+    digits.push_back(std::bitset<15>(std::string("101101111001001"))); // 4
+    digits.push_back(std::bitset<15>(std::string("111100111001111"))); // 5
+    digits.push_back(std::bitset<15>(std::string("111100111101111"))); // 6
+    digits.push_back(std::bitset<15>(std::string("111001001010010"))); // 7
+    digits.push_back(std::bitset<15>(std::string("111101111101111"))); // 8
+    digits.push_back(std::bitset<15>(std::string("111101111001111"))); // 9
 }
 
 void ScoreBoard::onSignal(std::string name) {
@@ -30,13 +30,16 @@ void ScoreBoard::render(float ticks) {
     glPushMatrix();
     glTranslatef(-2.3, 1.3, -5);
     
-    std::string scoreString;
-    std::stringstream stringStream;
-    stringStream << score;
-    scoreString = stringStream.str();
+    int currentScore = score;
+    while (currentScore > 0) {
+        numberStack.push(currentScore % 10);
+        currentScore = (int)currentScore / 10;
+    }
     
-    for (int d = 0; d < scoreString.length(); d++) {
-        std::bitset<15> digit = digits[scoreString[d]];
+    int stackSize = numberStack.size();
+    for (int d = 0; d < stackSize; d++) {
+        std::bitset<15> digit = digits[(int)numberStack.top()];
+        numberStack.pop();
         int counter = 0;
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 3; x++) {

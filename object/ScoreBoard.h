@@ -10,6 +10,7 @@
 #include <sstream>
 #include <map>
 #include <bitset>
+#include <stack>
 
 #include "../EventHandler.h"
 
@@ -17,7 +18,8 @@ class ScoreBoard : public EventHandler {
 
     private:
         int score;
-        std::map<char, std::bitset<15> > digits;
+        std::vector< std::bitset<15> > digits;
+        std::stack<int> numberStack;
         float glow[10][15];
 
     public:
