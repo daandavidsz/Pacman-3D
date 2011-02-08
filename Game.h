@@ -38,6 +38,7 @@ class Game : public EventHandler {
     public:
         virtual void onSignal(std::string name);    
         void load();
+        void reset();
         Maze getMaze();
         void render(float ticks);
         void handleKeystroke(unsigned char key);

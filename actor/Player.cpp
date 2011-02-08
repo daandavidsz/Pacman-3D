@@ -30,7 +30,10 @@ PLAYERSTATE Player::getState() {
 }
 
 void Player::setDying() {
-    state = DYING;
+    if (state != DYING) {
+        state = DYING;
+        dyingProgress = 0;   
+    }
 }
 
 void Player::resolvePosition(float movement) {
@@ -130,15 +133,23 @@ void Player::render(float ticks) {
     if (state == ALIVE) {
         threshHold = (int)(position * 90 + 45) % 90;
         if (threshHold > 45) { 
-            threshHold = 135 + threshHold;
+            threshHold = 90 + threshHold;
         }
         else {
             threshHold = 180 - threshHold;
         }
     }
     else if (state == DYING) {
-        threshHold = (int)(totalTicks * 360) % 360;
-        if (threshHold > 180) threshHold = 360 - threshHold;
+        threshHold = 180 - (int)(dyingProgress * 180);
+        if (threshHold < 0) {
+            threshHold = 0;
+            direction = none;
+            state = ALIVE;
+            emit("playerdied");
+        }
+        else {
+            dyingProgress += ticks * 0.7;
+        }
     }
     
     for(i = 1; i <= lats; i++) {
@@ -225,11 +236,11 @@ void Player::render(float ticks) {
     
         point p = points[i];
         
+        point n = normalizeVector(p);
         if (isMouth) {
-            glNormal3f(0, -1, 0);
+            glNormal3f(-1, 0, 0);
         }
         else {
-            point n = normalizeVector(p);
             glNormal3f(n.x, n.y, n.z);
         }
         

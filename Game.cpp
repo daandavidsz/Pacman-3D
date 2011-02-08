@@ -4,32 +4,23 @@ void Game::load() {
     srand ( time(NULL) );
     maze.load();
     maze.addListener(this);
-    
     maze.addListener(&scoreBoard);
     
     player.setGame(this);
-    player.setCurrentTile(maze.getTile(1,1));
+    player.addListener(this);
 
     blinky.setGame(this);
-    blinky.setCurrentTile(maze.getTile(10,10));
     blinky.setPlayer(&player); 
-    blinky.start();
     
     pinky.setGame(this);
-    pinky.setCurrentTile(maze.getTile(13,13));
     pinky.setPlayer(&player);  
-    pinky.start();
     
     inky.setGame(this);
-    inky.setCurrentTile(maze.getTile(15,13));
     inky.setPlayer(&player);  
     inky.setBlinky(&blinky);
-    inky.start();
     
     clyde.setGame(this);
-    clyde.setCurrentTile(maze.getTile(15,13));
     clyde.setPlayer(&player);  
-    clyde.start();
 
     enemies.push_back(&blinky);
     enemies.push_back(&pinky);
@@ -37,6 +28,20 @@ void Game::load() {
     enemies.push_back(&clyde);
     for (unsigned int i = 0; i < enemies.size(); i++) {
         this->addListener(enemies[i]);
+    }
+    
+    reset();
+}
+
+void Game::reset() {
+    player.setCurrentTile(maze.getTile(1,1));
+    blinky.setCurrentTile(maze.getTile(10,10));
+    pinky.setCurrentTile(maze.getTile(13,13));
+    inky.setCurrentTile(maze.getTile(15,13));
+    clyde.setCurrentTile(maze.getTile(15,13));
+    
+    for (unsigned int i = 0; i < enemies.size(); i++) {
+        enemies[i]->start();
     }
     
     gameState = running;
@@ -47,7 +52,9 @@ Maze Game::getMaze() {
 }
 
 void Game::onSignal(std::string name) {
-
+    if (name == "playerdied") {
+        reset();
+    }
 }
 
 void Game::handleLighting() {
