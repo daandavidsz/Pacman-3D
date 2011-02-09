@@ -12,6 +12,7 @@
 
 #include "../Direction.h"
 #include "../Tile.h"
+#include "../object/PacmanExplosion.h"
 
 #include "Actor.h"
 
@@ -26,7 +27,8 @@ class Player : public Actor {
     private:
         DIRECTION direction;
         DIRECTION wantedDirection;   
-        PLAYERSTATE state;     
+        PLAYERSTATE state; 
+        PacmanExplosion pacmanExplosion;    
         
         float dyingProgress;
         float totalTicks;

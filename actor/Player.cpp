@@ -32,7 +32,8 @@ PLAYERSTATE Player::getState() {
 void Player::setDying() {
     if (state != DYING) {
         state = DYING;
-        dyingProgress = 0;   
+        dyingProgress = 0;
+        pacmanExplosion.reset();   
     }
 }
 
@@ -129,6 +130,7 @@ void Player::render(float ticks) {
     std::map<int,bool> mouth;
     
     int threshHold = 0;
+    float alpha = 1.0;
     
     if (state == ALIVE) {
         threshHold = (int)(position * 90 + 45) % 90;
@@ -141,15 +143,19 @@ void Player::render(float ticks) {
     }
     else if (state == DYING) {
         threshHold = 180 - (int)(dyingProgress * 180);
-        if (threshHold < 0) {
-            threshHold = 0;
+        if (threshHold < -90) {
             direction = none;
             state = ALIVE;
-            emit("playerdied");
+            emit("playerdied");        
         }
-        else {
-            dyingProgress += ticks * 0.7;
+        if (threshHold < 0) {
+            threshHold = 0;
         }
+        if (threshHold < 90) {
+            pacmanExplosion.render(ticks);        
+            alpha = std::max(0.0, 1.0 - (dyingProgress-0.5)*3);
+        }
+        dyingProgress += ticks * 1;
     }
     
     for(i = 1; i <= lats; i++) {
@@ -214,7 +220,7 @@ void Player::render(float ticks) {
 
     }
     
-    glColor3f(1,1,0);
+    glColor4f(1,1,0, alpha);
     
     bool isMouth = false;
     
@@ -224,11 +230,11 @@ void Player::render(float ticks) {
         if (mouth.find(i) != mouth.end()) {
             switch (mouth.find(i)->second) {
                 case true:
-                    glColor3f(1, 0, 0);
+                    glColor4f(1, 0, 0, alpha);
                     isMouth = true;
                     break;
                 case false:
-                    glColor3f(1, 1, 0);
+                    glColor4f(1, 1, 0, alpha);
                     isMouth = false;
                     break;
             }

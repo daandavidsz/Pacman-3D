@@ -132,13 +132,12 @@ void Game::render(float ticks) {
     float multiplier = closestDistance > zoomInFrom ? 0.0 : 0.4 * (1.0-(1.0/zoomInFrom)*closestDistance);
     gluLookAt (playerPos.x, startY - (startY - endY)*multiplier, startZ - (startZ - endZ)*multiplier, playerPos.x, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
         
-    player.render(ticks);          
-            
     for (unsigned int i = 0; i < enemies.size(); i++) {
         enemies[i]->render(ticks);
     }
 
     maze.render(ticks, gameTime);
+    player.render(ticks);
     
     glLoadIdentity();
 }
