@@ -219,8 +219,8 @@ void Enemy::render() {
 
 void Enemy::renderBody() {
     double r = 0.6;
-    int lats = 12;
-    int longs = 16;
+    int lats = 24;
+    int longs = 24;
     float i, j;
     
     // Ghost rotation

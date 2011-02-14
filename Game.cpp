@@ -8,6 +8,17 @@ void Game::load() {
     
     player.setGame(this);
     player.addListener(this);
+    
+    reset();
+}
+
+void Game::reset() {
+    enemies.clear();
+
+    blinky = Blinky();
+    pinky = Pinky();
+    inky = Inky();
+    clyde = Clyde();
 
     blinky.setGame(this);
     blinky.setPlayer(&player); 
@@ -30,10 +41,6 @@ void Game::load() {
         this->addListener(enemies[i]);
     }
     
-    reset();
-}
-
-void Game::reset() {
     player.setCurrentTile(maze.getTile(1,1));
     blinky.setCurrentTile(maze.getTile(10,10));
     pinky.setCurrentTile(maze.getTile(13,13));
