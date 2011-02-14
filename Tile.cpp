@@ -84,7 +84,8 @@ void Tile::render() {
         point center = getCenter();    
         glPushMatrix();
         glTranslatef(center.x, center.y, -19.5);
-        bonus->render(lastTicks, gameTime);
+        bonus->update(lastTicks, gameTime);
+        bonus->render();
         glPopMatrix();
     }
 }

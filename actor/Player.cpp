@@ -103,8 +103,8 @@ void Player::render() {
     }
 
     double r = 0.7;
-    int lats = 12;
-    int longs = 12;
+    int lats = 24;
+    int longs = 24;
 
     float i, j;
 
