@@ -51,7 +51,8 @@ class Enemy : public Actor {
         ENEMYSTATE getState();
         void onSignal(std::string name);   
         void start();
-        void render(float ticks);
+        void update(float ticks);
+        void render();
         DIRECTION getDirection();
         point getPosition();
         void setCurrentTile(Tile * tile);

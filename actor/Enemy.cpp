@@ -111,7 +111,7 @@ void Enemy::setRealColor() {
     glColor3f(1, 1, 1);
 }
 
-void Enemy::render(float ticks) {
+void Enemy::update(float ticks) {
     if (game->getState() == stopped) {
         ticks = 0;
     }
@@ -168,7 +168,9 @@ void Enemy::render(float ticks) {
         }
         if (direction == none) direction = getOpposite(tDirection);
     }
+}
 
+void Enemy::render() {
     point center = currentTile->getCenter();
     
     switch (direction) {

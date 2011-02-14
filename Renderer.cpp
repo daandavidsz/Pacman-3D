@@ -103,7 +103,8 @@ class Renderer {
             lastClock = now;
             
             glLoadIdentity();
-            game.render(ticks);
+            game.update(ticks);
+            game.render();
 
             // Swap the buffers to display, since double buffering is used.
             glutSwapBuffers();

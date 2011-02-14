@@ -83,13 +83,15 @@ point Player::getPosition() {
     return currentPos;
 }
 
-void Player::render(float ticks) {
+void Player::update(float ticks) {
+    lastTicks = ticks;
     totalTicks += ticks;
-
     if (game->getState() != stopped) {
-        this->resolvePosition(ticks * 8.0);
-    }
-    
+        this->resolvePosition(lastTicks * 8.0);
+    }    
+}
+
+void Player::render() {
     point center = currentTile->getCenter();
     
     switch (direction) {
@@ -152,10 +154,10 @@ void Player::render(float ticks) {
             threshHold = 0;
         }
         if (threshHold < 90) {
-            pacmanExplosion.render(ticks);        
+            pacmanExplosion.render(lastTicks);        
             alpha = std::max(0.0, 1.0 - (dyingProgress-0.5)*3);
         }
-        dyingProgress += ticks * 1;
+        dyingProgress += lastTicks * 1;
     }
     
     for(i = 1; i <= lats; i++) {
@@ -215,9 +217,7 @@ void Player::render(float ticks) {
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));                
             }            
-
         }
-
     }
     
     glColor4f(1,1,0, alpha);

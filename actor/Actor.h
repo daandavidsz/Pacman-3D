@@ -24,5 +24,6 @@ class Actor : public EventHandler {
         
     public:
         void setGame(Game *game);
-        void render(float ticks);
+        void update(float ticks);
+        void render();
 };

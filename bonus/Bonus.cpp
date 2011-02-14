@@ -1,5 +1,9 @@
 #include "Bonus.h"
 
-void Bonus::render(float ticks, float gameTime) {
+void Bonus::update(float ticks, float gameTime) {
+    // Do nothing
+}
+
+void Bonus::render() {
     // Do nothing
 }

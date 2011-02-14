@@ -1,6 +1,11 @@
 #include "Cherry.h"
 
-void Cherry::render(float ticks, float gameTime) {
+void Cherry::update(float ticks, float gameTime) {
+    this->gameTime = gameTime;
+}
+
+
+void Cherry::render() {
     float height = 0.2 * sin(M_PI * (gameTime * 1.5));
     glTranslatef(0, 0, height);
 

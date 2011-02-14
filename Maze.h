@@ -25,6 +25,10 @@ class Maze : public EventHandler {
     private:
         int width;
         int height;
+        
+        float lastTicks;
+        float gameTime;
+        
         float * pixels[28][31];
         float pixelColors[28][31];
         Tile tiles[28][31];
@@ -76,7 +80,8 @@ class Maze : public EventHandler {
         int getWidth();
         int getHeight();
         float * getPixel(int x, int y);
-        void render(float ticks, float gameTime);
+        void update(float ticks, float gameTime);
+        void render();
         
         Tile * getTile(int x, int y);
         

@@ -21,6 +21,8 @@ class Tile : public EventHandler {
     int color;
     int steps;
     float smell;
+    float gameTime;
+    float lastTicks;
     
     bool energizer;
     bool visited;
@@ -36,7 +38,8 @@ class Tile : public EventHandler {
         void setColor(int color);
         void setVisited();
         void setEnergizer();
-        void render(float ticks, float gameTime);        
+        void update(float ticks, float gameTime);
+        void render();
         void setPosition(pos position);
         pos getPosition();
 };

@@ -528,8 +528,13 @@ float * Maze::getPixel(int x, int y) {
 Tile * Maze::getTile(int x, int y) {
     return &tiles[x][y];
 }
+     
+void Maze::update(float ticks, float gameTime) {
+    lastTicks = ticks;
+    this->gameTime = gameTime;
+}
         
-void Maze::render(float ticks, float gameTime) {
+void Maze::render() {
     //glTranslatef(0,0,-0.5);
     glCallList(mazeDisplayList);
     //glTranslatef(0,0,0.5);
@@ -537,7 +542,8 @@ void Maze::render(float ticks, float gameTime) {
 
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
-            tiles[x][y].render(ticks, gameTime);
+            tiles[x][y].update(lastTicks, this->gameTime);
+            tiles[x][y].render();
         }   
     }
 }

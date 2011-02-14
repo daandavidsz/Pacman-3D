@@ -54,7 +54,12 @@ void Tile::setEnergizer() {
     energizer = true;
 }
 
-void Tile::render(float ticks, float gameTime) {
+void Tile::update(float ticks, float gameTime) {
+    lastTicks = ticks;
+    this->gameTime = gameTime;
+}
+
+void Tile::render() {
     float pointX = center.x - 0.5;
     float pointY = center.y - 0.5;
     
@@ -79,7 +84,7 @@ void Tile::render(float ticks, float gameTime) {
         point center = getCenter();    
         glPushMatrix();
         glTranslatef(center.x, center.y, -19.5);
-        bonus->render(ticks, gameTime);
+        bonus->render(lastTicks, gameTime);
         glPopMatrix();
     }
 }

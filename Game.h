@@ -40,7 +40,8 @@ class Game : public EventHandler {
         void load();
         void reset();
         Maze getMaze();
-        void render(float ticks);
+        void update(float ticks);
+        void render();
         void handleKeystroke(unsigned char key);
         void handleSpecialKeystoke(int key);
         bool isPaused();

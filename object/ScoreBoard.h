@@ -18,6 +18,7 @@ class ScoreBoard : public EventHandler {
 
     private:
         unsigned int score;
+        float lastTicks;
         std::vector< std::bitset<15> > digits;
         std::stack<int> numberStack;
         float glow[10][15];
@@ -25,7 +26,8 @@ class ScoreBoard : public EventHandler {
     public:
     
         virtual void onSignal(std::string name);    
-        void render(float ticks);
+        void update(float ticks);
+        void render();
         ScoreBoard();
 
 };

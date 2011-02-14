@@ -36,6 +36,8 @@ class Player : public Actor {
         Tile * currentTile;
         float position;
         
+        float lastTicks;
+        
         void resolvePosition(float movement);
         
     public:
@@ -47,7 +49,8 @@ class Player : public Actor {
         DIRECTION getWantedDirection();
         void setWantedDirection(DIRECTION direction);
         void updateDirection();
-        void render(float ticks);
+        void update(float ticks);
+        void render();
         
         point getPosition();
         void incrPosition(float number);        

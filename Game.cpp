@@ -82,16 +82,27 @@ void Game::handleLighting() {
     glEnable ( GL_COLOR_MATERIAL ) ;  
 }
 
-void Game::render(float ticks) {
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
+void Game::update(float ticks) {
     gameTime += ticks;
     counter++;
+    scoreBoard.update(ticks);
+    
+    for (unsigned int i = 0; i < enemies.size(); i++) {
+        enemies[i]->update(ticks);    
+    }
 
-    scoreBoard.render(ticks);
+    maze.update(ticks, gameTime);
+    player.update(ticks);
+}
+
+void Game::render() {
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
     point playerPos = player.getPosition();
     float lookAt = 1 + gameTime * 2.5;
     if (lookAt > 25) lookAt = 25;
+    
+    scoreBoard.render();
     
     //gluLookAt (playerPos.x, playerPos.y, -18.0 + lookAt, playerPos.x/2, playerPos.y/2, playerPos.z, 0.0, 1.0, 0.0);
     //gluLookAt (0, -20, 18, 0, -2, playerPos.z, 0.0, 1.0, 0.0);
@@ -133,11 +144,11 @@ void Game::render(float ticks) {
     gluLookAt (playerPos.x, startY - (startY - endY)*multiplier, startZ - (startZ - endZ)*multiplier, playerPos.x, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
         
     for (unsigned int i = 0; i < enemies.size(); i++) {
-        enemies[i]->render(ticks);
+        enemies[i]->render();
     }
 
-    maze.render(ticks, gameTime);
-    player.render(ticks);
+    maze.render();
+    player.render();
     
     glLoadIdentity();
 }

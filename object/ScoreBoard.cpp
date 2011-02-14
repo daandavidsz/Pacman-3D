@@ -26,7 +26,11 @@ void ScoreBoard::onSignal(std::string name) {
             score += 10;
 }
 
-void ScoreBoard::render(float ticks) {
+void ScoreBoard::update(float ticks) {
+    lastTicks = ticks;
+}
+
+void ScoreBoard::render() {
     glPushMatrix();
     glTranslatef(-2.3, 1.3, -5);
     
@@ -44,7 +48,7 @@ void ScoreBoard::render(float ticks) {
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 3; x++) {
                 float wantedGlow = 1*digit[counter];
-                float newGlow = (1.0 - 10*ticks) * glow[d][counter] + 10*ticks * wantedGlow;
+                float newGlow = (1.0 - 10*lastTicks) * glow[d][counter] + 10*lastTicks * wantedGlow;
                 if (wantedGlow > 0.1) {
                     glow[d][counter] = newGlow;
                     glColor4f(1-newGlow, 1, 1-newGlow, 1);        

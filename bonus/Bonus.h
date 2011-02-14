@@ -6,5 +6,6 @@
 class Bonus : public EventHandler {
 
     public:
-        virtual void render(float ticks, float gameTime);
+        virtual void update(float ticks, float gameTime);    
+        virtual void render();
 };

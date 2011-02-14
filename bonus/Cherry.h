@@ -6,7 +6,10 @@
 
 class Cherry : public Bonus {
 
+    float gameTime;
+
     public:
-        void render(float ticks, float gameTime);
+        void update(float ticks, float gameTime);
+        void render();
         
 };
