@@ -2,6 +2,7 @@
 
 Tile::Tile() {
     if (rand() % 50 == 7) {
+        delete bonus;
         bonus = new Cherry();
     }
 }
