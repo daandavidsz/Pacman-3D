@@ -144,19 +144,14 @@ void Player::render() {
         }
     }
     else if (state == DYING) {
+        alpha = 0.0;
         threshHold = 180 - (int)(dyingProgress * 180);
         if (threshHold < -90) {
             direction = none;
             state = ALIVE;
             emit("playerdied");        
         }
-        if (threshHold < 0) {
-            threshHold = 0;
-        }
-        if (threshHold < 90) {
-            pacmanExplosion.render(lastTicks);        
-            alpha = std::max(0.0, 1.0 - (dyingProgress-0.5)*3);
-        }
+        pacmanExplosion.render(lastTicks);        
         dyingProgress += lastTicks * 1;
     }
     

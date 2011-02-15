@@ -8,8 +8,9 @@
 #include <math.h>
 #include <stdio.h> 
 #include <algorithm>
-
 #include <vector>
+
+#include "../Direction.h"
 
 class PacmanExplosionParticle {
 
@@ -25,6 +26,7 @@ class PacmanExplosion {
     private:
         float totalTicks;
         std::vector<PacmanExplosionParticle> particles;
+        point normalizeVector(point vector);
     
     public:
         PacmanExplosion();
