@@ -146,7 +146,7 @@ void Player::render() {
     else if (state == DYING) {
         alpha = 0.0;
         threshHold = 180 - (int)(dyingProgress * 180);
-        if (threshHold < -90) {
+        if (threshHold < -320) {
             direction = none;
             state = ALIVE;
             emit("playerdied");        

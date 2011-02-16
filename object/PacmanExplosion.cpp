@@ -38,8 +38,9 @@ void PacmanExplosion::render(float ticks) {
     if (alpha < 0.0) {
         alpha = 0.0;
     }
+    alpha = 1.0;
     
-    glDepthMask (GL_FALSE);
+    //glDepthMask (GL_FALSE);
     glPushMatrix();
     
     std::vector<point> points; 
@@ -66,38 +67,62 @@ void PacmanExplosion::render(float ticks) {
         }
     }
     
-    srand(1);
-
-    glColor4f(1, 1, 0, alpha);    
-    glBegin(GL_QUADS);
     for (int i = 0; i < points.size() - 2; i += 2) {
-        float xOffset = 40 * totalTicks * (-0.5 + (rand() % 100) / 100.0);
-        float zOffset = 40 * totalTicks * (-0.5 + (rand() % 100) / 100.0);
-        float yOffset = 40 * totalTicks * (-0.5 + (rand() % 100) / 100.0);
+        bool vertical = (((i % 25) / 6) % 2) == 0;
+        bool horizontal = ((int)(i / 50) % 8) < 4;
+    
+        if (horizontal != vertical) {
+            glColor4f(1, 1, 0, alpha);    
+        }
+        else {
+            glColor4f(0, 1, 0, alpha);    
+        }
+
+        srand(2*(horizontal != vertical));        
+        float xOffset = 1 * totalTicks * (-0.5 + (rand() % 100) / 100.0);
+        float zOffset = 1 * totalTicks * (-0.5 + (rand() % 100) / 100.0);
+        float yOffset = 1 * totalTicks * (-0.5 + (rand() % 100) / 100.0);
+        
+        std::vector<point> polyPoints;
+        
+        glBegin(GL_POLYGON);
         for (int j = 0; j < 4; j++) {
-            point p = points[i];
+            point p = points[i + j];
             switch (j) {
-                case 0:
-                    p = points[i+0]; break;
-                case 1:
-                    p = points[i+1]; break;
                 case 2:
                     p = points[i+3]; break;
                 case 3:
                     p = points[i+2]; break;                                                            
             }
+            polyPoints.push_back(p);
             point n = normalizeVector(p);
             glNormal3f(n.x, n.y, n.z);
             glVertex3f(p.x + xOffset, p.y + yOffset, p.z + zOffset);        
         }
+        glEnd();        
+                
+        for (int j = 0; j < 4; j++) {
+            std::vector<point> polyVector;
+            polyVector.push_back(polyPoints[(j + 1) % 4]);
+            polyVector.push_back(polyPoints[j]);
+            polyVector.push_back(point(0, 0, 0));
+            glBegin(GL_POLYGON);            
+            for (int m = 0; m < polyVector.size(); m++) {
+                point p = polyVector[m];
+                point n = normalizeVector(p);
+                glNormal3f(n.x, n.y, n.z);
+                glVertex3f(p.x + xOffset, p.y + yOffset, p.z + zOffset);
+            }
+            glEnd();                    
+        }
     }
-    glEnd();
     
     glPopMatrix();
-    glDepthMask (GL_TRUE);
+    //glDepthMask (GL_TRUE);
     totalTicks += ticks;
 }
 
 bool PacmanExplosion::completed() {
     return false;
 }
+
