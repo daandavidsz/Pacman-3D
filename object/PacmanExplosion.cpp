@@ -70,18 +70,25 @@ void PacmanExplosion::render(float ticks) {
     for (int i = 0; i < points.size() - 2; i += 2) {
         bool vertical = (((i % 25) / 6) % 2) == 0;
         bool horizontal = ((int)(i / 50) % 8) < 4;
+        int iVertical = ((i % 25) / 6);
+        int iHorizontal = (int)(i / 50) / 4;
+        
+        int part = 30 * iVertical + iHorizontal;
     
-        if (horizontal != vertical) {
-            glColor4f(1, 1, 0, alpha);    
+        srand(part);        
+        glColor4f(rand() % 256 / 256.0, rand() % 256 / 256.0, rand() % 256 / 256.0, alpha);   
+
+        if (part % 2 == 0) {
+            glColor4f(1, 1, 0, alpha);   
         }
         else {
-            glColor4f(0, 1, 0, alpha);    
+            glColor4f(0, 1, 0, alpha);   
         }
-
-        srand(2*(horizontal != vertical));        
-        float xOffset = 1 * totalTicks * (-0.5 + (rand() % 100) / 100.0);
-        float zOffset = 1 * totalTicks * (-0.5 + (rand() % 100) / 100.0);
-        float yOffset = 1 * totalTicks * (-0.5 + (rand() % 100) / 100.0);
+    
+        //srand(2*(horizontal != vertical));        
+        float xOffset = 1 * totalTicks * (-1.0 + (rand() % 100) / 50.0);
+        float zOffset = 1 * totalTicks * (-1.0 + (rand() % 100) / 50.0);
+        float yOffset = 1 * totalTicks * (-1.0 + (rand() % 100) / 50.0);
         
         std::vector<point> polyPoints;
         
