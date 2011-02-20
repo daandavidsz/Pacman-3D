@@ -57,7 +57,7 @@ void PacmanExplosion::render(float ticks) {
         double z1 = sin(lat1);
         double zr1 = cos(lat1);
 
-        for(float j = 0; j <= 360; j += 360 / longs) {
+        for(float j = 0; j < 360; j += 360 / longs) {
             double lng = 2 * M_PI * (double) (j - 1) / 360;
             double x = cos(lng);
             double y = sin(lng);
@@ -70,25 +70,35 @@ void PacmanExplosion::render(float ticks) {
     for (int i = 0; i < points.size() - 2; i += 2) {
         bool vertical = (((i % 25) / 6) % 2) == 0;
         bool horizontal = ((int)(i / 50) % 8) < 4;
-        int iVertical = ((i % 25) / 6);
-        int iHorizontal = (int)(i / 50) / 4;
         
-        int part = 30 * iVertical + iHorizontal;
+        int iVertical = ((i % 25) / 6);
+        int iHorizontal = ((int)(i / 50) / 4);
+        
+        int part = 100 * iVertical + (1+iHorizontal);
+        
+        part = ((i % 48) / 6) + 100*(i / (48*4));
+        
+        //std::cout << part << "\n";
     
-        srand(part);        
+        srand(part + 100);        
         glColor4f(rand() % 256 / 256.0, rand() % 256 / 256.0, rand() % 256 / 256.0, alpha);   
 
-        if (part % 2 == 0) {
-            glColor4f(1, 1, 0, alpha);   
-        }
-        else {
-            glColor4f(0, 1, 0, alpha);   
-        }
+        glColor4f(1, 1, 0, alpha);   
     
-        //srand(2*(horizontal != vertical));        
-        float xOffset = 1 * totalTicks * (-1.0 + (rand() % 100) / 50.0);
-        float zOffset = 1 * totalTicks * (-1.0 + (rand() % 100) / 50.0);
-        float yOffset = 1 * totalTicks * (-1.0 + (rand() % 100) / 50.0);
+        //srand(2*(horizontal != vertical));     
+        
+        float angle = (rand() % 100) / 100.0;
+        float speed = totalTicks / 100.0 * (rand() % 100);
+           
+        float xOffset = sin(M_PI * angle) * speed;
+        if (rand() % 2 == 1) xOffset = 0 - xOffset;
+        float zOffset = cos(M_PI * angle) * speed;
+        if (rand() % 2 == 1) zOffset = 0 - zOffset;        
+        //float yOffset = 1 * totalTicks * ((rand() % 100) / 100.0);
+        
+        float yOffset = sin(M_PI * totalTicks) * (2 - totalTicks);
+        
+        if (yOffset < 0) yOffset = 0 - yOffset;
         
         std::vector<point> polyPoints;
         
@@ -124,6 +134,7 @@ void PacmanExplosion::render(float ticks) {
         }
     }
     
+    //exit(0);
     glPopMatrix();
     //glDepthMask (GL_TRUE);
     totalTicks += ticks;
