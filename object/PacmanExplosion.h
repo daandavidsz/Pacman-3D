@@ -9,24 +9,20 @@
 #include <stdio.h> 
 #include <algorithm>
 #include <vector>
+#include <map>
 
 #include "../Direction.h"
+#include "Vector.h"
+#include "Particle.h"
 
-class PacmanExplosionParticle {
-
-    public:
-        float totalTicks, xShift, yShift, zShift;
-        PacmanExplosionParticle();
-        void render(float totalTicks);
-
-};
+struct Particle;
 
 class PacmanExplosion {
 
     private:
         float totalTicks;
-        std::vector<PacmanExplosionParticle> particles;
-        point normalizeVector(point vector);
+        std::map<int, Particle> particles;
+        Vector normalizeVector(Vector vector);
     
     public:
         PacmanExplosion();

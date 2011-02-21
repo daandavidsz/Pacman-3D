@@ -36,7 +36,7 @@ Bonus.o: bonus/Bonus.cpp bonus/Bonus.h
 Cherry.o: bonus/Cherry.cpp bonus/Cherry.h
 		$(CXX) $(CXXFLAGS) -c bonus/Cherry.cpp
 
-PacmanExplosion.o: object/PacmanExplosion.cpp object/PacmanExplosion.h
+PacmanExplosion.o: object/PacmanExplosion.cpp object/PacmanExplosion.h object/Particle.h object/Particle.cpp object/Vector.h
 		$(CXX) $(CXXFLAGS) -c object/PacmanExplosion.cpp
 		
 ScoreBoard.o: object/ScoreBoard.cpp object/ScoreBoard.h
