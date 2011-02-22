@@ -4,17 +4,25 @@
 
 class Particle {
 
-    std::vector<Vector> points;
-    std::vector<Vector> normals;    
+    std::vector<Vector> qPoints;
+    std::vector<Vector> qNormals;
+    
+    std::vector<Vector> tPoints;
+    std::vector<Vector> tNormals;    
+            
     Vector position;   
     Vector movementVector;       
     float totalTicks; 
     
     public:
         Particle();
-        void addPoint(Vector point, Vector normal);
+        void addQuadPoint(Vector point, Vector normal);
+        void addTrianglePoint(Vector point, Vector normal);        
         void setPosition(Vector position);
         void update(float ticks);
         void render();
+        
+        Vector getPosition();
+        Vector getMovementVector();
     
 };

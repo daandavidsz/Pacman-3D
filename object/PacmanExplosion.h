@@ -14,14 +14,14 @@
 #include "../Direction.h"
 #include "Vector.h"
 #include "Particle.h"
-
-struct Particle;
+#include "BloodParticle.h"
 
 class PacmanExplosion {
 
     private:
         float totalTicks;
         std::map<int, Particle> particles;
+        std::vector<BloodParticle> bloodParticles;
         Vector normalizeVector(Vector vector);
     
     public:

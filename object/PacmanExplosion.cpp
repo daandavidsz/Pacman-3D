@@ -1,5 +1,6 @@
 #include "PacmanExplosion.h"
 #include "Particle.cpp"
+#include "BloodParticle.cpp"
 
 PacmanExplosion::PacmanExplosion() {
     reset();
@@ -9,6 +10,7 @@ void PacmanExplosion::reset() {
     totalTicks = 0;
     std::vector<Vector> points; 
     particles.clear();
+    bloodParticles.clear();
     
     double r = 0.7;
     int lats = 24;
@@ -40,7 +42,6 @@ void PacmanExplosion::reset() {
             particles[part] = Particle();
             particles[part].setPosition(points[i]);
         }
-        //particles[part].addPoint(points[i], points[i]);
         
         std::vector<Vector> polyPoints;
         
@@ -54,7 +55,7 @@ void PacmanExplosion::reset() {
             }
             polyPoints.push_back(p);
             Vector n = normalizeVector(p);
-            particles[part].addPoint(p, n);
+            particles[part].addQuadPoint(p, n);
         }
                 
         for (int j = 0; j < 4; j++) {
@@ -65,7 +66,7 @@ void PacmanExplosion::reset() {
             for (int m = 0; m < polyVector.size(); m++) {
                 Vector p = polyVector[m];
                 Vector n = normalizeVector(p);
-                particles[part].addPoint(p, n);                
+                particles[part].addTrianglePoint(p, n);                
             }
         }
     }
@@ -90,8 +91,23 @@ void PacmanExplosion::render(float ticks) {
     //glDepthMask (GL_FALSE);
     glPushMatrix();
     
+    for (int i = 0; i < bloodParticles.size(); i++) {
+        bloodParticles[i].update(ticks);
+        bloodParticles[i].render();
+    }
+    
     for (int i = 0; i < particles.size(); i++) {
         particles[i].update(ticks);
+        if (bloodParticles.size() < 300 && rand() % 500 == 1) {
+            BloodParticle blood;
+            blood.setPosition(particles[i].getPosition());
+            Vector movementVector = particles[i].getMovementVector();
+            movementVector.x *= 0.5;
+            movementVector.y *= 0.5;
+            movementVector.z *= 0.5;                        
+            blood.setMovementVector(movementVector);   
+            bloodParticles.push_back(blood);         
+        }
         particles[i].render();
     }
     
