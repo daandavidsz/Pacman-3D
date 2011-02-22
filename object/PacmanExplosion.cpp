@@ -40,7 +40,7 @@ void PacmanExplosion::reset() {
             particles[part] = Particle();
             particles[part].setPosition(points[i]);
         }
-        particles[part].addPoint(points[i]);
+        //particles[part].addPoint(points[i], points[i]);
         
         std::vector<Vector> polyPoints;
         
@@ -53,7 +53,8 @@ void PacmanExplosion::reset() {
                     p = points[i+2]; break;                                                            
             }
             polyPoints.push_back(p);
-            particles[part].addPoint(p);
+            Vector n = normalizeVector(p);
+            particles[part].addPoint(p, n);
         }
                 
         for (int j = 0; j < 4; j++) {
@@ -63,7 +64,8 @@ void PacmanExplosion::reset() {
             polyVector.push_back(Vector(0, 0, 0));
             for (int m = 0; m < polyVector.size(); m++) {
                 Vector p = polyVector[m];
-                particles[part].addPoint(p);                
+                Vector n = normalizeVector(p);
+                particles[part].addPoint(p, n);                
             }
         }
     }

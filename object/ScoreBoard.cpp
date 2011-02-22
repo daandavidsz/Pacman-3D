@@ -20,10 +20,12 @@ ScoreBoard::ScoreBoard() {
 }
 
 void ScoreBoard::onSignal(std::string name) {
-    if (name == "energizer")
-            score += 50;
-    else if(name ==  "pellet")
-            score += 10;
+    if (name == "energizer") {
+        score += 50;
+    }
+    else if (name ==  "pellet") {
+        score += 10;
+    }
 }
 
 void ScoreBoard::update(float ticks) {
