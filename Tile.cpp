@@ -42,10 +42,10 @@ void Tile::setColor(int c) {
 void Tile::setVisited() {
     if (!visited) {
         if (energizer) {
-            emit("energizer");       
+            EventSystem::getInstance()->emit("energizer");       
         }
         else {
-            emit("pellet");
+            EventSystem::getInstance()->emit("pellet");
         }
         visited = true;
     }

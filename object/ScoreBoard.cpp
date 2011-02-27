@@ -1,8 +1,10 @@
 #include "ScoreBoard.h"
 
 ScoreBoard::ScoreBoard() {
-    ghostPoints = 1000;
-        
+    EventSystem::getInstance()->addObserver(this, "pellet");
+    EventSystem::getInstance()->addObserver(this, "energizer");
+    EventSystem::getInstance()->addObserver(this, "ghost_eaten");    
+
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 15; j++) {
             glow[i][j] = 0.0;
@@ -19,6 +21,13 @@ ScoreBoard::ScoreBoard() {
     digits.push_back(std::bitset<15>(std::string("111001001010010"))); // 7
     digits.push_back(std::bitset<15>(std::string("111101111101111"))); // 8
     digits.push_back(std::bitset<15>(std::string("111101111001111"))); // 9
+    
+    reset();
+}
+
+void ScoreBoard::reset() {
+    ghostPoints = 1000;
+    score = 0;
 }
 
 void ScoreBoard::onSignal(std::string name) {

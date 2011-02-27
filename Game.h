@@ -14,6 +14,7 @@
 #include "Direction.h"
 #include "Maze.h"
 #include "EventObserver.h"
+#include "EventSystem.h"
 
 class Game : public EventObserver {
 

@@ -1,3 +1,4 @@
 *~
 *.o
 Pacman
+.sconsign.dblite

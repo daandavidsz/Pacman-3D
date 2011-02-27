@@ -408,7 +408,6 @@ void Maze::createMaze() {
             position.x = x;
             position.y = y;
             tiles[x][y].setPosition(position);
-            tiles[x][y].addListener(this);
             
             float colorSum = color[0] + color[1] + color[2];
             

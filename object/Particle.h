@@ -1,5 +1,12 @@
 #pragma once
 
+#include <GL/glut.h> // Header File For The GLUT Library 
+#include <GL/gl.h>	 // Header File For The OpenGL32 Library
+#include <GL/glu.h>	 // Header File For The GLu32 Library
+
+#include <vector>
+#include <math.h>
+
 #include "Vector.h"
 
 class Particle {

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <ctime>
+#include <sys/time.h>
+
 class Timer {
     private:
         long startsec;

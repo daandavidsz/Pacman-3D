@@ -1,11 +1,8 @@
 #include "EventSystem.h"
 
-EventSystem * EventSystem::instance = NULL;
+EventSystem * EventSystem::instance = new EventSystem();
 
 EventSystem * EventSystem::getInstance() {
-    if (!instance) {
-        instance = new EventSystem();
-    }
     return instance;
 }
 
@@ -15,9 +12,11 @@ void EventSystem::emit(std::string signal) {
             observers[signal][i]->onSignal(signal);
         }
     }   
+    else {
+        std::cout << "Lost signal -> " << signal << "\n";    
+    }
 }
 
 void EventSystem::addObserver(EventObserver * eventObserver, std::string signal) {
-    std::vector<EventObserver*> list = observers[signal]; 
-    list.push_back(eventObserver);
+    observers[signal].push_back(eventObserver);
 }

@@ -3,13 +3,11 @@
 void Game::load() {
     srand ( time(NULL) );
     maze.load();
-    maze.addListener(this);
-    maze.addListener(&scoreBoard);
-    
     player.setGame(this);
-    player.addListener(this);
     
     reset();
+    EventSystem::getInstance()->addObserver(this, "playerdied");
+    scoreBoard.reset();
 }
 
 void Game::reset() {
@@ -37,9 +35,6 @@ void Game::reset() {
     enemies.push_back(&pinky);
     enemies.push_back(&inky);
     enemies.push_back(&clyde);
-    for (unsigned int i = 0; i < enemies.size(); i++) {
-        this->addListener(enemies[i]);
-    }
     
     player.setCurrentTile(maze.getTile(1,1));
     blinky.setCurrentTile(maze.getTile(10,10));

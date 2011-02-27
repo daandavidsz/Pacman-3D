@@ -10,6 +10,7 @@
 
 #include "bonus/Cherry.h"
 #include "Direction.h"
+#include "EventSystem.h"
 
 class Tile {
 

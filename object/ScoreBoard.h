@@ -13,6 +13,7 @@
 #include <stack>
 
 #include "../EventObserver.h"
+#include "../EventSystem.h"
 
 class ScoreBoard : public EventObserver {
 
@@ -26,6 +27,7 @@ class ScoreBoard : public EventObserver {
 
     public:
     
+        void reset();
         virtual void onSignal(std::string name);    
         void update(float ticks);
         void render();

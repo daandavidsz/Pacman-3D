@@ -22,6 +22,7 @@ point Enemy::getPosition() {
 }
 
 void Enemy::start() {
+    EventSystem::getInstance()->addObserver(this, "energizer");
     resolvePosition(0.0);
 }
 
@@ -148,6 +149,7 @@ void Enemy::update(float ticks) {
     if (state == SCARED) {
         float distance = this->distance(currentTile->getPosition(), player->getCurrentTile()->getPosition());
         if (distance < 1) {
+            EventSystem::getInstance()->emit("ghost_eaten");    
             state = EATEN;
         }
     }
