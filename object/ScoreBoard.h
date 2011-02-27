@@ -12,12 +12,13 @@
 #include <bitset>
 #include <stack>
 
-#include "../EventHandler.h"
+#include "../EventObserver.h"
 
-class ScoreBoard : public EventHandler {
+class ScoreBoard : public EventObserver {
 
     private:
         unsigned int score;
+        int ghostPoints;
         float lastTicks;
         std::vector< std::bitset<15> > digits;
         std::stack<int> numberStack;

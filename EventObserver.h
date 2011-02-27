@@ -5,13 +5,9 @@
 #include <iostream>
 #include <vector>
 
-class EventHandler {
-    
-    std::vector<EventHandler*> listeners;
+class EventObserver {
     
     public:
         virtual void onSignal(std::string name); 
-        void emit(std::string signal);
-        void addListener(EventHandler * eventHandler);
 
 };

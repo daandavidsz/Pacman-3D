@@ -1,9 +1,9 @@
 #pragma once
 
 #include "../Direction.h"
-#include "../EventHandler.h"
+#include "../EventObserver.h"
 
-class Bonus : public EventHandler {
+class Bonus : public EventObserver {
 
     public:
         virtual void update(float ticks, float gameTime);    

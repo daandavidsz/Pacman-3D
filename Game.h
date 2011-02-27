@@ -13,9 +13,9 @@
 #include "object/ScoreBoard.h"
 #include "Direction.h"
 #include "Maze.h"
-#include "EventHandler.h"
+#include "EventObserver.h"
 
-class Game : public EventHandler {
+class Game : public EventObserver {
 
     Maze maze;
     ScoreBoard scoreBoard;    

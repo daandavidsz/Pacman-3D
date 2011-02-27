@@ -3,8 +3,14 @@ CXXFLAGS=-Wall -Wno-unused-parameter -Wno-switch -lglut -lGLU -lGL `Magick++-con
 
 all: Pacman
 
-Pacman: Pacman.o EventHandler.o Actor.o Enemy.o Player.o Blinky.o Inky.o Pinky.o Clyde.o Bonus.o Cherry.o Maze.o Game.o Tile.o ScoreBoard.o PacmanExplosion.o
-		$(CXX) $(CXXFLAGS) Pacman.o EventHandler.o Actor.o Enemy.o Player.o Blinky.o Inky.o Pinky.o Clyde.o Bonus.o Cherry.o Maze.o Game.o Tile.o ScoreBoard.o PacmanExplosion.o -o Pacman
+Pacman: Pacman.o EventObserver.o EventSystem.o Actor.o Enemy.o Player.o Blinky.o Inky.o Pinky.o Clyde.o Bonus.o Cherry.o Maze.o Game.o Tile.o ScoreBoard.o PacmanExplosion.o
+		$(CXX) $(CXXFLAGS) Pacman.o EventObserver.o EventSystem.o Actor.o Enemy.o Player.o Blinky.o Inky.o Pinky.o Clyde.o Bonus.o Cherry.o Maze.o Game.o Tile.o ScoreBoard.o PacmanExplosion.o -o Pacman
+		
+EventObserver.o: EventObserver.cpp EventObserver.h
+		$(CXX) $(CXXFLAGS) -c EventObserver.cpp
+				
+EventSystem.o: EventSystem.cpp EventSystem.h
+		$(CXX) $(CXXFLAGS) -c EventSystem.cpp
 
 Pacman.o: Pacman.cpp Renderer.cpp
 		$(CXX) $(CXXFLAGS) -c Pacman.cpp
@@ -41,9 +47,6 @@ PacmanExplosion.o: object/PacmanExplosion.cpp object/PacmanExplosion.h object/Pa
 		
 ScoreBoard.o: object/ScoreBoard.cpp object/ScoreBoard.h
 		$(CXX) $(CXXFLAGS) -c object/ScoreBoard.cpp
-		
-EventHandler.o: EventHandler.cpp EventHandler.h
-		$(CXX) $(CXXFLAGS) -c EventHandler.cpp
 
 Game.o: Game.cpp Game.h
 		$(CXX) $(CXXFLAGS) -c Game.cpp

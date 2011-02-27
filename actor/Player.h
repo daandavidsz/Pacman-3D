@@ -10,6 +10,7 @@
 #include <math.h> 
 #include <map>
 
+#include "../EventSystem.h"
 #include "../Direction.h"
 #include "../Tile.h"
 #include "../object/PacmanExplosion.h"

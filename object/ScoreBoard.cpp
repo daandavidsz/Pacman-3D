@@ -1,6 +1,8 @@
 #include "ScoreBoard.h"
 
 ScoreBoard::ScoreBoard() {
+    ghostPoints = 1000;
+        
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 15; j++) {
             glow[i][j] = 0.0;
@@ -21,10 +23,15 @@ ScoreBoard::ScoreBoard() {
 
 void ScoreBoard::onSignal(std::string name) {
     if (name == "energizer") {
+        ghostPoints = 1000;
         score += 50;
     }
-    else if (name ==  "pellet") {
+    else if (name == "pellet") {
         score += 10;
+    }
+    else if (name == "ghost_eaten") {
+        score += ghostPoints;
+        ghostPoints += 1000;
     }
 }
 

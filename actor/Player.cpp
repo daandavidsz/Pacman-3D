@@ -149,7 +149,7 @@ void Player::render() {
         if (threshHold < -320) {
             direction = none;
             state = ALIVE;
-            emit("playerdied");        
+            EventSystem::getInstance()->emit("playerdied");        
         }
         pacmanExplosion.render(lastTicks);        
         dyingProgress += lastTicks * 1;

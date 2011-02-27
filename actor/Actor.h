@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../Direction.h"
-#include "../EventHandler.h"
+#include "../EventObserver.h"
 
 class Game;
 
-class Actor : public EventHandler {
+class Actor : public EventObserver {
 
     protected:
         Game * game;

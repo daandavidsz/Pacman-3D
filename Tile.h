@@ -10,9 +10,8 @@
 
 #include "bonus/Cherry.h"
 #include "Direction.h"
-#include "EventHandler.h"
 
-class Tile : public EventHandler {
+class Tile {
 
     Tile * exits[10];
     Bonus * bonus;
