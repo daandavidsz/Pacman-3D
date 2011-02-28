@@ -14,6 +14,7 @@
 #include "../Direction.h"
 #include "../Tile.h"
 #include "../object/PacmanExplosion.h"
+#include "../view/PlayerView.h"
 
 #include "Actor.h"
 
@@ -40,6 +41,8 @@ class Player : public Actor {
         float lastTicks;
         
         void resolvePosition(float movement);
+        
+        PlayerView playerView;
         
     public:
         PLAYERSTATE getState();

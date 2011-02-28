@@ -3,9 +3,12 @@ CXXFLAGS=-Wall -Wno-unused-parameter -Wno-switch -lglut -lGLU -lGL `Magick++-con
 
 all: Pacman
 
-Pacman: Pacman.o EventObserver.o EventSystem.o Actor.o Enemy.o Player.o Blinky.o Inky.o Pinky.o Clyde.o Bonus.o Cherry.o Maze.o Game.o Tile.o ScoreBoard.o PacmanExplosion.o
-		$(CXX) $(CXXFLAGS) Pacman.o EventObserver.o EventSystem.o Actor.o Enemy.o Player.o Blinky.o Inky.o Pinky.o Clyde.o Bonus.o Cherry.o Maze.o Game.o Tile.o ScoreBoard.o PacmanExplosion.o -o Pacman
-		
+Pacman: Pacman.o PlayerView.o EventObserver.o EventSystem.o Actor.o Enemy.o Player.o Blinky.o Inky.o Pinky.o Clyde.o Bonus.o Cherry.o Maze.o Game.o Tile.o ScoreBoard.o PacmanExplosion.o
+		$(CXX) $(CXXFLAGS) Pacman.o PlayerView.o EventObserver.o EventSystem.o Actor.o Enemy.o Player.o Blinky.o Inky.o Pinky.o Clyde.o Bonus.o Cherry.o Maze.o Game.o Tile.o ScoreBoard.o PacmanExplosion.o -o Pacman
+
+PlayerView.o: view/PlayerView.cpp view/PlayerView.h
+		$(CXX) $(CXXFLAGS) -c view/PlayerView.cpp
+				
 EventObserver.o: EventObserver.cpp EventObserver.h
 		$(CXX) $(CXXFLAGS) -c EventObserver.cpp
 				
