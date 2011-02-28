@@ -1,6 +1,24 @@
 #include "PlayerView.h"
 
-void PlayerView::render(float direction, float opening) {
+point PlayerView::normalizeVector(point vector) {
+    point normalizedVector;
+    float len = (float)(sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z));
+    normalizedVector.x = vector.x / len;
+    normalizedVector.y = vector.y / len;
+    normalizedVector.z = vector.z / len;
+    return normalizedVector;
+}
+
+void PlayerView::render(float direction, float opening, bool draw) {
+    glRotatef(90,0,1,0);  
+    glRotatef(direction,1,0,0);
+    glRotatef(90,0,0,1);     
+    
+    if (!draw) return;
+            
+    std::vector<point> points; 
+    std::map<int,bool> mouth;
+    
     double r = 0.7;
     int lats = 24;
     int longs = 24;
@@ -21,7 +39,7 @@ void PlayerView::render(float direction, float opening) {
         float m;
 
         for(j = 0; j <= 360; j += 360 / longs) {
-            if (j <= threshHold || j >= 360 - threshHold) {
+            if (j <= opening || j >= 360 - opening) {
                 double lng = 2 * M_PI * (double) (j - 1) / 360;
                 double x = cos(lng);
                 double y = sin(lng);
@@ -34,7 +52,7 @@ void PlayerView::render(float direction, float opening) {
             else if (!drawn) {
                 drawn = true;
                 
-                m = (int)(0.5 + threshHold);
+                m = (int)(0.5 + opening);
                                
                 double lng = 2 * M_PI * (double) (m - 1) / 360;
                 double x = cos(lng);
@@ -43,14 +61,13 @@ void PlayerView::render(float direction, float opening) {
 
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
-                //glColor3f(1,0,0);
                 mouth[(int)points.size()] = true;
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
                 points.push_back(point(0, 0, r * z1));
                 points.push_back(point(0, 0, r * z0));
                                 
-                m = (int)(0.5 + 360 - threshHold);
+                m = (int)(0.5 + 360 - opening);
                 
                 lng = 2 * M_PI * (double) (m - 1) / 360;
                 x = cos(lng);
@@ -60,14 +77,13 @@ void PlayerView::render(float direction, float opening) {
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
                 
                 mouth[(int)points.size()] = false;
-                //glColor3f(1,1,0);
                 points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
                 points.push_back(point(r * x * zr0, r * y * zr0, r * z0));                
             }            
         }
     }
 
-    glColor4f(1,1,0, alpha);
+    glColor3f(1,1,0);
 
     bool isMouth = false;
 
@@ -77,11 +93,11 @@ void PlayerView::render(float direction, float opening) {
         if (mouth.find(i) != mouth.end()) {
             switch (mouth.find(i)->second) {
                 case true:
-                    glColor4f(1, 0, 0, alpha);
+                    glColor3f(1, 0, 0);
                     isMouth = true;
                     break;
                 case false:
-                    glColor4f(1, 1, 0, alpha);
+                    glColor3f(1, 1, 0);
                     isMouth = false;
                     break;
             }

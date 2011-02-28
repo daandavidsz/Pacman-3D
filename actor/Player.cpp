@@ -97,28 +97,22 @@ void Player::render() {
     glPushMatrix();
 
     glTranslatef(currentPos.x, currentPos.y, -19.5);
-    glRotatef(90,0,1,0);  
     
+    float drawDirection = 0;
     switch (direction) {
         case left:
-            glRotatef(90,1,0,0); break;       
+            drawDirection = 90; break;    
         case right:
-            glRotatef(270,1,0,0); break;
+            drawDirection = 270; break;
         case up:
-            glRotatef(180,1,0,0); break;
+            drawDirection = 180; break;
         case down:
-            glRotatef(0,1,0,0); break;
+            drawDirection = 0; break;
         case none:
-            glRotatef(0,1,0,0); break;        
+            drawDirection = 0; break;        
     }
     
-    glRotatef(90,0,0,1);
-        
-    std::vector<point> points; 
-    std::map<int,bool> mouth;
-    
-    int threshHold = 0;
-    float alpha = 1.0;
+    float threshHold = 0;
     
     if (state == ALIVE) {
         threshHold = (int)(position * 90 + 45) % 90;
@@ -130,29 +124,25 @@ void Player::render() {
         }
     }
     else if (state == DYING) {
-        alpha = 0.0;
         threshHold = 180 - (int)(dyingProgress * 180);
         if (threshHold < -320) {
             direction = none;
             state = ALIVE;
             EventSystem::getInstance()->emit("playerdied");        
         }
-        pacmanExplosion.render(lastTicks);        
         dyingProgress += lastTicks * 1;
     }
     
-    playerView.render(1.0, 1.0);
-
-    /*
-    glColor3f(1, 0, 0);
-    glBegin(GL_LINES);
-    for (unsigned int i = 0; i < points.size(); i++) {
-        point p = points[i];
-        glVertex3f(p.x, p.y, p.z);
-        glVertex3f(0.5,0.5,0.5);
+    if (direction == none) {
+        playerView.render(drawDirection, 180-25, state == ALIVE);
     }
-    glEnd();
-    */
+    else {
+        playerView.render(drawDirection, threshHold, state == ALIVE);
+    }
+    
+    if (state == DYING) {
+        pacmanExplosion.render(lastTicks);
+    }
     
     glPopMatrix();
 }

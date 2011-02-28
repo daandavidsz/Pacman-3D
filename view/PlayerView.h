@@ -7,10 +7,15 @@
 #include <stdio.h> 
 #include <math.h> 
 #include <map>
+#include <vector>
+
+#include "../Direction.h"
 
 class PlayerView {
 
+    private:
+        point normalizeVector(point vector);
     public:
-        void render(float direction, float opening);
+        void render(float direction, float opening, bool draw);
 
 };
