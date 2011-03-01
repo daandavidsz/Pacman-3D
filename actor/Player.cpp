@@ -133,6 +133,7 @@ void Player::render() {
         dyingProgress += lastTicks * 1;
     }
     
+    playerView.setRadius(0.7);
     if (direction == none) {
         playerView.render(drawDirection, 180-25, state == ALIVE);
     }

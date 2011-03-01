@@ -11,6 +11,7 @@
 #include "actor/Inky.h"
 #include "actor/Clyde.h"
 #include "object/ScoreBoard.h"
+#include "view/PlayerView.h"
 #include "Direction.h"
 #include "Maze.h"
 #include "EventObserver.h"
@@ -18,22 +19,23 @@
 
 class Game : public EventObserver {
 
-    Maze maze;
-    ScoreBoard scoreBoard;    
-    Player player;
+    private:
+        PlayerView playerView;
+        Maze maze;
+        ScoreBoard scoreBoard;    
+        Player player;
+        
+        Pinky pinky;
+        Blinky blinky;
+        Inky inky;
+        Clyde clyde;  
+        std::vector<Enemy*> enemies;
 
-    Pinky pinky;
-    Blinky blinky;
-    Inky inky;
-    Clyde clyde;  
-    std::vector<Enemy*> enemies;
-
-    int counter;
-    float gameTime;
-    bool paused;
-    GAMESTATE gameState;
-    
-    protected:
+        int lives;
+        int counter;
+        float gameTime;
+        bool paused;
+        GAMESTATE gameState;
         void handleLighting();
     
     public:

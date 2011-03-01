@@ -9,17 +9,25 @@ point PlayerView::normalizeVector(point vector) {
     return normalizedVector;
 }
 
+void PlayerView::setRotation(double r) {
+    rotation = r;
+}
+
+void PlayerView::setRadius(double r) {
+    radius = r;
+}
+
 void PlayerView::render(float direction, float opening, bool draw) {
-    glRotatef(90,0,1,0);  
-    glRotatef(direction,1,0,0);
-    glRotatef(90,0,0,1);     
+    glRotatef(90, 0, 1, 0);  
+    glRotatef(rotation, 0, 0, 1);      
+    glRotatef(direction, 1, 0, 0);
+    glRotatef(90, 0, 0, 1);     
     
     if (!draw) return;
             
     std::vector<point> points; 
     std::map<int,bool> mouth;
     
-    double r = 0.7;
     int lats = 24;
     int longs = 24;
 
@@ -46,8 +54,8 @@ void PlayerView::render(float direction, float opening, bool draw) {
             
                 glColor3f(1, 1, 0);
 
-                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
-                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
+                points.push_back(point(radius * x * zr1, radius * y * zr1, radius * z1));
+                points.push_back(point(radius * x * zr0, radius * y * zr0, radius * z0));
             }
             else if (!drawn) {
                 drawn = true;
@@ -59,13 +67,13 @@ void PlayerView::render(float direction, float opening, bool draw) {
                 double y = sin(lng);
 
 
-                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
-                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
+                points.push_back(point(radius * x * zr1, radius * y * zr1, radius * z1));
+                points.push_back(point(radius * x * zr0, radius * y * zr0, radius * z0));
                 mouth[(int)points.size()] = true;
-                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
-                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
-                points.push_back(point(0, 0, r * z1));
-                points.push_back(point(0, 0, r * z0));
+                points.push_back(point(radius * x * zr1, radius * y * zr1, radius * z1));
+                points.push_back(point(radius * x * zr0, radius * y * zr0, radius * z0));
+                points.push_back(point(0, 0, radius * z1));
+                points.push_back(point(0, 0, radius * z0));
                                 
                 m = (int)(0.5 + 360 - opening);
                 
@@ -73,12 +81,12 @@ void PlayerView::render(float direction, float opening, bool draw) {
                 x = cos(lng);
                 y = sin(lng);
 
-                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
-                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));
+                points.push_back(point(radius * x * zr1, radius * y * zr1, radius * z1));
+                points.push_back(point(radius * x * zr0, radius * y * zr0, radius * z0));
                 
                 mouth[(int)points.size()] = false;
-                points.push_back(point(r * x * zr1, r * y * zr1, r * z1));
-                points.push_back(point(r * x * zr0, r * y * zr0, r * z0));                
+                points.push_back(point(radius * x * zr1, radius * y * zr1, radius * z1));
+                points.push_back(point(radius * x * zr0, radius * y * zr0, radius * z0));                
             }            
         }
     }

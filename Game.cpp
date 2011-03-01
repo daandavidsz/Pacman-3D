@@ -1,6 +1,8 @@
 #include "Game.h"
 
 void Game::load() {
+    lives = 3;
+    playerView.setRadius(0.15);
     srand ( time(NULL) );
     maze.load();
     player.setGame(this);
@@ -55,6 +57,7 @@ Maze Game::getMaze() {
 
 void Game::onSignal(std::string name) {
     if (name == "playerdied") {
+        lives--;
         reset();
     }
 }
@@ -105,6 +108,15 @@ void Game::render() {
     if (lookAt > 25) lookAt = 25;
     
     scoreBoard.render();
+    
+    playerView.setRotation(280);
+        
+    for (int i = 0; i < lives; i++) {
+        glPushMatrix();
+        glTranslatef(2.3 - 0.4 * i, 1.6, -5);
+        playerView.render((int)(gameTime * 50 + i * 20) % 360, 180 - 30, true);
+        glPopMatrix();
+    }
     
     //gluLookAt (playerPos.x, playerPos.y, -18.0 + lookAt, playerPos.x/2, playerPos.y/2, playerPos.z, 0.0, 1.0, 0.0);
     //gluLookAt (0, -20, 18, 0, -2, playerPos.z, 0.0, 1.0, 0.0);
