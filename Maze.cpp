@@ -127,7 +127,6 @@ void Maze::drawBigCorner(bool isInset) {
     float x, y;
 	float bigRadius = 0.65;
 	float smallRadius = 0.35;
-    bool inner = false;
     
     std::vector<point> opoints;    
     std::vector<point> points; 

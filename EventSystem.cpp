@@ -8,7 +8,7 @@ EventSystem * EventSystem::getInstance() {
 
 void EventSystem::emit(std::string signal) {
     if (observers.find(signal) != observers.end()) {
-        for (int i = 0; i < observers[signal].size(); i++) {
+        for (unsigned int i = 0; i < observers[signal].size(); i++) {
             observers[signal][i]->onSignal(signal);
         }
     }   

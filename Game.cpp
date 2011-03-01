@@ -89,7 +89,6 @@ void Game::handleLighting() {
 
 void Game::update(float ticks) {
     gameTime += ticks;
-    counter++;
     scoreBoard.update(ticks);
     
     for (unsigned int i = 0; i < enemies.size(); i++) {

@@ -35,7 +35,7 @@ void PacmanExplosion::reset() {
         }
     }
     
-    for (int i = 0; i < points.size() - 2; i += 2) {
+    for (unsigned int i = 0; i < points.size() - 2; i += 2) {
         int part = ((i % 48) / 6) + 100*(i / (48*4));
         
         if (particles.find(part) == particles.end()) {
@@ -63,7 +63,7 @@ void PacmanExplosion::reset() {
             polyVector.push_back(polyPoints[(j + 1) % 4]);
             polyVector.push_back(polyPoints[j]);
             polyVector.push_back(Vector(0, 0, 0));
-            for (int m = 0; m < polyVector.size(); m++) {
+            for (unsigned int m = 0; m < polyVector.size(); m++) {
                 Vector p = polyVector[m];
                 Vector n = normalizeVector(p);
                 particles[part].addTrianglePoint(p, n);                
@@ -91,12 +91,12 @@ void PacmanExplosion::render(float ticks) {
     //glDepthMask (GL_FALSE);
     glPushMatrix();
     
-    for (int i = 0; i < bloodParticles.size(); i++) {
+    for (unsigned int i = 0; i < bloodParticles.size(); i++) {
         bloodParticles[i].update(ticks);
         bloodParticles[i].render();
     }
     
-    for (int i = 0; i < particles.size(); i++) {
+    for (unsigned int i = 0; i < particles.size(); i++) {
         particles[i].update(ticks);
         if (bloodParticles.size() < 300 && rand() % 500 == 1) {
             BloodParticle blood;

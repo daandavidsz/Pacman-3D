@@ -31,8 +31,7 @@ class Game : public EventObserver {
         Clyde clyde;  
         std::vector<Enemy*> enemies;
 
-        int lives;
-        int counter;
+        char lives;
         float gameTime;
         bool paused;
         GAMESTATE gameState;

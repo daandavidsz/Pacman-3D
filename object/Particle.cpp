@@ -55,7 +55,7 @@ void Particle::update(float ticks) {
 
 void Particle::render() {
     glColor3f(1, 1, 0);
-    for (int i = 0; i < qPoints.size(); i++) {
+    for (unsigned int i = 0; i < qPoints.size(); i++) {
         if (i % 4 == 0) {
             glBegin(GL_QUADS);
         }
@@ -68,7 +68,7 @@ void Particle::render() {
         }        
     }
     
-    for (int i = 0; i < tPoints.size(); i++) {
+    for (unsigned int i = 0; i < tPoints.size(); i++) {
         if (i % 3 == 0) {
             glBegin(GL_TRIANGLES);
         }
