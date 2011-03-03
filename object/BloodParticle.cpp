@@ -42,17 +42,8 @@ void BloodParticle::render() {
     glPushMatrix();
     glTranslatef(position.x, position.y, position.z);
     glColor3f(1, 0, 0);
-    
     glutSolidSphere(size, 6, 6);
 
-    /*
-    for (int i = 0; i < splatters; i++) {
-        glTranslatef(sin(splatterDirection)*size, 0, cos(splatterDirection)*size);
-        glutSolidSphere(size / 3.0, 6, 6);
-        glTranslatef(-sin(splatterDirection)*size, 0, -cos(splatterDirection)*size);
-    }
-    */
-	
     glPopMatrix();    
 }
 

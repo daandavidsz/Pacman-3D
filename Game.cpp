@@ -3,6 +3,7 @@
 void Game::load() {
     lives = 3;
     playerView.setRadius(0.15);
+    playerView.setRotation(280);
     srand ( time(NULL) );
     maze.load();
     player.setGame(this);
@@ -100,22 +101,13 @@ void Game::update(float ticks) {
 }
 
 void Game::render() {
+    glDepthMask(GL_TRUE);
+    
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
     point playerPos = player.getPosition();
     float lookAt = 1 + gameTime * 2.5;
     if (lookAt > 25) lookAt = 25;
-    
-    scoreBoard.render();
-    
-    playerView.setRotation(280);
-        
-    for (int i = 0; i < lives; i++) {
-        glPushMatrix();
-        glTranslatef(2.3 - 0.4 * i, 1.6, -5);
-        playerView.render((int)(gameTime * 50 + i * 20) % 360, 180 - 30, true);
-        glPopMatrix();
-    }
     
     //gluLookAt (playerPos.x, playerPos.y, -18.0 + lookAt, playerPos.x/2, playerPos.y/2, playerPos.z, 0.0, 1.0, 0.0);
     //gluLookAt (0, -20, 18, 0, -2, playerPos.z, 0.0, 1.0, 0.0);
@@ -162,8 +154,40 @@ void Game::render() {
 
     maze.render();
     player.render();
-    
+
     glLoadIdentity();
+    
+    glDepthMask(GL_FALSE);
+    glBegin(GL_POLYGON);
+    glColor4f(0, 0, 0, 1);
+    glNormal3f(0, 0, -1);
+    glVertex3f(-2.8, -2.1, -5);
+    glNormal3f(0, 0, -1);    
+    glVertex3f(2.8, -2.1, -5);
+    glNormal3f(0, 0, -1);    
+    glVertex3f(2.8, -1.5, -5);
+    glNormal3f(0, 0, -1);    
+    glVertex3f(-2.8, -1.5, -5);
+    glEnd();  
+    glLineWidth(1.5);
+    glBegin(GL_LINE_LOOP);
+    glColor4f(0, 0, 1, 1);
+    glVertex3f(-2.8, -2.1, -5);
+    glVertex3f(2.8, -2.1, -5);
+    glVertex3f(2.8, -1.5, -5);
+    glVertex3f(-2.8, -1.5, -5);
+    glEnd();      
+        
+    scoreBoard.render();
+    
+    glDepthMask(GL_TRUE);
+        
+    for (int i = 0; i < lives; i++) {
+        glPushMatrix();
+        glTranslatef(2.3 - 0.4 * i, -1.75, -5);
+        playerView.render((int)(gameTime * 50 + i * 20) % 360, 180 - 30, true);
+        glPopMatrix();
+    }
 }
 
 void Game::handleSpecialKeystoke(int key) {

@@ -51,6 +51,13 @@ void Particle::update(float ticks) {
         movementVector.y *= 0.55;
         movementVector.z *= 0.55;                
     }
+    
+    // Stop vibrating particles on the ground
+    if (fabs(movementVector.x) < 0.01 && fabs(movementVector.y) < 0.01 && fabs(movementVector.z) < 0.01 && fabs(position.y + 1) < 0.01) {
+        movementVector.x = 0;
+        movementVector.y = 0;
+        movementVector.z = 0;
+    }
 }
 
 void Particle::render() {

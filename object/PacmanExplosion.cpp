@@ -82,13 +82,6 @@ Vector PacmanExplosion::normalizeVector(Vector vector) {
 }
 
 void PacmanExplosion::render(float ticks) {
-    float alpha = 1.0 - totalTicks*1.2;
-    if (alpha < 0.0) {
-        alpha = 0.0;
-    }
-    alpha = 1.0;
-    
-    //glDepthMask (GL_FALSE);
     glPushMatrix();
     
     for (unsigned int i = 0; i < bloodParticles.size(); i++) {
@@ -112,7 +105,6 @@ void PacmanExplosion::render(float ticks) {
     }
     
     glPopMatrix();
-    //glDepthMask (GL_TRUE);
     totalTicks += ticks;
 }
 

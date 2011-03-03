@@ -50,7 +50,7 @@ void ScoreBoard::update(float ticks) {
 
 void ScoreBoard::render() {
     glPushMatrix();
-    glTranslatef(-2.3, 1.3, -5);
+    glTranslatef(-2.28, -1.95, -5);
     
     unsigned int currentScore = score;
     while (currentScore > 0) {
@@ -61,7 +61,11 @@ void ScoreBoard::render() {
     int stackSize = numberStack.size();
     for (int d = 0; d < stackSize; d++) {
         std::bitset<15> digit = digits[(int)numberStack.top()];
-        numberStack.pop();
+    
+        if ((int)numberStack.top() == 1) {
+            //glTranslatef(-0.20, 0, 0);
+        }
+        
         int counter = 0;
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 3; x++) {
@@ -69,10 +73,11 @@ void ScoreBoard::render() {
                 float newGlow = (1.0 - 10*lastTicks) * glow[d][counter] + 10*lastTicks * wantedGlow;
                 if (wantedGlow > 0.1) {
                     glow[d][counter] = newGlow;
-                    glColor4f(1-newGlow, 1, 1-newGlow, 1);        
-                    glTranslatef(-x/9.0, y/9.0, 0);        
-                    glutSolidSphere(0.05, 10, 10);            
-                    glTranslatef(x/9.0, -y/9.0, 0);        
+                    //glColor4f(1-newGlow, 1, 1-newGlow, 1);
+                    glColor4f(0.3, 0.3, 0.3, 1);                
+                    glTranslatef(-x/11.0, y/11.0, 0);        
+                    glutSolidSphere(0.04, 10, 10);            
+                    glTranslatef(x/11.0, -y/11.0, 0);        
                 }
                 else {
                     glow[d][counter] = wantedGlow;
@@ -80,7 +85,9 @@ void ScoreBoard::render() {
                 counter++;            
             }
         }
-        glTranslatef(0.45, 0, 0);
+        glTranslatef(0.35, 0, 0);
+            
+        numberStack.pop();
     }
     glPopMatrix();
 }
