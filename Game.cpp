@@ -144,10 +144,28 @@ void Game::render() {
     }
     
     //gluLookAt (playerPos.x / 3.5, playerPos.y - 16, -4, playerPos.x / 3.5, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
-    float zoomInFrom = 15;    
+
+    /*
+    float zoomInFrom = 15;  
     float multiplier = closestDistance > zoomInFrom ? 0.0 : 0.4 * (1.0-(1.0/zoomInFrom)*closestDistance);
     gluLookAt (playerPos.x, startY - (startY - endY)*multiplier, startZ - (startZ - endZ)*multiplier, playerPos.x, playerPos.y, playerPos.z, 0.0, 1.0, 0.0);
-        
+    */
+    
+    float lookY = playerPos.y + 2;
+    float startX = playerPos.x;
+    
+    if (lookY < -5.5) lookY = -5.5;
+    else if (lookY > 9.5) lookY = 9.5;
+    
+    if (startX < -5) startX = -5;
+    else if (startX > 5) startX = 5;    
+
+    //std::cout << lookY << "\n";
+    
+    startY = lookY - 18;
+    
+    gluLookAt (startX, startY, startZ, startX, lookY, playerPos.z, 0.0, 1.0, 0.0);
+    
     for (unsigned int i = 0; i < enemies.size(); i++) {
         enemies[i]->render();
     }
@@ -161,30 +179,34 @@ void Game::render() {
     glBegin(GL_POLYGON);
     glColor4f(0, 0, 0, 1);
     glNormal3f(0, 0, -1);
-    glVertex3f(-2.8, -2.1, -5);
+    glVertex3f(-2.8, 2.1, -5);
+
     glNormal3f(0, 0, -1);    
-    glVertex3f(2.8, -2.1, -5);
+    glVertex3f(-2.8, 1.5, -5);
+    
     glNormal3f(0, 0, -1);    
-    glVertex3f(2.8, -1.5, -5);
+    glVertex3f(2.8, 1.5, -5);
+
     glNormal3f(0, 0, -1);    
-    glVertex3f(-2.8, -1.5, -5);
+    glVertex3f(2.8, 2.1, -5);
+
     glEnd();  
     glLineWidth(1.5);
     glBegin(GL_LINE_LOOP);
     glColor4f(0, 0, 1, 1);
-    glVertex3f(-2.8, -2.1, -5);
-    glVertex3f(2.8, -2.1, -5);
-    glVertex3f(2.8, -1.5, -5);
-    glVertex3f(-2.8, -1.5, -5);
+    glVertex3f(2.8, 2.1, -5);
+    glVertex3f(-2.8, 2.1, -5);
+    glVertex3f(-2.8, 1.5, -5);
+    glVertex3f(2.8, 1.5, -5);    
     glEnd();      
-        
+    
     scoreBoard.render();
     
     glDepthMask(GL_TRUE);
         
     for (int i = 0; i < lives; i++) {
         glPushMatrix();
-        glTranslatef(2.3 - 0.4 * i, -1.75, -5);
+        glTranslatef(2.3 - 0.4 * i, 1.75, -5);
         playerView.render((int)(gameTime * 50 + i * 20) % 360, 180 - 30, true);
         glPopMatrix();
     }

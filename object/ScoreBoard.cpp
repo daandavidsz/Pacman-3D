@@ -50,7 +50,7 @@ void ScoreBoard::update(float ticks) {
 
 void ScoreBoard::render() {
     glPushMatrix();
-    glTranslatef(-2.28, -1.95, -5);
+    glTranslatef(-2.28, 1.60, -5);
     
     unsigned int currentScore = score;
     while (currentScore > 0) {
