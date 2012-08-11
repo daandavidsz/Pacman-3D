@@ -490,6 +490,7 @@ void Maze::drawWall(int x, int y, float * color) {
 void Maze::load() {
     mazeDisplayList = glGenLists(1);
     
+    Magick::InitializeMagick(NULL);
     Magick::Image img("map.png");
     
     width = (int) img.columns();
