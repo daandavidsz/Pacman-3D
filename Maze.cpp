@@ -387,7 +387,7 @@ void Maze::createNormal(float x, float y, float z) {
         
 void Maze::createMaze() {
 	glNewList(mazeDisplayList, GL_COMPILE);
-    glColor3f (0.0, 0.0, 0.8);
+    glColor3f(0.0, 0.0, 0.8);
 
     int mazeHeight = getHeight();
     int mazeWidth = getWidth(); 
@@ -469,7 +469,7 @@ void Maze::drawCeiling(int x, int y) {
     float pointY = (float)y-(height/2);
     float top = -19 - 0.02;
     
-    glBegin (GL_QUADS);
+    glBegin(GL_QUADS);
         glNormal3f(0, 0, 1);
         glVertex3f(pointX, pointY, top);
         glNormal3f(0, 0, 1);        
@@ -478,7 +478,7 @@ void Maze::drawCeiling(int x, int y) {
         glVertex3f(pointX+1, pointY+1, top);
         glNormal3f(0, 0, 1);        
         glVertex3f(pointX, pointY+1, top);
-    glEnd ();
+    glEnd();
 }
 
 void Maze::drawWall(int x, int y, float * color) {
@@ -488,25 +488,63 @@ void Maze::drawWall(int x, int y, float * color) {
 }
 
 void Maze::load() {
+    std::vector<std::string> map;
+
+    map.push_back("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+    map.push_back("BGGGGGGGGGGGGBBGGGGGGGGGGGGB");
+    map.push_back("BGBBBBGBBBBBGBBGBBBBBGBBBBGB");
+    map.push_back("BRBZZBGBZZZBGBBGBZZZBGBZZBRB");
+    map.push_back("BGBBBBGBBBBBGBBGBBBBBGBBBBGB");
+    map.push_back("BGGGGGGGGGGGGGGGGGGGGGGGGGGB");
+    map.push_back("BGBBBBGBBGBBBBBBBBGBBGBBBBGB");
+    map.push_back("BGBBBBGBBGBBBBBBBBGBBGBBBBGB");
+    map.push_back("BGGGGGGBBGGGGBBGGGGBBGBBBBBB");
+    map.push_back("BBBBBBGBBBBBWBBWBBBBBGBBBBBB");
+    map.push_back("ZZZZZBGBBBBBWBBWBBBBBGBZZZZZ");
+    map.push_back("ZZZZZBGBBWWWWWWWWWWBBGBZZZZZ");
+    map.push_back("ZZZZZBGBBWBBBWWBBBWBBGBZZZZZ");
+    map.push_back("BBBBBBGBBWBWWWWWWBWBBGBBBBBB");
+    map.push_back("WWWWWWGWWWBWWWWWWBWWWGWWWWWW");
+    map.push_back("BBBBBBGBBWBWWWWWWBWBBGBBBBBB");
+    map.push_back("ZZZZZBGBBWBBBBBBBBWBBGBZZZZZ");
+    map.push_back("ZZZZZBGBBWWWWWWWWWWBBGBZZZZZ");
+    map.push_back("ZZZZZBGBBWBBBBBBBBWBBGBZZZZZ");
+    map.push_back("BBBBBBGBBWBBBBBBBBWBBGBBBBBB");
+    map.push_back("BGGGGGGGGGGGGBBGGGGGGGGGGGGB");
+    map.push_back("BGBBBBGBBBBBGBBGBBBBBGBBBBGB");
+    map.push_back("BRBBBBGBBBBBGBBGBBBBBGBBBBRB");
+    map.push_back("BGGGBBGGGGGGGGGGGGGGGGBBGGGB");
+    map.push_back("BBBGBBGBBGBBBBBBBBGBBGBBGBBB");
+    map.push_back("BBBGBBGBBGBBBBBBBBGBBGBBGBBB");
+    map.push_back("BGGGGGGBBGGGGBBGGGGBBGGGGGGB");
+    map.push_back("BGBBBBBBBBBBGBBGBBBBBBBBBBGB");
+    map.push_back("BGBBBBBBBBBBGBBGBBBBBBBBBBGB");
+    map.push_back("BGGGGGGGGGGGGGGGGGGGGGGGGGGB");
+    map.push_back("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
     mazeDisplayList = glGenLists(1);
-    
-    Magick::InitializeMagick(NULL);
-    Magick::Image img("map.png");
-    
-    width = (int) img.columns();
-    height = (int) img.rows();            
+
+    width = 28;
+    height = 31;
 
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
+            char character = map[y][x];
+
             float *color;
             color = new float[3];
-            
-            Magick::ColorRGB rgb(img.pixelColor(x, y));
-            color[0] = rgb.red();
-            color[1] = rgb.green();
-            color[2] = rgb.blue();
-            pixels[x][height - 1  - y] = color;
-            pixelColors[x][height - 1 - y] = rgb.red() * 10000 + rgb.green() * 100 + rgb.blue();
+            color[0] = 0.0;
+            color[1] = 0.0;
+            color[2] = 0.0;
+
+            switch (character) {
+                case 'B': color[2] = 1.0; break;
+                case 'W': color[0] = 1.0; color[1] = 1.0; color[2] = 1.0; break;
+                case 'R': color[0] = 1.0; break;
+                case 'G': color[0] = 1.0; color[1] = 1.0; break;
+            }
+
+            pixels[x][height - (y + 1)] = color;
         }
     }
     createMaze();

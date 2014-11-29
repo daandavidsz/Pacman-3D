@@ -1,6 +1,4 @@
-#include <GL/glut.h> // Header File For The GLUT Library 
-#include <GL/gl.h>	 // Header File For The OpenGL32 Library
-#include <GL/glu.h>	 // Header File For The GLu32 Library
+#include <OpenGLHeaders.h>
 #include <unistd.h>  // needed to sleep
 #include <stdlib.h>  // exit()
 #include <stdio.h> 
@@ -23,7 +21,7 @@ int main(int argc, char **argv)
      Depth buffered for automatic clipping */  
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
 
-    glutInitWindowSize(800, 600);  
+    glutInitWindowSize(1024, 768);  
     glutInitWindowPosition(0, 0);  
     window = glutCreateWindow("Pacman");  
 
@@ -41,7 +39,7 @@ int main(int argc, char **argv)
     glutSpecialFunc(&Renderer::specialKey);
 
     /* Initialize our window. */
-    Renderer::initGL(800, 600);
+    Renderer::initGL(1024, 768);
 
     /* Start Event Processing Engine */  
     glutMainLoop();  

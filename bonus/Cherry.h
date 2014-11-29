@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glut.h> // Header File For The GLUT Library 
+#include <../OpenGLHeaders.h>
 
 #include "Bonus.h"
 

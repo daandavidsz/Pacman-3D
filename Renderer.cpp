@@ -9,8 +9,8 @@ void Renderer::initGL(int width, int height) {
     
     //glPolygonMode(GL_FRONT, GL_LINE); 
 	
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	    
     glClearDepth(1.0);
     glDepthFunc(GL_LESS);
@@ -25,8 +25,7 @@ void Renderer::initGL(int width, int height) {
 };
         
 void Renderer::reSizeGLScene(int width, int height) {
-    if (height == 0) // Prevent a divide by zero if the window is too small
-    height = 1;
+    if (height == 0) height = 1;// Prevent a divide by zero if the window is too small
 
     glViewport(0, 0, width, height);
 

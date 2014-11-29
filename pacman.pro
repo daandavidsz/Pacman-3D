@@ -6,6 +6,7 @@ TEMPLATE = app
 TARGET = 
 DEPENDPATH += . actor bonus object view
 INCLUDEPATH += . actor bonus object view
+LIBS += -lglut -lGL -lGLU
 
 # Input
 HEADERS += Direction.h \

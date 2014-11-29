@@ -2,9 +2,7 @@
 
 #define PI 3.14159265358979323846
 
-#include <GL/glut.h> // Header File For The GLUT Library 
-#include <GL/gl.h>	 // Header File For The OpenGL32 Library
-#include <GL/glu.h>	 // Header File For The GLu32 Library
+#include <OpenGLHeaders.h>
 
 #include <iostream>
 #include <fstream>
@@ -13,7 +11,7 @@
 #include <bitset>
 #include <math.h>
 
-#include <Magick++.h>
+// #include <Magick++.h>
 
 #include "actor/Player.h"
 #include "Direction.h"
@@ -29,11 +27,11 @@ class Maze {
         float gameTime;
         
         float * pixels[28][31];
-        float pixelColors[28][31];
+        // float pixelColors[28][31];
         Tile tiles[28][31];
     	GLuint mazeDisplayList;
     	Player player;
-        std::map <const char *, int> vertexes;
+        // std::map <const char *, int> vertexes;
 
         void drawLines(float * color, int x, int y, float pointX, float pointY);
         void createNormal(float x, float y, float z);
@@ -63,13 +61,25 @@ class Maze {
         }
         
         bool isWall(int x, int y) {
-            if (x < 0 || x >= width || y < 0 || y >= height)
-                return true;
-            float * color = getPixel(x,y);
-            float colorSum = color[0] + color[1] + color[2];
-            if (color[0] == 1.0 && colorSum == 1.0) return false;
-            if (color[0] == 1.0 && color[1] == 1.0 && color[2] == 0.0) return false;
-            return colorSum < 3.0;
+            bool result = false;
+            if (x < 0 || x >= width || y < 0 || y >= height) {
+                result = true;
+            }
+            else {
+                float * color = getPixel(x,y);
+                float colorSum = color[0] + color[1] + color[2];
+                if (color[0] == 1.0 && colorSum == 1.0) {
+                    result = false;
+                }
+                else if (color[0] == 1.0 && color[1] == 1.0 && color[2] == 0.0) {
+                    result = false;
+                }
+                else {
+                    result = colorSum < 3.0;
+                }
+            }
+            // std::cout << result << "\n";
+            return result;
         };
         
         void drawCorner(float xCenter, float yCenter, float z, float start, bool inner);

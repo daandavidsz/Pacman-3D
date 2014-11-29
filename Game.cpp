@@ -64,18 +64,18 @@ void Game::onSignal(std::string name) {
 }
 
 void Game::handleLighting() {
-    glEnable ( GL_LIGHTING ) ;            
+    glEnable(GL_LIGHTING);            
         
-    GLfloat position[] = { 0.5, -0.3, 1, 0};            
+    GLfloat position[] = { 0.5, -0.3, 1, 0 };            
     glLightfv(GL_LIGHT0, GL_POSITION, position);
     
-    GLfloat ambient[] = {0.1, 0.1, 0.1};
+    GLfloat ambient[] = { 0.1, 0.1, 0.1 };
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
     
-    GLfloat diffuse[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
     
-    GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat specular[] = { 1.0, 1.0, 1.0, 1.0 };
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
     
     glEnable(GL_LIGHT0);
@@ -84,8 +84,8 @@ void Game::handleLighting() {
     float mcolor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     glMaterialfv(GL_FRONT, GL_SPECULAR, mcolor); 
     
-    glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE ) ;
-    glEnable ( GL_COLOR_MATERIAL ) ;  
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);  
 }
 
 void Game::update(float ticks) {
@@ -164,7 +164,7 @@ void Game::render() {
     
     startY = lookY - 18;
     
-    gluLookAt (startX, startY, startZ, startX, lookY, playerPos.z, 0.0, 1.0, 0.0);
+    gluLookAt(startX, startY, startZ, startX, lookY, playerPos.z, 0.0, 1.0, 0.0);
     
     for (unsigned int i = 0; i < enemies.size(); i++) {
         enemies[i]->render();
@@ -214,14 +214,10 @@ void Game::render() {
 
 void Game::handleSpecialKeystoke(int key) {
     switch (key) {
-        case GLUT_KEY_UP:
-            player.setWantedDirection(up); break;
-        case GLUT_KEY_DOWN:
-            player.setWantedDirection(down); break;
-        case GLUT_KEY_LEFT:
-            player.setWantedDirection(left); break;
-        case GLUT_KEY_RIGHT:
-            player.setWantedDirection(right); break;
+        case GLUT_KEY_UP:    player.setWantedDirection(up); break;
+        case GLUT_KEY_DOWN:  player.setWantedDirection(down); break;
+        case GLUT_KEY_LEFT:  player.setWantedDirection(left); break;
+        case GLUT_KEY_RIGHT: player.setWantedDirection(right); break;
     }
     
     if (paused) {
@@ -230,21 +226,17 @@ void Game::handleSpecialKeystoke(int key) {
 }
 
 void Game::handleKeystroke(unsigned char key) {
-    switch (key) {
-        case 'w':
-            player.setWantedDirection(up); break;
-        case 's':
-            player.setWantedDirection(down); break;
-        case 'a':
-            player.setWantedDirection(left); break;
-        case 'd':
-            player.setWantedDirection(right); break;
-        case 'p':
-            paused = !paused; break;
-    }
-    
-    if (paused && key != 'p') {
+    if (paused) {
         paused = false;
+        return;
+    }
+
+    switch (key) {
+        case 'w': player.setWantedDirection(up); break;
+        case 's': player.setWantedDirection(down); break;
+        case 'a': player.setWantedDirection(left); break;
+        case 'd': player.setWantedDirection(right); break;
+        case 'p': paused = !paused; break;
     }
 }
 

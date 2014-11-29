@@ -99,15 +99,13 @@ void PlayerView::render(float direction, float opening, bool draw) {
     for (unsigned int i = 0; i < points.size(); i++) {
 
         if (mouth.find(i) != mouth.end()) {
-            switch (mouth.find(i)->second) {
-                case true:
-                    glColor3f(1, 0, 0);
-                    isMouth = true;
-                    break;
-                case false:
-                    glColor3f(1, 1, 0);
-                    isMouth = false;
-                    break;
+            if (mouth.find(i)->second) {
+                glColor3f(1, 0, 0);
+                isMouth = true;
+            }
+            else {
+                glColor3f(1, 1, 0);
+                isMouth = false;
             }
         }
 
